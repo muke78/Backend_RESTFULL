@@ -3,9 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "node --max-old-space-size=12288 .",
-    "dev": "nodemon --max-old-space-size=12288 index.js",
-    "test": "mocha --max-old-space-size=12288 test.js"
+    "start": "node ",
+    "dev": "nodemon"
   },
   "license": "MIT",
   "dependencies": {
