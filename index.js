@@ -1,4 +1,3 @@
-// app.js
 const express = require('express');
 const http = require('http');
 
@@ -18,7 +17,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/api', UsuariosRouter);
+app.use('/api/v1', UsuariosRouter);
 
 // Middleware de manejo de errores
 app.use((err, req, res, next) => {

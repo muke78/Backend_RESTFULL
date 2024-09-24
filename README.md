@@ -1,4 +1,4 @@
-# Backend REST_FULL_API
+# Backend REST FULL API
 
 ## Seguimiento 
 
@@ -7,7 +7,7 @@
 - En el frontend se ocuparan tecnologias como:
   - Zustand (Como manejador de estado global)
   - Tanstack Query(Como manejador de peticiones y respuestas)
-  - Algunalibreria donde monte la interfaz del diseño como Boostrap, Tailwind o shadcn/ui o styled-components para algo mas personalizado
+  - Alguna libreria donde monte la interfaz del diseño como Boostrap, Tailwind o shadcn/ui o styled-components para algo mas personalizado
 
 ## Segunda fase
 - Se hara  el backend en Nest de la misma forma solo que migrandolo a un nuevo esquema de desarrollo, en la primera fase estara construido con MySQL, pero en esta fase se hara con MongoDB, GraphQL, Apollo
