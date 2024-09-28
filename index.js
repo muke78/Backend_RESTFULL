@@ -1,10 +1,22 @@
 const express = require('express');
 const http = require('http');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./config/swaggerConfig');
 
 // Routers
 const MaestrosRouter = require('./router/maestrosRouter');
 
 const app = express();
+
+// Configurar Swagger UI
+app.use(
+  '/api-docs',
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerDocument, {
+    customCssUrl:
+      'https://cdn.jsdelivr.net/npm/swagger-ui-themes@3.0.0/themes/3.x/theme-material.css',
+  })
+);
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');

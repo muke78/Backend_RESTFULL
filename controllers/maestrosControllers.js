@@ -84,6 +84,13 @@ const InsertarMaestro = async (req, res) => {
         });
       }
     }
+
+    if (age > 100) {
+      return res
+        .status(500)
+        .send({ message: 'La edad no puede ser mayor a 100 años' });
+    }
+
     const status = 5;
     const queryInsert = `INSERT INTO maestros (TeacherID, NameUser, FirstName, LastName, NameSchool, LevelStudies, StudentsInCharge, CCT, SchoolZone, Curp, Email, Age, Phone, Country, Status)
     VALUES (UUID(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ${status});`;
