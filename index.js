@@ -2,7 +2,7 @@ const express = require('express');
 const http = require('http');
 
 // Routers
-const UsuariosRouter = require('./router/usuariosRouter');
+const MaestrosRouter = require('./router/maestrosRouter');
 
 const app = express();
 
@@ -17,7 +17,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/api/v1', UsuariosRouter);
+app.use('/api/v1', MaestrosRouter);
 
 // Middleware de manejo de errores
 app.use((err, req, res, next) => {
