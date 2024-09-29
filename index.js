@@ -5,6 +5,7 @@ const swaggerDocument = require('./config/swaggerConfig');
 
 // Routers
 const MaestrosRouter = require('./router/maestrosRouter');
+const UsuariosRouter = require('./router/usuariosRouter');
 
 const app = express();
 
@@ -29,7 +30,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/api/v1', MaestrosRouter);
+app.use('/api/v1', MaestrosRouter, UsuariosRouter);
 
 // Middleware de manejo de errores
 app.use((err, req, res, next) => {

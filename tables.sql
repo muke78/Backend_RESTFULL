@@ -18,3 +18,14 @@ CREATE TABLE `maestros` (
   PRIMARY KEY (`TeacherID`),
   CONSTRAINT `maestros_chk_1` CHECK (((`Age` >= 0) and (`Age` <= 99)))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+
+
+CREATE TABLE `usuarios` (
+  `id` char(36) NOT NULL,
+  `NameUser` varchar(255) DEFAULT NULL,
+  `Email` varchar(45) DEFAULT NULL,
+  `Pasword` char(40) DEFAULT NULL,
+  `Status` int DEFAULT '5',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+
