@@ -41,7 +41,7 @@ const BusquedaDeMaestro = async (req, res) => {
     const resultSearch = await connectionQuery(querySearch, queryParamsSearch);
 
     if (resultSearch.length === 0)
-      return res.status(404).json({ message: 'Maestro no encontrado' });
+      return res.status(404).json({ message: 'Maestro no encontrado, intente buscar con otro' });
 
     res.status(200).send(resultSearch[0]);
   } catch (error) {
@@ -59,6 +59,7 @@ const InsertarMaestro = async (req, res) => {
       studentsInCharge,
       cct,
       schoolZone,
+      workShif,
       curp,
       email,
       age,
@@ -74,6 +75,7 @@ const InsertarMaestro = async (req, res) => {
       !studentsInCharge ||
       !cct ||
       !schoolZone ||
+      !workShif ||
       !curp ||
       !email ||
       !age ||
@@ -113,8 +115,8 @@ const InsertarMaestro = async (req, res) => {
     }
 
     const status = 5;
-    const queryInsert = `INSERT INTO teachers (TeacherID, FirstName, LastName, NameSchool, LevelStudies, StudentsInCharge, CCT, SchoolZone, Curp, Email, Age, Phone, Country, Status)
-    VALUES (UUID(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ${status});`;
+    const queryInsert = `INSERT INTO teachers (TeacherID, FirstName, LastName, NameSchool, LevelStudies, StudentsInCharge, CCT, SchoolZone, WorkShif, Curp, Email, Age, Phone, Country, Status)
+    VALUES (UUID(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ${status});`;
     const queryParamsInsert = [
       firstName,
       lastName,
@@ -123,6 +125,7 @@ const InsertarMaestro = async (req, res) => {
       studentsInCharge,
       cct,
       schoolZone,
+      workShif,
       curp,
       email,
       age,
@@ -147,6 +150,7 @@ const ActualizarMaestro = async (req, res) => {
       studentsInCharge,
       cct,
       schoolZone,
+      workShif,
       curp,
       email,
       age,
@@ -156,7 +160,7 @@ const ActualizarMaestro = async (req, res) => {
       id,
     } = req.body;
 
-    const queryUpdate = `UPDATE teachers SET FirstName = ? , LastName = ?, NameSchool = ?, LevelStudies = ? ,StudentsInCharge = ?, CCT = ?, SchoolZone = ?, Curp = ? , Email = ? , Age = ? , Phone = ? , Country = ?, Status = ? WHERE TeacherID = ?`;
+    const queryUpdate = `UPDATE teachers SET FirstName = ? , LastName = ?, NameSchool = ?, LevelStudies = ? ,StudentsInCharge = ?, CCT = ?, SchoolZone = ?, WorkShif = ?, Curp = ? , Email = ? , Age = ? , Phone = ? , Country = ?, Status = ? WHERE TeacherID = ?`;
     const queryParamsUpdate = [
       firstName,
       lastName,
@@ -165,6 +169,7 @@ const ActualizarMaestro = async (req, res) => {
       studentsInCharge,
       cct,
       schoolZone,
+      workShif,
       curp,
       email,
       age,
