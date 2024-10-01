@@ -3,7 +3,7 @@ const hashedArg = require('argon2');
 
 const ObtenerTodosLosUsuarios = async (req, res) => {
   try {
-    const obtenerUsuarios = `SELECT * FROM usuarios ORDER BY NameUser ASC;`;
+    const obtenerUsuarios = `SELECT * FROM users ORDER BY NameUser ASC;`;
     const result = await connectionQuery(obtenerUsuarios);
 
     if (result.length === 0)
@@ -23,7 +23,7 @@ const InsertarUsario = async (req, res) => {
       return res.status(400).send({ message: 'Los campos son requeridos' });
 
     if (email && email.trim()) {
-      const queryValidate = `SELECT * FROM usuarios WHERE Email = ?`;
+      const queryValidate = `SELECT * FROM users WHERE Email = ?`;
       const queryParamsValidate = [email];
       const resultValidate = await connectionQuery(
         queryValidate,
@@ -38,7 +38,7 @@ const InsertarUsario = async (req, res) => {
     }
 
     const hashedPasword = await hashedArg.hash(password);
-    const queryInsert = `INSERT INTO usuarios (id, NameUser, Email, Password) VALUES (UUID(), ?, ?, '${hashedPasword}')`;
+    const queryInsert = `INSERT INTO users (id, NameUser, Email, Password) VALUES (UUID(), ?, ?, '${hashedPasword}')`;
     const queryParamsInsert = [nameUser, email, password];
     await connectionQuery(queryInsert, queryParamsInsert);
 
@@ -52,8 +52,23 @@ const EditarUsuario = async (req, res) => {
   try {
     const { nameUser, email, password, id } = req.body;
 
+    if (email && email.trim()) {
+      const queryValidate = `SELECT * FROM users WHERE Email = ?`;
+      const queryParamsValidate = [email];
+      const resultValidate = await connectionQuery(
+        queryValidate,
+        queryParamsValidate
+      );
+
+      if (resultValidate.length > 0) {
+        return res.status(500).send({
+          message: 'El correo ya se encuentra registrado',
+        });
+      }
+    }
+
     const hashedPasswordUpdate = await hashedArg.hash(password);
-    const queryUpdate = `UPDATE usuarios SET NameUser = ?, Email = ?, Password = '${hashedPasswordUpdate}' WHERE id = ?`;
+    const queryUpdate = `UPDATE users SET NameUser = ?, Email = ?, Password = '${hashedPasswordUpdate}' WHERE id = ?`;
     const queryParamsUpdate = [nameUser, email, id];
 
     await connectionQuery(queryUpdate, queryParamsUpdate);
@@ -76,7 +91,7 @@ const EliminarUsuario = async (req, res) => {
         .send({ message: 'No se envio el ID o no es valido' });
 
     if (id) {
-      const queryValidate = `SELECT * FROM usuarios WHERE id = ?`;
+      const queryValidate = `SELECT * FROM users WHERE id = ?`;
       const queryParamsValidate = [id];
       const resultValidate = await connectionQuery(
         queryValidate,
@@ -91,7 +106,7 @@ const EliminarUsuario = async (req, res) => {
     }
 
     const queryParamsDelete = [id];
-    const queryDelete = `DELETE FROM usuarios WHERE id = ?`;
+    const queryDelete = `DELETE FROM users WHERE id = ?`;
     await connectionQuery(queryDelete, queryParamsDelete);
 
     res.status(200).send({ message: 'Usuario eliminado exitosamente' });
