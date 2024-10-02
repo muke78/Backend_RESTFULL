@@ -1,6 +1,7 @@
 require('dotenv').config({ path: '.env' });
 const path = require('path');
 const swaggerJsdoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
 
 const swaggerDefinition = {
   openapi: '3.1.0',
@@ -38,4 +39,18 @@ const options = {
 
 const swaggerDocument = swaggerJsdoc(options);
 
-module.exports = swaggerDocument;
+const setupSwagger = (app) => {
+  app.use(
+    '/api-docs',
+    swaggerUi.serve,
+    swaggerUi.setup(swaggerDocument, {
+      customCssUrl:
+        'https://cdn.jsdelivr.net/npm/swagger-ui-themes@3.0.0/themes/3.x/theme-material.css',
+    })
+  );
+};
+
+module.exports = {
+  swaggerDocument,
+  setupSwagger,
+};
