@@ -1,16 +1,21 @@
 const express = require('express');
 const UsuariosControllers = require('../controllers/usuariosControllers');
+const verificarToken = require('../middleware/verificarToken');
 const api = express.Router();
 api.use(express.json());
+
+api.post('/login', UsuariosControllers.Login);
 
 /**
  * @swagger
  * /lista-de-usuarios:
  *   get:
- *     summary: Obtiene la lista de usuarios
- *     description: Este endpoint devuelve la lista completa de usuarios ordenada alfabéticamente por el nombre de usuario.
+ *     summary: Obtener todos los usuarios
+ *     description: Devuelve una lista de todos los usuarios ordenados por nombre de usuario en orden ascendente.
  *     tags:
- *       - Usuarios
+ *       - Users
+ *     security:
+ *       - BearerAuth: []
  *     responses:
  *       200:
  *         description: Lista de usuarios obtenida con éxito
@@ -21,23 +26,30 @@ api.use(express.json());
  *               items:
  *                 type: object
  *                 properties:
- *                   id:
- *                     type: integer
- *                     example: 1
+ *                   ID:
+ *                     type: string
+ *                     description: ID del usuario.
+ *                     example: "c4f2525c-8062-11ef-949a-00e04c360195"
  *                   NameUser:
  *                     type: string
- *                     example: "Juan Perez"
- *                   email:
+ *                     description: Nombre del usuario.
+ *                     example: "Juan Pérez"
+ *                   Email:
  *                     type: string
+ *                     description: Correo electrónico del usuario.
  *                     example: "juan.perez@example.com"
- *                   createdAt:
+ *                   Role:
  *                     type: string
- *                     format: date-time
- *                     example: "2023-09-28T14:48:00.000Z"
- *                   updatedAt:
+ *                     description: Rol del usuario.
+ *                     example: "user"
+ *                   AccountStatus:
  *                     type: string
- *                     format: date-time
- *                     example: "2023-09-28T14:48:00.000Z"
+ *                     description: Estado de la cuenta.
+ *                     example: "active"
+ *                   LastLogin:
+ *                     type: string
+ *                     description: Última fecha de inicio de sesión.
+ *                     example: "2024-10-02 12:34:56"
  *       404:
  *         description: No se encontraron usuarios
  *         content:
@@ -60,16 +72,20 @@ api.use(express.json());
  *                   example: "Error interno del servidor"
  */
 
-api.get('/lista-de-usuarios', UsuariosControllers.ObtenerTodosLosUsuarios);
+api.get(
+  '/lista-de-usuarios',
+  verificarToken,
+  UsuariosControllers.ObtenerTodosLosUsuarios
+);
 
 /**
  * @swagger
  * /crear-usuario:
  *   post:
  *     summary: Crea un nuevo usuario
- *     description: Este endpoint permite la creación de un nuevo usuario proporcionando el nombre de usuario, correo electrónico y contraseña.
+ *     description: Este endpoint permite crear un nuevo usuario en el sistema. Los campos obligatorios son nameUser, email, password, role y accountStatus.
  *     tags:
- *       - Usuarios
+ *       - Users
  *     requestBody:
  *       required: true
  *       content:
@@ -79,13 +95,24 @@ api.get('/lista-de-usuarios', UsuariosControllers.ObtenerTodosLosUsuarios);
  *             properties:
  *               nameUser:
  *                 type: string
- *                 example: "Juan Perez"
+ *                 description: Nombre del usuario.
+ *                 example: "Juan Pérez"
  *               email:
  *                 type: string
+ *                 description: Correo electrónico del usuario.
  *                 example: "juan.perez@example.com"
  *               password:
  *                 type: string
- *                 example: "password123"
+ *                 description: Contraseña del usuario.
+ *                 example: "securePassword123"
+ *               role:
+ *                 type: string
+ *                 description: Rol del usuario (por ejemplo, 'admin', 'user').
+ *                 example: "user"
+ *               accountStatus:
+ *                 type: string
+ *                 description: Estado de la cuenta (por ejemplo, 'active', 'inactive').
+ *                 example: "active"
  *     responses:
  *       200:
  *         description: Usuario creado con éxito
@@ -98,7 +125,7 @@ api.get('/lista-de-usuarios', UsuariosControllers.ObtenerTodosLosUsuarios);
  *                   type: string
  *                   example: "Usuario creado con exito"
  *       400:
- *         description: Campos requeridos faltantes
+ *         description: Falta un campo obligatorio
  *         content:
  *           application/json:
  *             schema:
@@ -108,7 +135,7 @@ api.get('/lista-de-usuarios', UsuariosControllers.ObtenerTodosLosUsuarios);
  *                   type: string
  *                   example: "Los campos son requeridos"
  *       500:
- *         description: Error al crear el usuario o el correo ya está registrado
+ *         description: Error interno del servidor
  *         content:
  *           application/json:
  *             schema:
@@ -116,19 +143,21 @@ api.get('/lista-de-usuarios', UsuariosControllers.ObtenerTodosLosUsuarios);
  *               properties:
  *                 message:
  *                   type: string
- *                   example: "El correo ya se encuentra registrado"
+ *                   example: "Error al crear el usuario"
+ *                 error:
+ *                   type: object
  */
 
-api.post('/crear-usuario', UsuariosControllers.InsertarUsario);
+api.post('/crear-usuario', verificarToken, UsuariosControllers.InsertarUsario);
 
 /**
  * @swagger
  * /actualizar-usuario:
  *   put:
  *     summary: Actualiza un usuario existente
- *     description: Este endpoint actualiza la información de un usuario existente, incluyendo el nombre de usuario, correo electrónico y contraseña.
+ *     description: Este endpoint permite actualizar la información de un usuario existente en el sistema. Los campos obligatorios son nameUser, email, password, role, accountStatus e id.
  *     tags:
- *       - Usuarios
+ *       - Users
  *     requestBody:
  *       required: true
  *       content:
@@ -138,16 +167,28 @@ api.post('/crear-usuario', UsuariosControllers.InsertarUsario);
  *             properties:
  *               id:
  *                 type: string
- *                 example: "123e4567-e89b-12d3-a456-426614174000"
+ *                 description: ID del usuario a actualizar.
+ *                 example: "c4f2525c-8062-11ef-949a-00e04c360195"
  *               nameUser:
  *                 type: string
- *                 example: "Juan Perez"
+ *                 description: Nombre actualizado del usuario.
+ *                 example: "Juan Pérez"
  *               email:
  *                 type: string
+ *                 description: Correo electrónico actualizado del usuario.
  *                 example: "juan.perez@example.com"
  *               password:
  *                 type: string
- *                 example: "newpassword123"
+ *                 description: Contraseña actualizada del usuario.
+ *                 example: "newSecurePassword456"
+ *               role:
+ *                 type: string
+ *                 description: Rol actualizado del usuario.
+ *                 example: "admin"
+ *               accountStatus:
+ *                 type: string
+ *                 description: Estado actualizado de la cuenta.
+ *                 example: "active"
  *     responses:
  *       200:
  *         description: Usuario actualizado con éxito
@@ -160,7 +201,7 @@ api.post('/crear-usuario', UsuariosControllers.InsertarUsario);
  *                   type: string
  *                   example: "El usuario se actualizo con exito"
  *       500:
- *         description: Error en la actualización del usuario
+ *         description: Error en la actualización del usuario o el correo ya está registrado
  *         content:
  *           application/json:
  *             schema:
@@ -168,14 +209,12 @@ api.post('/crear-usuario', UsuariosControllers.InsertarUsario);
  *               properties:
  *                 message:
  *                   type: string
- *                   example: "Hubo un error en la actualizacion del usuario"
+ *                   example: "El correo ya se encuentra registrado"
  *                 error:
- *                   type: string
- *                   example: "Detalles del error"
+ *                   type: object
  */
 
-
-api.put('/actualizar-usuario', UsuariosControllers.EditarUsuario);
+api.put('/actualizar-usuario', verificarToken, UsuariosControllers.EditarUsuario);
 
 /**
  * @swagger
@@ -184,7 +223,7 @@ api.put('/actualizar-usuario', UsuariosControllers.EditarUsuario);
  *     summary: Elimina un usuario
  *     description: Este endpoint elimina un usuario existente basado en el ID proporcionado.
  *     tags:
- *       - Usuarios
+ *       - Users
  *     parameters:
  *       - name: id
  *         in: path
@@ -239,7 +278,6 @@ api.put('/actualizar-usuario', UsuariosControllers.EditarUsuario);
  *                   example: "Detalles del error"
  */
 
-
-api.delete('/eliminar-usuario/:id', UsuariosControllers.EliminarUsuario);
+api.delete('/eliminar-usuario/:id', verificarToken, UsuariosControllers.EliminarUsuario);
 
 module.exports = api;

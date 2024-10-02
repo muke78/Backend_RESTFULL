@@ -1,4 +1,6 @@
+const jwt = require('../helpers/jwt');
 const { connectionQuery } = require('../helpers/connection.helper');
+const { lastLogin } = require('../helpers/userLastLogin');
 const hashedArg = require('argon2');
 
 const ObtenerTodosLosUsuarios = async (req, res) => {
@@ -17,9 +19,9 @@ const ObtenerTodosLosUsuarios = async (req, res) => {
 
 const InsertarUsario = async (req, res) => {
   try {
-    const { nameUser, email, password } = req.body;
+    const { nameUser, email, password, role, accountStatus } = req.body;
 
-    if (!nameUser || !email || !password)
+    if (!nameUser || !email || !password || !role || !accountStatus)
       return res.status(400).send({ message: 'Los campos son requeridos' });
 
     if (email && email.trim()) {
@@ -38,8 +40,8 @@ const InsertarUsario = async (req, res) => {
     }
 
     const hashedPasword = await hashedArg.hash(password);
-    const queryInsert = `INSERT INTO users (id, NameUser, Email, Password) VALUES (UUID(), ?, ?, '${hashedPasword}')`;
-    const queryParamsInsert = [nameUser, email, password];
+    const queryInsert = `INSERT INTO users (ID, NameUser, Email, Password, Role, LastLogin, AccountStatus) VALUES (UUID(), ?, ?, '${hashedPasword}', ?, NULL, ?)`;
+    const queryParamsInsert = [nameUser, email, role, accountStatus];
     await connectionQuery(queryInsert, queryParamsInsert);
 
     res.status(200).send({ message: 'Usuario creado con exito' });
@@ -50,26 +52,11 @@ const InsertarUsario = async (req, res) => {
 
 const EditarUsuario = async (req, res) => {
   try {
-    const { nameUser, email, password, id } = req.body;
-
-    if (email && email.trim()) {
-      const queryValidate = `SELECT * FROM users WHERE Email = ?`;
-      const queryParamsValidate = [email];
-      const resultValidate = await connectionQuery(
-        queryValidate,
-        queryParamsValidate
-      );
-
-      if (resultValidate.length > 0) {
-        return res.status(500).send({
-          message: 'El correo ya se encuentra registrado',
-        });
-      }
-    }
+    const { nameUser, email, password, role, accountStatus, id } = req.body;
 
     const hashedPasswordUpdate = await hashedArg.hash(password);
-    const queryUpdate = `UPDATE users SET NameUser = ?, Email = ?, Password = '${hashedPasswordUpdate}' WHERE id = ?`;
-    const queryParamsUpdate = [nameUser, email, id];
+    const queryUpdate = `UPDATE users SET NameUser = ?, Email = ?, Password = '${hashedPasswordUpdate}', Role = ?, AccountStatus = ?  WHERE ID = ?`;
+    const queryParamsUpdate = [nameUser, email, role, accountStatus, id];
 
     await connectionQuery(queryUpdate, queryParamsUpdate);
     res.status(200).send({ message: 'El usuario se actualizo con exito' });
@@ -118,11 +105,74 @@ const EliminarUsuario = async (req, res) => {
   }
 };
 
-const login = (req, res) => {};
+const Login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/gm;
+    if (!email)
+      return res
+        .status(400)
+        .send({ message: 'El correo electrónico es requerido' });
+
+    if (!regex.test(email))
+      return res
+        .status(400)
+        .send({ message: 'El correo electrónico no es válido' });
+
+    if (!password)
+      return res.status(400).send({ message: 'La contraseña es requerida' });
+
+    const queryValidate = `SELECT * FROM users WHERE Email = ?`;
+    const queryParamsValidate = [email];
+    const resultValidate = await connectionQuery(
+      queryValidate,
+      queryParamsValidate
+    );
+
+    if (resultValidate.length === 0) {
+      return res
+        .status(400)
+        .send({ message: 'El usuario no se encuentra registrado' });
+    }
+
+    const user = resultValidate[0];
+
+    const argonVerify = await hashedArg.verify(user.Password, password);
+
+    if (!argonVerify)
+      return res
+        .status(400)
+        .send({ message: 'La contraseña es incorrecta o está mal escrita' });
+
+    if (user.AccountStatus === 'Inactivo')
+      return res.status(400).send({
+        message:
+          'El usuario está inactivo, pida la reactivación a un administrador',
+      });
+
+    // Crea el token
+    const token = jwt.createToken({
+      id: user.ID,
+      nameUser: user.NameUser,
+      email: user.Email,
+      role: user.Role,
+      lastLogin: user.LastLogin,
+      accountStatus: user.AccountStatus,
+    });
+
+    await lastLogin(user.ID);
+
+    return res.status(200).send({ token });
+  } catch (error) {
+    return res.status(500).send({ message: error.message });
+  }
+};
 
 module.exports = {
   ObtenerTodosLosUsuarios,
   InsertarUsario,
   EditarUsuario,
   EliminarUsuario,
+  Login,
 };

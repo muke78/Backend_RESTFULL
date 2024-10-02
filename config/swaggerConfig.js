@@ -7,8 +7,22 @@ const swaggerDefinition = {
   info: {
     title: 'API Gestion y Administracion de una escuela',
     version: '1.0.0',
-    description: 'Documentación para la API de gestión de maestros',
+    description: 'Documentación para la API de una escuela',
   },
+  components: {
+    securitySchemes: {
+      BearerAuth: {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+      },
+    },
+  },
+  security: [
+    {
+      BearerAuth: [],
+    },
+  ],
   servers: [
     {
       url: `${process.env.ENDPOINT_SWAGGER}`,

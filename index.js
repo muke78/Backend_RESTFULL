@@ -2,6 +2,7 @@ const express = require('express');
 const http = require('http');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./config/swaggerConfig');
+const argon2 = require('argon2');
 
 // Routers
 const MaestrosRouter = require('./router/maestrosRouter');
