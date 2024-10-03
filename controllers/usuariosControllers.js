@@ -1,6 +1,7 @@
 const jwt = require('../helpers/jwt');
 const { connectionQuery } = require('../helpers/connection.helper');
 const { lastLogin } = require('../helpers/userLastLogin');
+const { insertTeacherBeforeUser } = require('../helpers/insertTeacherWithUser');
 const hashedArg = require('argon2');
 
 const ObtenerTodosLosUsuarios = async (req, res) => {
@@ -19,34 +20,37 @@ const ObtenerTodosLosUsuarios = async (req, res) => {
 
 const InsertarUsario = async (req, res) => {
   try {
-    const { nameUser, email, password, role, accountStatus } = req.body;
+    const { nameUser, email, password, role } = req.body;
 
-    if (!nameUser || !email || !password || !role || !accountStatus)
+    if (!nameUser || !email || !password || !role)
       return res.status(400).send({ message: 'Los campos son requeridos' });
 
-    if (email && email.trim()) {
-      const queryValidate = `SELECT * FROM users WHERE Email = ?`;
-      const queryParamsValidate = [email];
-      const resultValidate = await connectionQuery(
-        queryValidate,
-        queryParamsValidate
-      );
+    const queryValidate = `SELECT * FROM users WHERE Email = ?`;
+    const queryParamsValidate = [email];
+    const resultValidate = await connectionQuery(
+      queryValidate,
+      queryParamsValidate
+    );
 
-      if (resultValidate.length > 0) {
-        return res.status(500).send({
-          message: 'El correo ya se encuentra registrado',
-        });
-      }
+    if (resultValidate.length > 0) {
+      return res.status(500).send({
+        message: 'El correo ya se encuentra registrado',
+      });
     }
 
     const hashedPasword = await hashedArg.hash(password);
-    const queryInsert = `INSERT INTO users (ID, NameUser, Email, Password, Role, LastLogin, AccountStatus) VALUES (UUID(), ?, ?, '${hashedPasword}', ?, NULL, ?)`;
-    const queryParamsInsert = [nameUser, email, role, accountStatus];
+    const queryInsert = `INSERT INTO users (ID, NameUser, Email, Password, Role, LastLogin) VALUES (UUID(), ?, ?, '${hashedPasword}', ?, NULL)`;
+    const queryParamsInsert = [nameUser, email, role];
     await connectionQuery(queryInsert, queryParamsInsert);
 
-    res.status(200).send({ message: 'Usuario creado con exito' });
+    await insertTeacherBeforeUser(email);
+    await res
+      .status(200)
+      .send({ message: 'Usuario creado exitosamente y maestro' });
   } catch (error) {
-    res.status(500).send({ message: 'Error al crear el usuario', error });
+    res
+      .status(500)
+      .send({ message: 'Error al crear el usuario y su maestro', error });
   }
 };
 

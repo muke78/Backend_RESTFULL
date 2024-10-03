@@ -219,8 +219,8 @@ const ActualizarMaestro = async (req, res) => {
       status,
       id,
     ];
-    const result = await connectionQuery(queryUpdate, queryParamsUpdate);
-    res.status(200).send({ message: 'Se actualizo el maestro', result });
+    await connectionQuery(queryUpdate, queryParamsUpdate);
+    res.status(200).send({ message: 'Se actualizo el maestro' });
   } catch (error) {
     res.status(500).send({
       message: 'Hubo un error en la actualizacion del registro',

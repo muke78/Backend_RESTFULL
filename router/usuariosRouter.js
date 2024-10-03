@@ -72,11 +72,7 @@ api.post('/login', UsuariosControllers.Login);
  *                   example: "Error interno del servidor"
  */
 
-api.get(
-  '/lista-de-usuarios',
-  verificarToken,
-  UsuariosControllers.ObtenerTodosLosUsuarios
-);
+api.get('/lista-de-usuarios', UsuariosControllers.ObtenerTodosLosUsuarios);
 
 /**
  * @swagger
@@ -148,7 +144,7 @@ api.get(
  *                   type: object
  */
 
-api.post('/crear-usuario', verificarToken, UsuariosControllers.InsertarUsario);
+api.post('/crear-usuario', UsuariosControllers.InsertarUsario);
 
 /**
  * @swagger
@@ -214,7 +210,7 @@ api.post('/crear-usuario', verificarToken, UsuariosControllers.InsertarUsario);
  *                   type: object
  */
 
-api.put('/actualizar-usuario', verificarToken, UsuariosControllers.EditarUsuario);
+api.put('/actualizar-usuario', UsuariosControllers.EditarUsuario);
 
 /**
  * @swagger
@@ -278,6 +274,6 @@ api.put('/actualizar-usuario', verificarToken, UsuariosControllers.EditarUsuario
  *                   example: "Detalles del error"
  */
 
-api.delete('/eliminar-usuario/:id', verificarToken, UsuariosControllers.EliminarUsuario);
+api.delete('/eliminar-usuario/:id', UsuariosControllers.EliminarUsuario);
 
 module.exports = api;
