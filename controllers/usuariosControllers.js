@@ -54,6 +54,21 @@ const EditarUsuario = async (req, res) => {
   try {
     const { nameUser, email, password, role, accountStatus, id } = req.body;
 
+    if (id) {
+      const queryValidateUpdate = `SELECT * FROM users WHERE ID = ?`;
+      const queryParamsValidUpdate = [id];
+      const resultValidUpdate = await connectionQuery(
+        queryValidateUpdate,
+        queryParamsValidUpdate
+      );
+
+      if (resultValidUpdate.length === 0) {
+        return res.status(400).send({
+          message: 'No se proporciono un id valido o el usuario no existe',
+        });
+      }
+    }
+
     const hashedPasswordUpdate = await hashedArg.hash(password);
     const queryUpdate = `UPDATE users SET NameUser = ?, Email = ?, Password = '${hashedPasswordUpdate}', Role = ?, AccountStatus = ?  WHERE ID = ?`;
     const queryParamsUpdate = [nameUser, email, role, accountStatus, id];
