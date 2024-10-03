@@ -1,8 +1,11 @@
 const { connectionQuery } = require('../helpers/connection.helper');
+const {
+  deleteUserByTeacherID,
+} = require('../helpers/teachersEliminatedStatus');
 
 const ObtenerTodosLosMaestros = async (req, res) => {
   try {
-    const obtenerUser = `SELECT * FROM teachers WHERE Status = 5 ORDER BY LastName ASC;`;
+    const obtenerUser = `SELECT * FROM teachers WHERE Status = "Activo" ORDER BY LastName ASC;`;
     const result = await connectionQuery(obtenerUser);
 
     if (result.length === 0)
@@ -16,7 +19,7 @@ const ObtenerTodosLosMaestros = async (req, res) => {
 
 const ObtenerLosUsuariosEliminados = async (req, res) => {
   try {
-    const obtenerUserDelete = `SELECT * FROM teachers WHERE Status = 6 ORDER BY LastName ASC;`;
+    const obtenerUserDelete = `SELECT * FROM teachers WHERE Status = "Inactivo" ORDER BY LastName ASC;`;
     const result = await connectionQuery(obtenerUserDelete);
 
     if (result.length === 0)
@@ -30,20 +33,34 @@ const ObtenerLosUsuariosEliminados = async (req, res) => {
 
 const BusquedaDeMaestro = async (req, res) => {
   try {
-    const { id, email, nameUser, firstName } = req.body;
-    let querySearch = `SELECT * FROM teachers WHERE TeacherID = ?`;
+    const { email, firstName, lastName } = req.body;
+    let querySearch = `SELECT * FROM teachers WHERE 1=1`;
+    const queryParamsSearch = [];
 
-    if (email || nameUser || firstName) {
-      querySearch += ' OR Email = ? OR FirstName = ?;';
+    if (email) {
+      querySearch += ' AND email LIKE ?';
+      queryParamsSearch.push(`%${email}%`);
     }
 
-    const queryParamsSearch = [id, email, nameUser, firstName];
+    if (firstName) {
+      querySearch += ' AND FirstName LIKE ?';
+      queryParamsSearch.push(`%${firstName}%`);
+    }
+
+    if (lastName) {
+      querySearch += ' AND LastName LIKE ?';
+      queryParamsSearch.push(`%${lastName}%`);
+    }
+
     const resultSearch = await connectionQuery(querySearch, queryParamsSearch);
 
-    if (resultSearch.length === 0)
-      return res.status(404).json({ message: 'Maestro no encontrado, intente buscar con otro' });
+    if (resultSearch.length === 0) {
+      return res
+        .status(404)
+        .json({ message: 'Maestro no encontrado, intente buscar con otro' });
+    }
 
-    res.status(200).send(resultSearch[0]);
+    res.status(200).send(resultSearch);
   } catch (error) {
     res.status(500).send({ message: error.message });
   }
@@ -52,35 +69,45 @@ const BusquedaDeMaestro = async (req, res) => {
 const InsertarMaestro = async (req, res) => {
   try {
     const {
+      teacherID,
       firstName,
       lastName,
       nameSchool,
       levelStudies,
       studentsInCharge,
+      grade,
+      group,
       cct,
       schoolZone,
-      workShif,
+      workShift,
       curp,
       email,
-      age,
       phone,
-      country,
+      age,
+      address,
+      emergencyContact,
+      emergencyPhone,
     } = req.body;
 
     if (
+      !teacherID ||
       !firstName ||
       !lastName ||
       !nameSchool ||
       !levelStudies ||
       !studentsInCharge ||
+      !grade ||
+      !group ||
       !cct ||
       !schoolZone ||
-      !workShif ||
+      !workShift ||
       !curp ||
       !email ||
-      !age ||
       !phone ||
-      !country
+      !age ||
+      !address ||
+      !emergencyContact ||
+      !emergencyPhone
     )
       return res.status(400).send({ message: 'Los campos son requeridos' });
 
@@ -95,11 +122,11 @@ const InsertarMaestro = async (req, res) => {
       if (resultValidate.length > 0) {
         const { Status } = resultValidate[0];
 
-        if (Status === 5) {
+        if (Status === 'Activo') {
           return res.status(500).send({
             message: 'El correo ya se encuentra registrado',
           });
-        } else if (Status === 6) {
+        } else if (Status === 'Inactivo') {
           return res.status(500).send({
             message:
               'El correo existe pero el maestro está eliminado, eliminelo definitivamente o editelo',
@@ -114,23 +141,28 @@ const InsertarMaestro = async (req, res) => {
         .send({ message: 'La edad no puede ser mayor a 100 años' });
     }
 
-    const status = 5;
-    const queryInsert = `INSERT INTO teachers (TeacherID, FirstName, LastName, NameSchool, LevelStudies, StudentsInCharge, CCT, SchoolZone, WorkShif, Curp, Email, Age, Phone, Country, Status)
-    VALUES (UUID(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ${status});`;
+    const queryInsert = `INSERT INTO teachers(ID, TeacherID, FirstName, LastName, NameSchool, LevelStudies, StudentsInCharge, Grade, \`Group\`, CCT, SchoolZone, WorkShift, Curp, Email, Phone, Age, Address, EmergencyContact, EmergencyPhone) 
+    VALUES (UUID(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ?, ?, ?, ?, ?, ?)`;
+
     const queryParamsInsert = [
+      teacherID,
       firstName,
       lastName,
       nameSchool,
       levelStudies,
       studentsInCharge,
+      grade,
+      group,
       cct,
       schoolZone,
-      workShif,
+      workShift,
       curp,
       email,
-      age,
       phone,
-      country,
+      age,
+      address,
+      emergencyContact,
+      emergencyPhone,
     ];
     await connectionQuery(queryInsert, queryParamsInsert);
 
@@ -148,38 +180,47 @@ const ActualizarMaestro = async (req, res) => {
       nameSchool,
       levelStudies,
       studentsInCharge,
+      grade,
+      group,
       cct,
       schoolZone,
-      workShif,
+      workShift,
       curp,
       email,
-      age,
       phone,
-      country,
+      age,
+      address,
+      emergencyContact,
+      emergencyPhone,
       status,
       id,
     } = req.body;
 
-    const queryUpdate = `UPDATE teachers SET FirstName = ? , LastName = ?, NameSchool = ?, LevelStudies = ? ,StudentsInCharge = ?, CCT = ?, SchoolZone = ?, WorkShif = ?, Curp = ? , Email = ? , Age = ? , Phone = ? , Country = ?, Status = ? WHERE TeacherID = ?`;
+    const queryUpdate = `UPDATE teachers SET FirstName = ? , LastName = ?, NameSchool = ?, LevelStudies = ? , StudentsInCharge = ?, Grade = ?, \`Group\` = ?, CCT = ?, SchoolZone = ?, WorkShift = ?, 
+    Curp = ? , Email = ? , Phone = ?, Age = ?, Address = ?, EmergencyContact = ?, EmergencyPhone = ?, Status = ? WHERE ID = ?`;
     const queryParamsUpdate = [
       firstName,
       lastName,
       nameSchool,
       levelStudies,
       studentsInCharge,
+      grade,
+      group,
       cct,
       schoolZone,
-      workShif,
+      workShift,
       curp,
       email,
-      age,
       phone,
-      country,
+      age,
+      address,
+      emergencyContact,
+      emergencyPhone,
       status,
       id,
     ];
-    await connectionQuery(queryUpdate, queryParamsUpdate);
-    res.status(200).send({ message: 'Se actualizo el maestro' });
+    const result = await connectionQuery(queryUpdate, queryParamsUpdate);
+    res.status(200).send({ message: 'Se actualizo el maestro', result });
   } catch (error) {
     res.status(500).send({
       message: 'Hubo un error en la actualizacion del registro',
@@ -191,15 +232,15 @@ const ActualizarMaestro = async (req, res) => {
 const MoverABovedaEliminados = async (req, res) => {
   try {
     const { id } = req.params;
+    console.log(id);
 
     if (!id)
       return res
         .status(400)
         .send({ message: 'No se envio el ID o no es valido' });
 
+    const queryDelete = `UPDATE teachers SET Status = 'Inactivo' WHERE ID = ?`;
     const queryParamsDelete = [id];
-    const Status = 6;
-    const queryDelete = `UPDATE teachers SET Status = ${Status} WHERE TeacherID = ?`;
     await connectionQuery(queryDelete, queryParamsDelete);
 
     res.status(200).send({
@@ -217,35 +258,36 @@ const EliminarMaestro = async (req, res) => {
   try {
     const { id } = req.params;
 
-    if (!id)
+    if (!id) {
       return res
         .status(400)
-        .send({ message: 'No se envio el ID o no es valido' });
-
-    if (id) {
-      const queryValidate = `SELECT * FROM teachers WHERE TeacherID = ?`;
-      const queryParamsValidate = [id];
-      const resultValidate = await connectionQuery(
-        queryValidate,
-        queryParamsValidate
-      );
-
-      if (resultValidate.length === 0) {
-        return res.status(404).send({
-          message: 'El maestro no existe',
-        });
-      }
+        .send({ message: 'No se envió el ID o no es válido' });
     }
 
-    const queryParamsDelete = [id];
-    const queryDelete = `DELETE FROM teachers WHERE TeacherID = ?`;
-    await connectionQuery(queryDelete, queryParamsDelete);
+    const queryValidate = `SELECT TeacherID FROM teachers WHERE ID = ?`;
+    const queryParamsValidate = [id];
+    const resultValidate = await connectionQuery(
+      queryValidate,
+      queryParamsValidate
+    );
+
+    if (resultValidate.length === 0) {
+      return res.status(404).send({ message: 'El maestro no existe' });
+    }
+
+    const { TeacherID } = resultValidate[0];
+
+    const queryDeleteTeacher = `DELETE FROM teachers WHERE ID = ?`;
+    await connectionQuery(queryDeleteTeacher, [id]);
+
+    await deleteUserByTeacherID(TeacherID);
+
     res.status(200).send({
-      message: 'Se elimino definitivamente el maestro',
+      message: 'Se eliminó definitivamente el maestro y su usuario asociado',
     });
   } catch (error) {
     res.status(500).send({
-      message: 'Hubo un error al eliminar el maestro',
+      message: 'Hubo un error al eliminar el maestro y su usuario',
       error,
     });
   }
