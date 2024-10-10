@@ -2,6 +2,7 @@ const jwt = require('../helpers/jwt');
 const { connectionQuery } = require('../helpers/connection.helper');
 const { lastLogin } = require('../helpers/userLastLogin');
 const { insertTeacherBeforeUser } = require('../helpers/insertTeacherWithUser');
+const { deleteTeacherByUser } = require('../helpers/deleteTeacherByUser');
 const hashedArg = require('argon2');
 
 const ObtenerTodosLosUsuarios = async (req, res) => {
@@ -73,6 +74,21 @@ const EditarUsuario = async (req, res) => {
       }
     }
 
+    if (email) {
+      const queryValidateEmailUpdate = `SELECT * FROM users WHERE Email = ?`;
+      const queryParamsEmailUpdate = [email];
+      const resulQueryEmailValidate = await connectionQuery(
+        queryValidateEmailUpdate,
+        queryParamsEmailUpdate
+      );
+      if (resulQueryEmailValidate.length > 0)
+        return res
+          .status(400)
+          .send({
+            message: 'Usuario ya existe y el correo esta siendo utilizado',
+          });
+    }
+
     const hashedPasswordUpdate = await hashedArg.hash(password);
     const queryUpdate = `UPDATE users SET NameUser = ?, Email = ?, Password = '${hashedPasswordUpdate}', Role = ?, AccountStatus = ?  WHERE ID = ?`;
     const queryParamsUpdate = [nameUser, email, role, accountStatus, id];
@@ -110,12 +126,12 @@ const EliminarUsuario = async (req, res) => {
         });
       }
     }
-
-    const queryParamsDelete = [id];
     const queryDelete = `DELETE FROM users WHERE id = ?`;
-    await connectionQuery(queryDelete, queryParamsDelete);
+    await connectionQuery(queryDelete, [id]);
 
-    res.status(200).send({ message: 'Usuario eliminado exitosamente' });
+    await deleteTeacherByUser(id);
+
+    res.status(200).send({ message: 'Usuario eliminado exitosamente y el maestro' });
   } catch (error) {
     res.status(500).send({
       message: 'Hubo un error al eliminar el usuario',

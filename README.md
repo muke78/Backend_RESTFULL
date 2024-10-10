@@ -8,6 +8,9 @@
   - Zustand (Como manejador de estado global)
   - Tanstack Query(Como manejador de peticiones y respuestas)
   - Alguna libreria donde monte la interfaz del diseño como Boostrap, Tailwind o shadcn/ui o styled-components para algo mas personalizado
+## Modelo relacional de la Base de Datos
+
+![Administracion de jardin de niños](/assets/Administracion%20de%20jardin%20de%20niños.png)
 
 ## Segunda fase
 - Se hara  el backend en Nest de la misma forma solo que migrandolo a un nuevo esquema de desarrollo, en la primera fase estara construido con MySQL, pero en esta fase se hara con MongoDB, GraphQL, Apollo
