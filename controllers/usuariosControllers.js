@@ -40,13 +40,13 @@ const InsertarUsario = async (req, res) => {
     }
 
     const hashedPasword = await hashedArg.hash(password);
-    const queryInsert = `INSERT INTO users (ID, NameUser, Email, Password, Role, LastLogin) VALUES (UUID(), ?, ?, '${hashedPasword}', ?, NULL)`;
-    const queryParamsInsert = [nameUser, email, role];
+    const queryInsert = `INSERT INTO users (ID, NameUser, Email, Password, Role, LastLogin) VALUES (UUID(), ?, ?, ?, ?, NULL)`;
+    const queryParamsInsert = [nameUser, email, hashedPasword, role];
     await connectionQuery(queryInsert, queryParamsInsert);
 
     await insertTeacherBeforeUser(email);
     await res
-      .status(200)
+      .status(201)
       .send({ message: 'Usuario creado exitosamente y maestro' });
   } catch (error) {
     res
@@ -68,7 +68,7 @@ const EditarUsuario = async (req, res) => {
       );
 
       if (resultValidUpdate.length === 0) {
-        return res.status(400).send({
+        return res.status(404).send({
           message: 'No se proporciono un id valido o el usuario no existe',
         });
       }
@@ -83,9 +83,9 @@ const EditarUsuario = async (req, res) => {
       );
       if (resulQueryEmailValidate.length > 0)
         return res
-          .status(400)
+          .status(409)
           .send({
-            message: 'Usuario ya existe y el correo esta siendo utilizado',
+            message: 'Usuario ya existe y el correo esta siendo utilizado',
           });
     }
 
@@ -121,7 +121,7 @@ const EliminarUsuario = async (req, res) => {
       );
 
       if (resultValidate.length === 0) {
-        return res.status(404).send({
+        return res.status(400).send({
           message: 'El usuario no existe',
         });
       }
@@ -167,7 +167,7 @@ const Login = async (req, res) => {
 
     if (resultValidate.length === 0) {
       return res
-        .status(400)
+        .status(404)
         .send({ message: 'El usuario no se encuentra registrado' });
     }
 
@@ -177,11 +177,11 @@ const Login = async (req, res) => {
 
     if (!argonVerify)
       return res
-        .status(400)
+        .status(500)
         .send({ message: 'La contraseña es incorrecta o está mal escrita' });
 
     if (user.AccountStatus === 'Inactivo')
-      return res.status(400).send({
+      return res.status(403).send({
         message:
           'El usuario está inactivo, pida la reactivación a un administrador',
       });

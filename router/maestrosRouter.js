@@ -59,7 +59,11 @@ api.use(express.json());
  *                   example: Error interno del servidor
  */
 
-api.get('/lista-de-maestros', MaestrosControllers.ObtenerTodosLosMaestros);
+api.get(
+  '/lista-de-maestros',
+  verificarToken,
+  MaestrosControllers.ObtenerTodosLosMaestros
+);
 
 /**
  * @swagger
@@ -117,6 +121,7 @@ api.get('/lista-de-maestros', MaestrosControllers.ObtenerTodosLosMaestros);
 
 api.get(
   '/lista-de-maestros-eliminados',
+  verificarToken,
   MaestrosControllers.ObtenerLosUsuariosEliminados
 );
 
@@ -192,7 +197,11 @@ api.get(
  *                   example: Error interno del servidor
  */
 
-api.post('/buscar-maestro', MaestrosControllers.BusquedaDeMaestro);
+api.post(
+  '/buscar-maestro',
+  verificarToken,
+  MaestrosControllers.BusquedaDeMaestro
+);
 
 /**
  * @swagger
@@ -318,7 +327,11 @@ api.post('/buscar-maestro', MaestrosControllers.BusquedaDeMaestro);
  *                   example: Error interno del servidor
  */
 
-api.post('/agregar-maestro', MaestrosControllers.InsertarMaestro);
+api.post(
+  '/agregar-maestro',
+  verificarToken,
+  MaestrosControllers.InsertarMaestro
+);
 
 /**
  * @swagger
@@ -447,12 +460,16 @@ api.post('/agregar-maestro', MaestrosControllers.InsertarMaestro);
  *                   type: string
  *                   example: Error interno del servidor
  */
-api.put('/actualizar-maestro', MaestrosControllers.ActualizarMaestro);
+api.put(
+  '/actualizar-maestro',
+  verificarToken,
+  MaestrosControllers.ActualizarMaestro
+);
 
 /**
  * @swagger
  * /borrar-maestro-boveda/{id}:
- *   delete:
+ *   put:
  *     summary: Envía un maestro a la bóveda de eliminados
  *     tags:
  *       - Maestros
@@ -502,8 +519,9 @@ api.put('/actualizar-maestro', MaestrosControllers.ActualizarMaestro);
  *                   example: Error interno del servidor
  */
 
-api.delete(
+api.put(
   '/borrar-maestro-boveda/:id',
+  verificarToken,
   MaestrosControllers.MoverABovedaEliminados
 );
 
@@ -570,6 +588,10 @@ api.delete(
  *                   example: Error interno del servidor
  */
 
-api.delete('/borrar-maestro-def/:id', MaestrosControllers.EliminarMaestro);
+api.delete(
+  '/borrar-maestro-def/:id',
+  verificarToken,
+  MaestrosControllers.EliminarMaestro
+);
 
 module.exports = api;

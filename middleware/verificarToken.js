@@ -6,14 +6,14 @@ const verificarToken = (req, res, next) => {
   if (!token) {
     return res
       .status(401)
-      .json({ message: 'Acceso no autorizado. Token no proporcionado.' });
+      .send({ message: 'Acceso no autorizado. Token no proporcionado.' });
   }
 
   const bearerToken = token.split(' ')[1];
   if (!bearerToken) {
     return res
       .status(401)
-      .json({ message: 'Acceso no autorizado. Token no proporcionado.' });
+      .send({ message: 'Acceso no autorizado. Token no proporcionado.' });
   }
 
   try {
@@ -24,7 +24,7 @@ const verificarToken = (req, res, next) => {
   } catch (error) {
     return res
       .status(401)
-      .json({ message: 'Acceso no autorizado. Token inválido.' });
+      .send({ message: 'Acceso no autorizado. Token inválido.' });
   }
 };
 

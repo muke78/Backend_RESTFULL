@@ -1,15 +1,12 @@
 const { connectionQuery } = require('../helpers/connection.helper');
-const {
-  deleteUserByTeacherID,
-} = require('../helpers/teachersEliminatedStatus');
 
-const ObtenerTodosLosMaestros = async (req, res) => {
+const ObtenerTodosLosPapas = async (req, res) => {
   try {
-    const obtenerUser = `SELECT * FROM teachers WHERE Status = "Activo" ORDER BY LastName ASC;`;
-    const result = await connectionQuery(obtenerUser);
+    const obtenerPadres = `SELECT * FROM parents WHERE Status = 'Activo' ORDER BY LastName ASC;`;
+    const result = await connectionQuery(obtenerPadres);
 
     if (result.length === 0)
-      return res.status(404).send({ message: 'No se encontraron maestros' });
+      return res.status(404).send({ message: 'No se encontraron padres' });
 
     res.status(200).send(result);
   } catch (error) {
@@ -17,69 +14,74 @@ const ObtenerTodosLosMaestros = async (req, res) => {
   }
 };
 
-const ObtenerLosUsuariosEliminados = async (req, res) => {
+const ObtenerPadresPorMaestro = async (req, res) => {
   try {
-    const obtenerUserDelete = `SELECT * FROM teachers WHERE Status = "Inactivo" ORDER BY LastName ASC;`;
-    const result = await connectionQuery(obtenerUserDelete);
+    const { id } = req.params;
+
+    const verifyTeacher = `SELECT * FROM teachers WHERE ID = ?;`;
+    const resultVerify = await connectionQuery(verifyTeacher, [id]);
+
+    if (resultVerify === 0)
+      return res
+        .status(404)
+        .send({ message: 'No se encontro ningun maestro con ese di' });
+
+    const obtenerPadreSearch = `SELECT * FROM parents WHERE TeacherID = ?;`;
+    const result = await connectionQuery(obtenerPadreSearch, [id]);
 
     if (result.length === 0)
-      return res.status(404).send({ message: 'No hay maestros eliminados' });
+      return res.status(404).send({
+        message: 'No se encontraron padres que se relacionen con el maestro',
+      });
 
-    res.status(200).send(result);
+    res.status(200).send({ message: 'Resultados de la busqueda', result });
   } catch (error) {
     res.status(500).send({ message: error.message });
   }
 };
 
-const BusquedaDeMaestro = async (req, res) => {
+const BusquedaDePadres = async (req, res) => {
   try {
     const { email, firstName, lastName } = req.body;
-    let querySearch = `SELECT * FROM teachers WHERE 1=1`;
-    const queryParamsSearch = [];
+    let querySearch = `SELECT * FROM parents WHERE 1=1`;
+    const queryParams = [];
 
     if (email) {
       querySearch += ' AND email LIKE ?';
-      queryParamsSearch.push(`%${email}%`);
+      queryParams.push(`%${email}%`);
     }
 
     if (firstName) {
       querySearch += ' AND FirstName LIKE ?';
-      queryParamsSearch.push(`%${firstName}%`);
+      queryParams.push(`%${firstName}%`);
     }
 
     if (lastName) {
       querySearch += ' AND LastName LIKE ?';
-      queryParamsSearch.push(`%${lastName}%`);
+      queryParams.push(`%${lastName}%`);
     }
 
-    const resultSearch = await connectionQuery(querySearch, queryParamsSearch);
+    const resultSearch = await connectionQuery(querySearch, queryParams);
 
-    if (resultSearch.length === 0) {
-      return res
-        .status(404)
-        .send({ message: 'Maestro no encontrado, intente buscar con otro' });
-    }
-
+    if (resultSearch.length === 0)
+      return res.status(404).send({
+        message: ' Papá o Mamá no encontrados, intente buscar con otro',
+      });
     res.status(200).send(resultSearch);
   } catch (error) {
     res.status(500).send({ message: error.message });
   }
 };
 
-const InsertarMaestro = async (req, res) => {
+const InsertarPadres = async (req, res) => {
   try {
     const {
       teacherID,
       firstName,
       lastName,
-      nameSchool,
-      levelStudies,
-      studentsInCharge,
-      grade,
-      group,
-      cct,
-      schoolZone,
-      workShift,
+      dateOfBirth,
+      ocupation,
+      gender,
       curp,
       email,
       phone,
@@ -93,14 +95,9 @@ const InsertarMaestro = async (req, res) => {
       !teacherID ||
       !firstName ||
       !lastName ||
-      !nameSchool ||
-      !levelStudies ||
-      !studentsInCharge ||
-      !grade ||
-      !group ||
-      !cct ||
-      !schoolZone ||
-      !workShift ||
+      !dateOfBirth ||
+      !ocupation ||
+      !gender ||
       !curp ||
       !email ||
       !phone ||
@@ -108,11 +105,12 @@ const InsertarMaestro = async (req, res) => {
       !address ||
       !emergencyContact ||
       !emergencyPhone
-    )
+    ) {
       return res.status(400).send({ message: 'Los campos son requeridos' });
+    }
 
     if (email && email.trim()) {
-      const queryValidate = `SELECT * FROM teachers WHERE Email = ?`;
+      const queryValidate = `SELECT * FROM parents WHERE Email = ?`;
       const queryParamsValidate = [email];
       const resultValidate = await connectionQuery(
         queryValidate,
@@ -129,7 +127,7 @@ const InsertarMaestro = async (req, res) => {
         } else if (Status === 'Inactivo') {
           return res.status(500).send({
             message:
-              'El correo existe pero el maestro está eliminado, eliminelo definitivamente o editelo',
+              'El correo existe pero la mamá o el papá está eliminado, eliminelo definitivamente o editelo',
           });
         }
       }
@@ -141,21 +139,17 @@ const InsertarMaestro = async (req, res) => {
         .send({ message: 'La edad no puede ser mayor a 100 años' });
     }
 
-    const queryInsert = `INSERT INTO teachers(ID, TeacherID, FirstName, LastName, NameSchool, LevelStudies, StudentsInCharge, Grade, \`Group\`, CCT, SchoolZone, WorkShift, Curp, Email, Phone, Age, Address, EmergencyContact, EmergencyPhone) 
-    VALUES (UUID(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ?, ?, ?, ?, ?, ?)`;
+    const queryInsert = `INSERT INTO parents(ID, TeacherID, FirstName, LastName, DateOfBirth, Ocupation, Gender, Curp, Email, Phone, Age,
+                    Address, EmergencyContact, EmergencyPhone)
+VALUES (UUID(), "", ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
     const queryParamsInsert = [
       teacherID,
       firstName,
       lastName,
-      nameSchool,
-      levelStudies,
-      studentsInCharge,
-      grade,
-      group,
-      cct,
-      schoolZone,
-      workShift,
+      dateOfBirth,
+      ocupation,
+      gender,
       curp,
       email,
       phone,
@@ -164,27 +158,24 @@ const InsertarMaestro = async (req, res) => {
       emergencyContact,
       emergencyPhone,
     ];
+
     await connectionQuery(queryInsert, queryParamsInsert);
 
-    res.status(201).send({ message: 'Maestro creado con exito' });
+    res.status(201).send({ message: 'Se creo con exito' });
   } catch (error) {
-    res.status(500).send({ message: 'Error al crear el maestro', error });
+    res.status(500).send({ message: 'Error al crear al papá o mamá' });
   }
 };
 
-const ActualizarMaestro = async (req, res) => {
+const EditarPadres = async (req, res) => {
   try {
     const {
+      teacherID,
       firstName,
       lastName,
-      nameSchool,
-      levelStudies,
-      studentsInCharge,
-      grade,
-      group,
-      cct,
-      schoolZone,
-      workShift,
+      dateOfBirth,
+      ocupation,
+      gender,
       curp,
       email,
       phone,
@@ -196,19 +187,16 @@ const ActualizarMaestro = async (req, res) => {
       id,
     } = req.body;
 
-    const queryUpdate = `UPDATE teachers SET FirstName = ? , LastName = ?, NameSchool = ?, LevelStudies = ? , StudentsInCharge = ?, Grade = ?, \`Group\` = ?, CCT = ?, SchoolZone = ?, WorkShift = ?, 
-    Curp = ? , Email = ? , Phone = ?, Age = ?, Address = ?, EmergencyContact = ?, EmergencyPhone = ?, Status = ? WHERE ID = ?`;
+    const queryUpdate = `UPDATE parents SET TeacherID = ?, FirstName = ?, LastName = ?, DateOfBirth = ?, Ocupation = ?, Gender = ?, Curp = ?, Email = ?, Phone = ?, Age = ?,
+    Address = ?, EmergencyContact = ?, EmergencyPhone = ?, Status = ? WHERE ID = ?`;
+
     const queryParamsUpdate = [
+      teacherID,
       firstName,
       lastName,
-      nameSchool,
-      levelStudies,
-      studentsInCharge,
-      grade,
-      group,
-      cct,
-      schoolZone,
-      workShift,
+      dateOfBirth,
+      ocupation,
+      gender,
       curp,
       email,
       phone,
@@ -219,8 +207,9 @@ const ActualizarMaestro = async (req, res) => {
       status,
       id,
     ];
+
     await connectionQuery(queryUpdate, queryParamsUpdate);
-    res.status(200).send({ message: 'Se actualizo el maestro' });
+    res.status(200).send({ message: 'Se actualizo el papá o la mamá' });
   } catch (error) {
     res.status(500).send({
       message: 'Hubo un error en la actualizacion del registro',
@@ -237,7 +226,7 @@ const MoverABovedaEliminados = async (req, res) => {
         .status(400)
         .send({ message: 'No se envio el ID o no es valido' });
 
-    const queryDelete = `UPDATE teachers SET Status = 'Inactivo' WHERE ID = ?`;
+    const queryDelete = `UPDATE parents SET Status = 'Inactivo' WHERE ID = ?`;
     const queryParamsDelete = [id];
     await connectionQuery(queryDelete, queryParamsDelete);
 
@@ -252,7 +241,7 @@ const MoverABovedaEliminados = async (req, res) => {
   }
 };
 
-const EliminarMaestro = async (req, res) => {
+const EliminarPadre = async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -262,7 +251,7 @@ const EliminarMaestro = async (req, res) => {
         .send({ message: 'No se envió el ID o no es válido' });
     }
 
-    const queryValidate = `SELECT TeacherID FROM teachers WHERE ID = ?`;
+    const queryValidate = `SELECT * FROM parents WHERE ID = ?`;
     const queryParamsValidate = [id];
     const resultValidate = await connectionQuery(
       queryValidate,
@@ -270,33 +259,29 @@ const EliminarMaestro = async (req, res) => {
     );
 
     if (resultValidate.length === 0) {
-      return res.status(404).send({ message: 'El maestro no existe' });
+      return res.status(404).send({ message: 'El papá o mamá no existe' });
     }
 
-    const { TeacherID } = resultValidate[0];
-
-    const queryDeleteTeacher = `DELETE FROM teachers WHERE ID = ?`;
+    const queryDeleteTeacher = `DELETE FROM parents WHERE ID = ?`;
     await connectionQuery(queryDeleteTeacher, [id]);
 
-    await deleteUserByTeacherID(TeacherID);
-
     res.status(200).send({
-      message: 'Se eliminó definitivamente el maestro y su usuario asociado',
+      message: 'Se eliminó definitivamente el papá o mamá',
     });
   } catch (error) {
     res.status(500).send({
-      message: 'Hubo un error al eliminar el maestro y su usuario',
+      message: 'Hubo un error al eliminar al papá o mamá',
       error,
     });
   }
 };
 
 module.exports = {
-  ObtenerTodosLosMaestros,
-  ObtenerLosUsuariosEliminados,
-  BusquedaDeMaestro,
-  InsertarMaestro,
-  ActualizarMaestro,
+  ObtenerTodosLosPapas,
+  ObtenerPadresPorMaestro,
+  BusquedaDePadres,
+  InsertarPadres,
+  EditarPadres,
   MoverABovedaEliminados,
-  EliminarMaestro,
+  EliminarPadre,
 };
