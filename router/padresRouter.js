@@ -13,4 +13,4 @@ api.post('/busqueda-padres', PadresControllers.BusquedaDePadres);
 api.post('/insertar-padres', PadresControllers.InsertarPadres);
 api.put('/actualizar-padres', PadresControllers.EditarPadres);
 api.put('/borrar-padres-boveda/:id', PadresControllers.MoverABovedaEliminados);
-api.delete('/borrar-padres-def/:id', PadresControllers.MoverABovedaEliminados);
+api.delete('/borrar-padres-def/:id', PadresControllers.EliminarPadre);
