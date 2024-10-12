@@ -141,7 +141,7 @@ const InsertarPadres = async (req, res) => {
 
     const queryInsert = `INSERT INTO parents(ID, TeacherID, FirstName, LastName, DateOfBirth, Ocupation, Gender, Curp, Email, Phone, Age,
                     Address, EmergencyContact, EmergencyPhone)
-VALUES (UUID(), "", ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+VALUES (UUID(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
     const queryParamsInsert = [
       teacherID,
@@ -163,7 +163,7 @@ VALUES (UUID(), "", ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
     res.status(201).send({ message: 'Se creo con exito' });
   } catch (error) {
-    res.status(500).send({ message: 'Error al crear al papá o mamá' });
+    res.status(500).send({ message: 'Error al crear al papá o mamá', error});
   }
 };
 
