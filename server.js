@@ -1,5 +1,5 @@
 const express = require('express');
-const http = require('http');
+const { createServer } = require('node:http');
 const { setupSwagger } = require('./config/swaggerConfig');
 const corsMiddleware = require('./middleware/cors');
 const securityHeadersMiddleware = require('./middleware/securityHeaders');
@@ -22,7 +22,7 @@ app.use((err, req, res, next) => {
 });
 
 // Crear y arrancar el servidor
-const server = http.createServer(app);
+const server = createServer(app);
 server.listen(3000, () => {
   console.log('El servidor está escuchando en el puerto 3000');
 });

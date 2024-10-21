@@ -1,4 +1,4 @@
-require('dotenv').config({ path: '.env' });
+process.loadEnvFile();
 const mysql = require('mysql2');
 
 // Configuracion de la conexion a la base de datos

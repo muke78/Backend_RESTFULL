@@ -1,5 +1,5 @@
-require('dotenv').config({ path: '.env' });
-const path = require('path');
+process.loadEnvFile();
+const { resolve } = require('node:path');
 const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 
@@ -34,7 +34,7 @@ const swaggerDefinition = {
 
 const options = {
   swaggerDefinition,
-  apis: [path.resolve(__dirname, '../router/*.js')],
+  apis: [resolve(__dirname, '../router/*.js')],
 };
 
 const swaggerDocument = swaggerJsdoc(options);

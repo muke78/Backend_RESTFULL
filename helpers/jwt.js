@@ -1,4 +1,4 @@
-require('dotenv').config({ path: '.env' });
+process.loadEnvFile();
 const jwt = require('jwt-simple');
 const { addDay } = require('@formkit/tempo');
 
