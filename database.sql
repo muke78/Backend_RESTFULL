@@ -156,11 +156,10 @@ CREATE TABLE `parents` (
   `EmergencyPhone` varchar(15) NOT NULL,
   `Created` datetime DEFAULT (now()),
   `Updated` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `Status` int DEFAULT '5',
+  `Status` varchar(20) DEFAULT 'Activo',
   PRIMARY KEY (`ID`,`TeacherID`),
-  KEY `TeacherID` (`TeacherID`),
-  CONSTRAINT `parents_ibfk_1` FOREIGN KEY (`TeacherID`) REFERENCES `teachers` (`TeacherID`),
-  CONSTRAINT `parents_ibfk_2` FOREIGN KEY (`TeacherID`) REFERENCES `teachers` (`TeacherID`)
+  KEY `fk_teacher` (`TeacherID`),
+  CONSTRAINT `fk_teacher` FOREIGN KEY (`TeacherID`) REFERENCES `teachers` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -262,6 +261,7 @@ CREATE TABLE `teachers` (
   `TeacherID` char(36) NOT NULL,
   `FirstName` varchar(100) NOT NULL,
   `LastName` varchar(100) NOT NULL,
+  `DateOfBirth` date DEFAULT NULL,
   `NameSchool` varchar(150) NOT NULL,
   `LevelStudies` varchar(45) NOT NULL,
   `StudentsInCharge` int NOT NULL,
@@ -272,17 +272,16 @@ CREATE TABLE `teachers` (
   `WorkShift` varchar(45) NOT NULL,
   `Curp` varchar(20) NOT NULL,
   `Email` varchar(100) NOT NULL,
-  `Phone` bigint NOT NULL,
+  `Phone` varchar(15) NOT NULL,
   `Age` int NOT NULL,
   `Address` varchar(255) NOT NULL,
   `EmergencyContact` varchar(100) NOT NULL,
   `EmergencyPhone` varchar(15) NOT NULL,
   `Created` datetime DEFAULT (now()),
   `Updated` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `Status` int DEFAULT '5',
+  `Status` varchar(20) DEFAULT 'Activo',
   PRIMARY KEY (`ID`,`TeacherID`),
-  KEY `TeacherID` (`TeacherID`),
-  CONSTRAINT `teachers_ibfk_1` FOREIGN KEY (`TeacherID`) REFERENCES `users` (`ID`)
+  KEY `teachers_ibfk_1` (`TeacherID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -300,9 +299,9 @@ CREATE TABLE `user_permissions` (
   `Created` datetime DEFAULT CURRENT_TIMESTAMP,
   `Updated` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`ID`),
-  KEY `UserID` (`UserID`),
   KEY `PermitID` (`PermitID`),
-  CONSTRAINT `user_permissions_ibfk_1` FOREIGN KEY (`UserID`) REFERENCES `users` (`ID`),
+  KEY `user_permissions_ibfk_1` (`UserID`),
+  CONSTRAINT `user_permissions_ibfk_1` FOREIGN KEY (`UserID`) REFERENCES `users` (`ID`) ON DELETE CASCADE,
   CONSTRAINT `user_permissions_ibfk_2` FOREIGN KEY (`PermitID`) REFERENCES `permissions` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -321,7 +320,7 @@ CREATE TABLE `users` (
   `Password` char(150) NOT NULL,
   `Role` varchar(50) DEFAULT NULL,
   `LastLogin` datetime DEFAULT NULL,
-  `AccountStatus` varchar(20) DEFAULT 'Active',
+  `AccountStatus` varchar(20) DEFAULT 'Activo',
   `Created` datetime DEFAULT CURRENT_TIMESTAMP,
   `Updated` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`ID`),
@@ -338,4 +337,4 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-10-02  0:31:47
+-- Dump completed on 2024-10-21 23:37:12
