@@ -1,5 +1,5 @@
 process.loadEnvFile();
-const mysql = require('mysql2');
+import mysql from 'mysql2';
 
 // Configuracion de la conexion a la base de datos
 const dbConnection = {
@@ -24,6 +24,4 @@ pool.on('error', (err) => {
   console.error('Error a la conexion de la base de datos', err);
 });
 
-module.exports = {
-  pool,
-};
+export { pool };

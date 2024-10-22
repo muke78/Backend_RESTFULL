@@ -1,9 +1,9 @@
-const express = require('express');
-const MaestrosControllers = require('../controllers/maestrosControllers');
-const verificarToken = require('../middleware/verificarToken');
-const api = express.Router();
+import express from 'express';
+import MaestrosControllers from '../controllers/maestrosControllers.js';
+import { verificarToken } from '../middleware/verificarToken.js';
+const apiMaestros = express.Router();
 
-api.use(express.json());
+apiMaestros.use(express.json());
 
 /**
  * @swagger
@@ -59,7 +59,7 @@ api.use(express.json());
  *                   example: Error interno del servidor
  */
 
-api.get(
+apiMaestros.get(
   '/lista-de-maestros',
   verificarToken,
   MaestrosControllers.ObtenerTodosLosMaestros
@@ -119,7 +119,7 @@ api.get(
  *                   example: Error interno del servidor
  */
 
-api.get(
+apiMaestros.get(
   '/lista-de-maestros-eliminados',
   verificarToken,
   MaestrosControllers.ObtenerLosUsuariosEliminados
@@ -197,7 +197,7 @@ api.get(
  *                   example: Error interno del servidor
  */
 
-api.post(
+apiMaestros.post(
   '/buscar-maestro',
   verificarToken,
   MaestrosControllers.BusquedaDeMaestro
@@ -331,7 +331,7 @@ api.post(
  *                   example: Error interno del servidor
  */
 
-api.post(
+apiMaestros.post(
   '/agregar-maestro',
   verificarToken,
   MaestrosControllers.InsertarMaestro
@@ -468,7 +468,7 @@ api.post(
  *                   type: string
  *                   example: Error interno del servidor
  */
-api.put(
+apiMaestros.put(
   '/actualizar-maestro',
   verificarToken,
   MaestrosControllers.ActualizarMaestro
@@ -527,7 +527,7 @@ api.put(
  *                   example: Error interno del servidor
  */
 
-api.put(
+apiMaestros.put(
   '/borrar-maestro-boveda/:id',
   verificarToken,
   MaestrosControllers.MoverABovedaEliminados
@@ -596,10 +596,10 @@ api.put(
  *                   example: Error interno del servidor
  */
 
-api.delete(
+apiMaestros.delete(
   '/borrar-maestro-def/:id',
   verificarToken,
   MaestrosControllers.EliminarMaestro
 );
 
-module.exports = api;
+export { apiMaestros };

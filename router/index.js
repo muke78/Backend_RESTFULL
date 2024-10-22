@@ -1,10 +1,10 @@
-const express = require('express');
-const maestrosRouter = require('./maestrosRouter');
-const usuariosRouter = require('./usuariosRouter');
-const padresRouter = require('./padresRouter');
+import express from 'express';
+import { apiMaestros } from './maestrosRouter.js';
+import { apiUsuarios } from './usuariosRouter.js';
+import { apiPadres } from './padresRouter.js';
 
 const router = express.Router();
 
-router.use('/api/v1', maestrosRouter, usuariosRouter, padresRouter);
+router.use('/api/v1', apiMaestros, apiUsuarios, apiPadres);
 
-module.exports = router;
+export { router };

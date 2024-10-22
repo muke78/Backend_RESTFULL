@@ -1,7 +1,12 @@
 process.loadEnvFile();
-const { resolve } = require('node:path');
-const swaggerJsdoc = require('swagger-jsdoc');
-const swaggerUi = require('swagger-ui-express');
+import { resolve, dirname} from 'node:path';
+import { fileURLToPath } from 'node:url';
+import swaggerJsdoc from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
+
+// Obtener __dirname equivalente en ESM
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const swaggerDefinition = {
   openapi: '3.1.0',
@@ -50,7 +55,4 @@ const setupSwagger = (app) => {
   );
 };
 
-module.exports = {
-  swaggerDocument,
-  setupSwagger,
-};
+export { swaggerDocument, setupSwagger };

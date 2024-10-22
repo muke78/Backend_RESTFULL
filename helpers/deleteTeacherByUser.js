@@ -1,4 +1,4 @@
-const { connectionQuery } = require('./connection.helper');
+import { connectionQuery } from './connection.helper.js';
 
 const deleteTeacherByUser = async (userId) => {
   try {
@@ -8,8 +8,8 @@ const deleteTeacherByUser = async (userId) => {
     );
 
     if (resultQuery.length === 0) {
-        console.log('No se encontró ningún maestro con el userId proporcionado.');
-        return;
+      console.log('No se encontró ningún maestro con el userId proporcionado.');
+      return;
     }
 
     const teacherId = resultQuery[0].ID;
@@ -24,6 +24,4 @@ const deleteTeacherByUser = async (userId) => {
   }
 };
 
-module.exports = {
-  deleteTeacherByUser,
-};
+export { deleteTeacherByUser };

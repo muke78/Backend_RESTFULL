@@ -5,4 +5,4 @@ const securityHeadersMiddleware = (req, res, next) => {
   next();
 };
 
-module.exports = securityHeadersMiddleware;
+export { securityHeadersMiddleware };

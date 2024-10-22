@@ -1,4 +1,4 @@
-const { connectionQuery } = require('./connection.helper');
+import { connectionQuery } from './connection.helper.js';
 
 const deleteUserByTeacherID = async (teacherID) => {
   try {
@@ -7,4 +7,4 @@ const deleteUserByTeacherID = async (teacherID) => {
   } catch (error) {}
 };
 
-module.exports = { deleteUserByTeacherID };
+export { deleteUserByTeacherID };

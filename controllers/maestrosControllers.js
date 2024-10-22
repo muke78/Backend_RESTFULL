@@ -1,7 +1,5 @@
-const { connectionQuery } = require('../helpers/connection.helper');
-const {
-  deleteUserByTeacherID,
-} = require('../helpers/teachersEliminatedStatus');
+import { connectionQuery } from '../helpers/connection.helper.js';
+import { deleteUserByTeacherID } from '../helpers/teachersEliminatedStatus.js';
 
 const ObtenerTodosLosMaestros = async (req, res) => {
   try {
@@ -296,7 +294,7 @@ const EliminarMaestro = async (req, res) => {
   }
 };
 
-module.exports = {
+export default {
   ObtenerTodosLosMaestros,
   ObtenerLosUsuariosEliminados,
   BusquedaDeMaestro,

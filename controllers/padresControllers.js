@@ -1,4 +1,4 @@
-const { connectionQuery } = require('../helpers/connection.helper');
+import { connectionQuery } from '../helpers/connection.helper.js';
 
 const ObtenerTodosLosPapas = async (req, res) => {
   try {
@@ -163,7 +163,7 @@ VALUES (UUID(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
     res.status(201).send({ message: 'Se creo con exito' });
   } catch (error) {
-    res.status(500).send({ message: 'Error al crear al papá o mamá', error});
+    res.status(500).send({ message: 'Error al crear al papá o mamá', error });
   }
 };
 
@@ -276,7 +276,7 @@ const EliminarPadre = async (req, res) => {
   }
 };
 
-module.exports = {
+export default {
   ObtenerTodosLosPapas,
   ObtenerPadresPorMaestro,
   BusquedaDePadres,

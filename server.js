@@ -1,9 +1,9 @@
-const express = require('express');
-const { createServer } = require('node:http');
-const { setupSwagger } = require('./config/swaggerConfig');
-const corsMiddleware = require('./middleware/cors');
-const securityHeadersMiddleware = require('./middleware/securityHeaders');
-const routes = require('./router/index');
+import express from 'express';
+import { createServer } from 'node:http';
+import { setupSwagger } from './config/swaggerConfig.js';
+import { corsMiddleware } from './middleware/cors.js';
+import { securityHeadersMiddleware } from './middleware/securityHeaders.js';
+import { router } from './router/index.js';
 
 const app = express();
 
@@ -13,7 +13,7 @@ setupSwagger(app);
 // Middleware
 app.use(corsMiddleware);
 app.use(securityHeadersMiddleware);
-app.use(routes);
+app.use(router);
 
 // Middleware de manejo de errores
 app.use((err, req, res, next) => {

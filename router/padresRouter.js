@@ -1,18 +1,19 @@
-const express = require('express');
-const verificarToken = require('../middleware/verificarToken');
-const PadresControllers = require('../controllers/padresControllers');
-const api = express.Router();
-api.use(express.json());
+import express from 'express';
+import { verificarToken } from '../middleware/verificarToken.js';
+import PadresControllers from '../controllers/padresControllers.js';
 
-api.get('/lista-de-padres', PadresControllers.ObtenerTodosLosPapas);
-api.post(
+const apiPadres = express.Router();
+apiPadres.use(express.json());
+
+apiPadres.get('/lista-de-padres', PadresControllers.ObtenerTodosLosPapas);
+apiPadres.post(
   '/lista-padres-maestro/:id',
   PadresControllers.ObtenerPadresPorMaestro
 );
-api.post('/busqueda-padres', PadresControllers.BusquedaDePadres);
-api.post('/insertar-padres', PadresControllers.InsertarPadres);
-api.put('/actualizar-padres', PadresControllers.EditarPadres);
-api.put('/borrar-padres-boveda/:id', PadresControllers.MoverABovedaEliminados);
-api.delete('/borrar-padres-def/:id', PadresControllers.EliminarPadre);
+apiPadres.post('/busqueda-padres', PadresControllers.BusquedaDePadres);
+apiPadres.post('/insertar-padres', PadresControllers.InsertarPadres);
+apiPadres.put('/actualizar-padres', PadresControllers.EditarPadres);
+apiPadres.put('/borrar-padres-boveda/:id', PadresControllers.MoverABovedaEliminados);
+apiPadres.delete('/borrar-padres-def/:id', PadresControllers.EliminarPadre);
 
-module.exports = api;
+export { apiPadres };

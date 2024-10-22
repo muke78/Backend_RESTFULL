@@ -1,9 +1,9 @@
-const jwt = require('../helpers/jwt');
-const { connectionQuery } = require('../helpers/connection.helper');
-const { lastLogin } = require('../helpers/userLastLogin');
-const { insertTeacherBeforeUser } = require('../helpers/insertTeacherWithUser');
-const { deleteTeacherByUser } = require('../helpers/deleteTeacherByUser');
-const hashedArg = require('argon2');
+import { createToken } from '../helpers/jwt.js';
+import { connectionQuery } from '../helpers/connection.helper.js';
+import { lastLogin } from '../helpers/userLastLogin.js';
+import { insertTeacherBeforeUser } from '../helpers/insertTeacherWithUser.js';
+import { deleteTeacherByUser } from '../helpers/deleteTeacherByUser.js';
+import hashedArg from 'argon2';
 
 const ObtenerTodosLosUsuarios = async (req, res) => {
   try {
@@ -82,11 +82,9 @@ const EditarUsuario = async (req, res) => {
         queryParamsEmailUpdate
       );
       if (resulQueryEmailValidate.length > 0)
-        return res
-          .status(409)
-          .send({
-            message: 'Usuario ya existe y el correo esta siendo utilizado',
-          });
+        return res.status(409).send({
+          message: 'Usuario ya existe y el correo esta siendo utilizado',
+        });
     }
 
     const hashedPasswordUpdate = await hashedArg.hash(password);
@@ -131,7 +129,9 @@ const EliminarUsuario = async (req, res) => {
 
     await deleteTeacherByUser(id);
 
-    res.status(200).send({ message: 'Usuario eliminado exitosamente y el maestro' });
+    res
+      .status(200)
+      .send({ message: 'Usuario eliminado exitosamente y el maestro' });
   } catch (error) {
     res.status(500).send({
       message: 'Hubo un error al eliminar el usuario',
@@ -187,7 +187,7 @@ const Login = async (req, res) => {
       });
 
     // Crea el token
-    const token = jwt.createToken({
+    const token = createToken({
       id: user.ID,
       nameUser: user.NameUser,
       email: user.Email,
@@ -204,7 +204,7 @@ const Login = async (req, res) => {
   }
 };
 
-module.exports = {
+export default {
   ObtenerTodosLosUsuarios,
   InsertarUsario,
   EditarUsuario,

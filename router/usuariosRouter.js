@@ -1,10 +1,11 @@
-const express = require('express');
-const UsuariosControllers = require('../controllers/usuariosControllers');
-const verificarToken = require('../middleware/verificarToken');
-const api = express.Router();
-api.use(express.json());
+import express from 'express';
+import { verificarToken } from '../middleware/verificarToken.js';
+import UsuariosControllers from '../controllers/usuariosControllers.js';
 
-api.post('/login', UsuariosControllers.Login);
+const apiUsuarios = express.Router();
+apiUsuarios.use(express.json());
+
+apiUsuarios.post('/login', UsuariosControllers.Login);
 
 /**
  * @swagger
@@ -72,7 +73,11 @@ api.post('/login', UsuariosControllers.Login);
  *                   example: "Error interno del servidor"
  */
 
-api.get('/lista-de-usuarios', verificarToken, UsuariosControllers.ObtenerTodosLosUsuarios);
+apiUsuarios.get(
+  '/lista-de-usuarios',
+  verificarToken,
+  UsuariosControllers.ObtenerTodosLosUsuarios
+);
 
 /**
  * @swagger
@@ -144,7 +149,11 @@ api.get('/lista-de-usuarios', verificarToken, UsuariosControllers.ObtenerTodosLo
  *                   type: object
  */
 
-api.post('/crear-usuario', verificarToken, UsuariosControllers.InsertarUsario);
+apiUsuarios.post(
+  '/crear-usuario',
+  verificarToken,
+  UsuariosControllers.InsertarUsario
+);
 
 /**
  * @swagger
@@ -210,7 +219,11 @@ api.post('/crear-usuario', verificarToken, UsuariosControllers.InsertarUsario);
  *                   type: object
  */
 
-api.put('/actualizar-usuario',verificarToken, UsuariosControllers.EditarUsuario);
+apiUsuarios.put(
+  '/actualizar-usuario',
+  verificarToken,
+  UsuariosControllers.EditarUsuario
+);
 
 /**
  * @swagger
@@ -274,6 +287,10 @@ api.put('/actualizar-usuario',verificarToken, UsuariosControllers.EditarUsuario)
  *                   example: "Detalles del error"
  */
 
-api.delete('/eliminar-usuario/:id', verificarToken, UsuariosControllers.EliminarUsuario);
+apiUsuarios.delete(
+  '/eliminar-usuario/:id',
+  verificarToken,
+  UsuariosControllers.EliminarUsuario
+);
 
-module.exports = api;
+export { apiUsuarios };
