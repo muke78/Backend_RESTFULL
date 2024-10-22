@@ -40,7 +40,11 @@ apiPadres.use(express.json());
  *       500:
  *         description: Error interno del servidor
  */
-apiPadres.get('/lista-de-padres', PadresControllers.ObtenerTodosLosPapas);
+apiPadres.get(
+  '/lista-de-padres',
+  verificarToken,
+  PadresControllers.ObtenerTodosLosPapas
+);
 
 /**
  * @swagger
@@ -83,6 +87,7 @@ apiPadres.get('/lista-de-padres', PadresControllers.ObtenerTodosLosPapas);
  */
 apiPadres.get(
   '/lista-de-padres-eliminados',
+  verificarToken,
   PadresControllers.ObtenerPadresEliminados
 );
 
@@ -152,6 +157,7 @@ apiPadres.get(
 
 apiPadres.post(
   '/lista-padres-maestro/:id',
+  verificarToken,
   PadresControllers.ObtenerPadresPorMaestro
 );
 
@@ -226,7 +232,11 @@ apiPadres.post(
  *                   example: "Error interno del servidor"
  */
 
-apiPadres.post('/busqueda-padres', PadresControllers.BusquedaDePadres);
+apiPadres.post(
+  '/busqueda-padres',
+  verificarToken,
+  PadresControllers.BusquedaDePadres
+);
 
 /**
  * @swagger
@@ -355,7 +365,11 @@ apiPadres.post('/busqueda-padres', PadresControllers.BusquedaDePadres);
  *                   type: string
  */
 
-apiPadres.post('/insertar-padres', PadresControllers.InsertarPadres);
+apiPadres.post(
+  '/insertar-padres',
+  verificarToken,
+  PadresControllers.InsertarPadres
+);
 
 /**
  * @swagger
@@ -474,7 +488,11 @@ apiPadres.post('/insertar-padres', PadresControllers.InsertarPadres);
  *                   type: string
  */
 
-apiPadres.put('/actualizar-padres', PadresControllers.EditarPadres);
+apiPadres.put(
+  '/actualizar-padres',
+  verificarToken,
+  PadresControllers.EditarPadres
+);
 
 /**
  * @swagger
@@ -529,6 +547,7 @@ apiPadres.put('/actualizar-padres', PadresControllers.EditarPadres);
 
 apiPadres.put(
   '/borrar-padres-boveda/:id',
+  verificarToken,
   PadresControllers.MoverABovedaEliminados
 );
 
@@ -593,6 +612,10 @@ apiPadres.put(
  *                   type: string
  */
 
-apiPadres.delete('/borrar-padres-def/:id', PadresControllers.EliminarPadre);
+apiPadres.delete(
+  '/borrar-padres-def/:id',
+  verificarToken,
+  PadresControllers.EliminarPadre
+);
 
 export { apiPadres };
