@@ -5,8 +5,6 @@ import UsuariosControllers from '../controllers/usuariosControllers.js';
 const apiUsuarios = express.Router();
 apiUsuarios.use(express.json());
 
-apiUsuarios.post('/login', UsuariosControllers.Login);
-
 /**
  * @swagger
  * /lista-de-usuarios:
@@ -78,6 +76,84 @@ apiUsuarios.get(
   verificarToken,
   UsuariosControllers.ObtenerTodosLosUsuarios
 );
+
+/**
+ * @swagger
+ * /login:
+ *   post:
+ *     summary: Inicia sesión de usuario
+ *     description: Autentica a un usuario utilizando su correo electrónico y contraseña. Devuelve un token si la autenticación es exitosa.
+ *     tags:
+ *       - Users
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 example: "usuario@example.com"
+ *               password:
+ *                 type: string
+ *                 example: "TuContraseñaSecreta"
+ *     responses:
+ *       200:
+ *         description: Inicio de sesión exitoso. Retorna un token JWT.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 token:
+ *                   type: string
+ *                   example: "eyJhbGciOiJIUzI1NiIsInR..."
+ *       400:
+ *         description: Error de validación de datos (correo o contraseña faltantes o inválidos).
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "El correo electrónico es requerido"
+ *       403:
+ *         description: El usuario está inactivo y no puede iniciar sesión.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "El usuario está inactivo, pida la reactivación a un administrador"
+ *       404:
+ *         description: El usuario no se encuentra registrado.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "El usuario no se encuentra registrado"
+ *       500:
+ *         description: Error interno del servidor durante la autenticación.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "La contraseña es incorrecta o está mal escrita"
+ */
+
+apiUsuarios.post('/login', UsuariosControllers.Login);
+
 
 /**
  * @swagger

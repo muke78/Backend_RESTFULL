@@ -74,18 +74,18 @@ const EditarUsuario = async (req, res) => {
       }
     }
 
-    if (email) {
-      const queryValidateEmailUpdate = `SELECT * FROM users WHERE Email = ?`;
-      const queryParamsEmailUpdate = [email];
-      const resulQueryEmailValidate = await connectionQuery(
-        queryValidateEmailUpdate,
-        queryParamsEmailUpdate
-      );
-      if (resulQueryEmailValidate.length > 0)
-        return res.status(409).send({
-          message: 'Usuario ya existe y el correo esta siendo utilizado',
-        });
-    }
+    // if (email) {
+    //   const queryValidateEmailUpdate = `SELECT * FROM users WHERE Email = ?`;
+    //   const queryParamsEmailUpdate = [email];
+    //   const resulQueryEmailValidate = await connectionQuery(
+    //     queryValidateEmailUpdate,
+    //     queryParamsEmailUpdate
+    //   );
+    //   if (resulQueryEmailValidate.length > 0)
+    //     return res.status(409).send({
+    //       message: 'Usuario ya existe y el correo esta siendo utilizado',
+    //     });
+    // }
 
     const hashedPasswordUpdate = await hashedArg.hash(password);
     const queryUpdate = `UPDATE users SET NameUser = ?, Email = ?, Password = '${hashedPasswordUpdate}', Role = ?, AccountStatus = ?  WHERE ID = ?`;
