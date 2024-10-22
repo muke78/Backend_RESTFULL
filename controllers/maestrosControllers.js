@@ -72,6 +72,7 @@ const InsertarMaestro = async (req, res) => {
       teacherID,
       firstName,
       lastName,
+      dateOfBirth,
       nameSchool,
       levelStudies,
       studentsInCharge,
@@ -93,6 +94,7 @@ const InsertarMaestro = async (req, res) => {
       !teacherID ||
       !firstName ||
       !lastName ||
+      !dateOfBirth ||
       !nameSchool ||
       !levelStudies ||
       !studentsInCharge ||
@@ -141,13 +143,14 @@ const InsertarMaestro = async (req, res) => {
         .send({ message: 'La edad no puede ser mayor a 100 años' });
     }
 
-    const queryInsert = `INSERT INTO teachers(ID, TeacherID, FirstName, LastName, NameSchool, LevelStudies, StudentsInCharge, Grade, \`Group\`, CCT, SchoolZone, WorkShift, Curp, Email, Phone, Age, Address, EmergencyContact, EmergencyPhone) 
-    VALUES (UUID(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ?, ?, ?, ?, ?, ?)`;
+    const queryInsert = `INSERT INTO teachers(ID, TeacherID, FirstName, LastName, DateOfBirth,  NameSchool, LevelStudies, StudentsInCharge, Grade, \`Group\`, CCT, SchoolZone, WorkShift, Curp, Email, Phone, Age, Address, EmergencyContact, EmergencyPhone) 
+    VALUES (UUID(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ?, ?, ?, ?, ?, ?)`;
 
     const queryParamsInsert = [
       teacherID,
       firstName,
       lastName,
+      dateOfBirth,
       nameSchool,
       levelStudies,
       studentsInCharge,
@@ -177,6 +180,7 @@ const ActualizarMaestro = async (req, res) => {
     const {
       firstName,
       lastName,
+      dateOfBirth,
       nameSchool,
       levelStudies,
       studentsInCharge,
@@ -196,11 +200,12 @@ const ActualizarMaestro = async (req, res) => {
       id,
     } = req.body;
 
-    const queryUpdate = `UPDATE teachers SET FirstName = ? , LastName = ?, NameSchool = ?, LevelStudies = ? , StudentsInCharge = ?, Grade = ?, \`Group\` = ?, CCT = ?, SchoolZone = ?, WorkShift = ?, 
+    const queryUpdate = `UPDATE teachers SET FirstName = ? , LastName = ?, DateOfBirth = ?, NameSchool = ?, LevelStudies = ? , StudentsInCharge = ?, Grade = ?, \`Group\` = ?, CCT = ?, SchoolZone = ?, WorkShift = ?, 
     Curp = ? , Email = ? , Phone = ?, Age = ?, Address = ?, EmergencyContact = ?, EmergencyPhone = ?, Status = ? WHERE ID = ?`;
     const queryParamsUpdate = [
       firstName,
       lastName,
+      dateOfBirth,
       nameSchool,
       levelStudies,
       studentsInCharge,

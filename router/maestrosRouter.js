@@ -231,6 +231,10 @@ api.post(
  *                 type: string
  *                 description: Apellido del maestro
  *                 example: Pérez
+ *               dateOfBirth:
+ *                 type: string
+ *                 description: Fecha de nacimiento del maestro
+ *                 example: 1990-03-12
  *               nameSchool:
  *                 type: string
  *                 description: Nombre de la escuela
@@ -361,6 +365,10 @@ api.post(
  *                 type: string
  *                 description: Nuevo apellido del maestro
  *                 example: Pérez
+ *               dateOfBirth:
+ *                 type: string
+ *                 description: Nueva fecha de cumpleaños del maestro
+ *                 example: 1990-03-12
  *               nameSchool:
  *                 type: string
  *                 description: Nuevo nombre de la escuela
