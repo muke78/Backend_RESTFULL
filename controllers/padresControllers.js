@@ -2,11 +2,24 @@ import { connectionQuery } from '../helpers/connection.helper.js';
 
 const ObtenerTodosLosPapas = async (req, res) => {
   try {
-    const obtenerPadres = `SELECT * FROM parents WHERE Status = 'Activo' ORDER BY LastName ASC;`;
-    const result = await connectionQuery(obtenerPadres);
+    const [result] = await connectionQuery('CALL ObtenerPadresActivos()');
 
     if (result.length === 0)
       return res.status(404).send({ message: 'No se encontraron padres' });
+
+    res.status(200).send(result);
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+};
+
+const ObtenerPadresEliminados = async (req, res) => {
+  try {
+    const obtenerPadresDelete = `SELECT * FROM parents WHERE Status = "Inactivo" ORDER BY LastName ASC;`;
+    const result = await connectionQuery(obtenerPadresDelete);
+
+    if (result.length === 0)
+      return res.status(404).send({ message: 'No hay padres eliminados' });
 
     res.status(200).send(result);
   } catch (error) {
@@ -18,23 +31,25 @@ const ObtenerPadresPorMaestro = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const verifyTeacher = `SELECT * FROM teachers WHERE ID = ?;`;
+    const verifyTeacher = `SELECT * FROM parents WHERE TeacherID = ?;`;
     const resultVerify = await connectionQuery(verifyTeacher, [id]);
 
-    if (resultVerify === 0)
+    if (resultVerify.length === 0)
       return res
         .status(404)
-        .send({ message: 'No se encontro ningun maestro con ese di' });
+        .send({ message: 'No se encontro ningun maestro con ese id' });
 
-    const obtenerPadreSearch = `SELECT * FROM parents WHERE TeacherID = ?;`;
-    const result = await connectionQuery(obtenerPadreSearch, [id]);
+    const [result] = await connectionQuery(`CALL ObtenerPadresPorMaestro(?)`, [
+      id,
+    ]);
 
     if (result.length === 0)
       return res.status(404).send({
-        message: 'No se encontraron padres que se relacionen con el maestro',
+        message:
+          'No se encontraron padres que se relacionen con el maestro o estan en la boveda',
       });
 
-    res.status(200).send({ message: 'Resultados de la busqueda', result });
+    res.status(200).send(result);
   } catch (error) {
     res.status(500).send({ message: error.message });
   }
@@ -278,6 +293,7 @@ const EliminarPadre = async (req, res) => {
 
 export default {
   ObtenerTodosLosPapas,
+  ObtenerPadresEliminados,
   ObtenerPadresPorMaestro,
   BusquedaDePadres,
   InsertarPadres,

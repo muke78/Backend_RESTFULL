@@ -6,10 +6,8 @@ const apiPadres = express.Router();
 apiPadres.use(express.json());
 
 apiPadres.get('/lista-de-padres', PadresControllers.ObtenerTodosLosPapas);
-apiPadres.post(
-  '/lista-padres-maestro/:id',
-  PadresControllers.ObtenerPadresPorMaestro
-);
+apiPadres.get('/lista-de-padres-eliminados', PadresControllers.ObtenerPadresEliminados);
+apiPadres.post('/lista-padres-maestro/:id', PadresControllers.ObtenerPadresPorMaestro);
 apiPadres.post('/busqueda-padres', PadresControllers.BusquedaDePadres);
 apiPadres.post('/insertar-padres', PadresControllers.InsertarPadres);
 apiPadres.put('/actualizar-padres', PadresControllers.EditarPadres);
