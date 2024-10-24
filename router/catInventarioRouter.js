@@ -62,6 +62,7 @@ const apiCatInventario = express.Router();
 
 apiCatInventario.get(
   '/lista-inventario',
+  verificarToken,
   CatInventarioControllers.ObtenerTodoElInnventario
 );
 

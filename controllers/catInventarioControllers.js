@@ -5,7 +5,7 @@ const ObtenerTodoElInnventario = async (req, res) => {
     const result = await connectionQuery('SELECT * FROM catinventory');
 
     if (result.length === 0)
-      return res.status(404).json({ message: 'No hya nada en el inventario' });
+      return res.status(404).json({ message: 'No hay nada en el inventario' });
 
     res.status(200).json(result);
   } catch (error) {

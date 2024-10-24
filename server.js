@@ -13,8 +13,8 @@ setupSwagger(app);
 // Middleware
 app.use(corsMiddleware);
 app.use(securityHeadersMiddleware);
-app.use(router);
 app.use(express.json());
+app.use(router);
 
 // Middleware de manejo de errores
 app.use((err, req, res, next) => {
