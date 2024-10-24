@@ -3,7 +3,6 @@ import CatInventarioControllers from '../controllers/catInventarioControllers.js
 import { verificarToken } from '../middleware/verificarToken.js';
 const apiCatInventario = express.Router();
 
-apiCatInventario.use(express.json());
 
 /**
  * @swagger
@@ -63,7 +62,6 @@ apiCatInventario.use(express.json());
 
 apiCatInventario.get(
   '/lista-inventario',
-  verificarToken,
   CatInventarioControllers.ObtenerTodoElInnventario
 );
 

@@ -5,11 +5,11 @@ const ObtenerTodoElInnventario = async (req, res) => {
     const result = await connectionQuery('SELECT * FROM catinventory');
 
     if (result.length === 0)
-      return res.status(404).send({ message: 'No hya nada en el inventario' });
+      return res.status(404).json({ message: 'No hya nada en el inventario' });
 
-    res.status(200).send(result);
+    res.status(200).json(result);
   } catch (error) {
-    res.status(500).send({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -40,7 +40,7 @@ const InsertarInventario = async (req, res) => {
       !condition ||
       !purchaseDate
     ) {
-      return res.status(400).send({ message: 'Los campos son requeridos' });
+      return res.status(400).json({ message: 'Los campos son requeridos' });
     }
 
     const queryInsert = `INSERT INTO catinventory (ID, ItemCode, Name, Description, Quantity, Weight, Width, Height, Location, \`Condition\`, PurchaseDate)
@@ -61,9 +61,9 @@ const InsertarInventario = async (req, res) => {
 
     await connectionQuery(queryInsert, queryParamsInsert);
 
-    res.status(201).send({ message: 'Inventario creado con exito' });
+    res.status(201).json({ message: 'Inventario creado con exito' });
   } catch (error) {
-    res.status(500).send({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -98,9 +98,9 @@ const EditarInventario = async (req, res) => {
       id,
     ];
     await connectionQuery(queryUpdate, queryParamsUpdate);
-    res.status(200).send({ message: 'Se actualizo el item' });
+    res.status(200).json({ message: 'Se actualizo el item' });
   } catch (error) {
-    res.status(500).send({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -111,15 +111,15 @@ const EliminarInventario = async (req, res) => {
     if (!id) {
       return res
         .status(400)
-        .send({ message: 'No se envió el ID o no es válido' });
+        .json({ message: 'No se envió el ID o no es válido' });
     }
 
     const queryDeleteInventory = `DELETE FROM catinventory WHERE ID = ?`;
     await connectionQuery(queryDeleteInventory, [id]);
 
-    res.status(200).send({ message: 'Se elimino correctamente el item' });
+    res.status(200).json({ message: 'Se elimino correctamente el item' });
   } catch (error) {
-    res.status(500).send({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 

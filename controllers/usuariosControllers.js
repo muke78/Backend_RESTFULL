@@ -11,11 +11,11 @@ const ObtenerTodosLosUsuarios = async (req, res) => {
     const result = await connectionQuery(obtenerUsuarios);
 
     if (result.length === 0)
-      return res.status(404).send({ message: 'No se encontraron usuarios' });
+      return res.status(404).json({ message: 'No se encontraron usuarios' });
 
-    res.status(200).send(result);
+    res.status(200).json(result);
   } catch (error) {
-    res.status(500).send({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -24,7 +24,7 @@ const InsertarUsario = async (req, res) => {
     const { nameUser, email, password, role } = req.body;
 
     if (!nameUser || !email || !password || !role)
-      return res.status(400).send({ message: 'Los campos son requeridos' });
+      return res.status(400).json({ message: 'Los campos son requeridos' });
 
     const queryValidate = `SELECT * FROM users WHERE Email = ?`;
     const queryParamsValidate = [email];
@@ -34,7 +34,7 @@ const InsertarUsario = async (req, res) => {
     );
 
     if (resultValidate.length > 0) {
-      return res.status(500).send({
+      return res.status(500).json({
         message: 'El correo ya se encuentra registrado',
       });
     }
@@ -47,11 +47,11 @@ const InsertarUsario = async (req, res) => {
     await insertTeacherBeforeUser(email);
     await res
       .status(201)
-      .send({ message: 'Usuario creado exitosamente y maestro' });
+      .json({ message: 'Usuario creado exitosamente y maestro' });
   } catch (error) {
     res
       .status(500)
-      .send({ message: 'Error al crear el usuario y su maestro', error });
+      .json({ message: 'Error al crear el usuario y su maestro', error });
   }
 };
 
@@ -68,7 +68,7 @@ const EditarUsuario = async (req, res) => {
       );
 
       if (resultValidUpdate.length === 0) {
-        return res.status(404).send({
+        return res.status(404).json({
           message: 'No se proporciono un id valido o el usuario no existe',
         });
       }
@@ -82,7 +82,7 @@ const EditarUsuario = async (req, res) => {
     //     queryParamsEmailUpdate
     //   );
     //   if (resulQueryEmailValidate.length > 0)
-    //     return res.status(409).send({
+    //     return res.status(409).json({
     //       message: 'Usuario ya existe y el correo esta siendo utilizado',
     //     });
     // }
@@ -92,9 +92,9 @@ const EditarUsuario = async (req, res) => {
     const queryParamsUpdate = [nameUser, email, role, accountStatus, id];
 
     await connectionQuery(queryUpdate, queryParamsUpdate);
-    res.status(200).send({ message: 'El usuario se actualizo con exito' });
+    res.status(200).json({ message: 'El usuario se actualizo con exito' });
   } catch (error) {
-    res.status(500).send({
+    res.status(500).json({
       message: 'Hubo un error en la actualizacion del usuario',
       error,
     });
@@ -108,7 +108,7 @@ const EliminarUsuario = async (req, res) => {
     if (!id)
       return res
         .status(400)
-        .send({ message: 'No se envio el ID o no es valido' });
+        .json({ message: 'No se envio el ID o no es valido' });
 
     if (id) {
       const queryValidate = `SELECT * FROM users WHERE id = ?`;
@@ -119,7 +119,7 @@ const EliminarUsuario = async (req, res) => {
       );
 
       if (resultValidate.length === 0) {
-        return res.status(400).send({
+        return res.status(400).json({
           message: 'El usuario no existe',
         });
       }
@@ -131,9 +131,9 @@ const EliminarUsuario = async (req, res) => {
 
     res
       .status(200)
-      .send({ message: 'Usuario eliminado exitosamente y el maestro' });
+      .json({ message: 'Usuario eliminado exitosamente y el maestro' });
   } catch (error) {
-    res.status(500).send({
+    res.status(500).json({
       message: 'Hubo un error al eliminar el usuario',
       error,
     });
@@ -148,15 +148,15 @@ const Login = async (req, res) => {
     if (!email)
       return res
         .status(400)
-        .send({ message: 'El correo electrónico es requerido' });
+        .json({ message: 'El correo electrónico es requerido' });
 
     if (!regex.test(email))
       return res
         .status(400)
-        .send({ message: 'El correo electrónico no es válido' });
+        .json({ message: 'El correo electrónico no es válido' });
 
     if (!password)
-      return res.status(400).send({ message: 'La contraseña es requerida' });
+      return res.status(400).json({ message: 'La contraseña es requerida' });
 
     const queryValidate = `SELECT * FROM users WHERE Email = ?`;
     const queryParamsValidate = [email];
@@ -168,7 +168,7 @@ const Login = async (req, res) => {
     if (resultValidate.length === 0) {
       return res
         .status(404)
-        .send({ message: 'El usuario no se encuentra registrado' });
+        .json({ message: 'El usuario no se encuentra registrado' });
     }
 
     const user = resultValidate[0];
@@ -178,10 +178,10 @@ const Login = async (req, res) => {
     if (!argonVerify)
       return res
         .status(500)
-        .send({ message: 'La contraseña es incorrecta o está mal escrita' });
+        .json({ message: 'La contraseña es incorrecta o está mal escrita' });
 
     if (user.AccountStatus === 'Inactivo')
-      return res.status(403).send({
+      return res.status(403).json({
         message:
           'El usuario está inactivo, pida la reactivación a un administrador',
       });
@@ -198,9 +198,9 @@ const Login = async (req, res) => {
 
     await lastLogin(user.ID);
 
-    return res.status(200).send({ token });
+    return res.status(200).json({ token });
   } catch (error) {
-    return res.status(500).send({ message: error.message });
+    return res.status(500).json({ message: error.message });
   }
 };
 

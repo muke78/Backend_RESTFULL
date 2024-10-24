@@ -3,7 +3,6 @@ import { verificarToken } from '../middleware/verificarToken.js';
 import UsuariosControllers from '../controllers/usuariosControllers.js';
 
 const apiUsuarios = express.Router();
-apiUsuarios.use(express.json());
 
 /**
  * @swagger

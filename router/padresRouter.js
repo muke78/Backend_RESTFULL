@@ -3,7 +3,6 @@ import { verificarToken } from '../middleware/verificarToken.js';
 import PadresControllers from '../controllers/padresControllers.js';
 
 const apiPadres = express.Router();
-apiPadres.use(express.json());
 
 /**
  * @swagger

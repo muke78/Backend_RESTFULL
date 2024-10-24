@@ -3,7 +3,6 @@ import MaestrosControllers from '../controllers/maestrosControllers.js';
 import { verificarToken } from '../middleware/verificarToken.js';
 const apiMaestros = express.Router();
 
-apiMaestros.use(express.json());
 
 /**
  * @swagger

@@ -14,11 +14,12 @@ setupSwagger(app);
 app.use(corsMiddleware);
 app.use(securityHeadersMiddleware);
 app.use(router);
+app.use(express.json());
 
 // Middleware de manejo de errores
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).send('Error interno del servidor');
+  res.status(500).json('Error interno del servidor');
 });
 
 // Crear y arrancar el servidor
