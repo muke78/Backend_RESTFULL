@@ -79,6 +79,61 @@ apiCatInsumos.get(
 
 /**
  * @swagger
+ * /lista-insumos-desuso:
+ *   get:
+ *     summary: Obtiene la lista de insumos en desuso
+ *     description: Devuelve todos los insumos con estado "Inactivo" en el catálogo.
+ *     tags: 
+ *      - Catálogo de Insumo
+ *     responses:
+ *       200:
+ *         description: Lista de insumos en desuso obtenida exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                     description: ID del insumo
+ *                   nombre:
+ *                     type: string
+ *                     description: Nombre del insumo
+ *                   status:
+ *                     type: string
+ *                     description: Estado del insumo (esperado "Inactivo")
+ *       404:
+ *         description: No se encontró ningún insumo en desuso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: No hay nada en los insumos en desuso
+ *       500:
+ *         description: Error del servidor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Error interno del servidor
+ */
+
+apiCatInsumos.get(
+  '/lista-insumos-desuso',
+  verificarToken,
+  CatInsumosControllers.ObtenerTodosLosInsumosDesuso
+);
+
+/**
+ * @swagger
  * /agregar-insumo:
  *   post:
  *     summary: Agrega un nuevo insumo al catálogo
@@ -224,11 +279,7 @@ apiCatInsumos.post(
  *                   example: Error interno del servidor
  */
 
-apiCatInsumos.put(
-  '/actualizar-insumo',
-  verificarToken,
-  CatInsumosControllers.EditarInsumo
-);
+apiCatInsumos.put('/actualizar-insumo', CatInsumosControllers.EditarInsumo);
 
 /**
  * @swagger

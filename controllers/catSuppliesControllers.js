@@ -2,10 +2,29 @@ import { connectionQuery } from '../helpers/connection.helper.js';
 
 const ObtenerTodosLosInsumos = async (req, res) => {
   try {
-    const result = await connectionQuery(`SELECT * FROM catsupplies`);
+    const result = await connectionQuery(
+      `SELECT * FROM catsupplies WHERE Status = "Activo"`
+    );
 
     if (result.length === 0)
       return res.status(404).json({ message: 'No hay nada en los insumos' });
+
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const ObtenerTodosLosInsumosDesuso = async (req, res) => {
+  try {
+    const result = await connectionQuery(
+      `SELECT * FROM catsupplies WHERE Status = "Inactivo"`
+    );
+
+    if (result.length === 0)
+      return res
+        .status(404)
+        .json({ message: 'No hay nada en los insumos en desuso' });
 
     res.status(200).json(result);
   } catch (error) {
@@ -71,10 +90,11 @@ const EditarInsumo = async (req, res) => {
       purchaseDate,
       expiryDate,
       cost,
+      status,
       id,
     } = req.body;
 
-    const queryUpdate = `UPDATE catsupplies SET Name = ?, Description = ?, Quantity = ?, Unit = ?, Supplier = ?, PurchaseDate = ?, ExpiryDate = ?, Cost = ? WHERE ID = ?`;
+    const queryUpdate = `UPDATE catsupplies SET Name = ?, Description = ?, Quantity = ?, Unit = ?, Supplier = ?, PurchaseDate = ?, ExpiryDate = ?, Cost = ?, Status = ? WHERE ID = ?`;
     const queryUpdateParams = [
       name,
       description,
@@ -84,6 +104,7 @@ const EditarInsumo = async (req, res) => {
       purchaseDate,
       expiryDate,
       cost,
+      status,
       id,
     ];
 
@@ -115,6 +136,7 @@ const EliminarInsumo = async (req, res) => {
 
 export default {
   ObtenerTodosLosInsumos,
+  ObtenerTodosLosInsumosDesuso,
   InsertarInsumo,
   EditarInsumo,
   EliminarInsumo,
