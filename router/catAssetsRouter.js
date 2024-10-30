@@ -274,6 +274,11 @@ apiCatActivos.post('/agregar-activo', CatActivosControllers.InsertarActivo);
 
 apiCatActivos.put('/actualizar-activo', CatActivosControllers.EditarActivo);
 
+apiCatActivos.put(
+  '/borrar-activo-boveda/:id',
+  CatActivosControllers.MoverABovedaEliminados
+);
+
 /**
  * @swagger
  * /eliminar-activo/{id}:

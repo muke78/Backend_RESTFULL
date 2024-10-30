@@ -77,9 +77,8 @@ const InsertarActivo = async (req, res) => {
 
     const result = await connectionQuery(queryInsert, queryParamsInsert);
 
-    if (result.affectedRows > 0) {
-      methodCreated(req, res, queryParamsInsert);
-    }
+    if (result.affectedRows > 0)
+      return methodCreated(req, res, queryParamsInsert);
   } catch (error) {
     methodError(req, res, error);
   }
@@ -130,6 +129,28 @@ const EditarActivo = async (req, res) => {
   }
 };
 
+const MoverABovedaEliminados = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!id) return methodIncorrect(req, res);
+
+    const queryDelete = `UPDATE catassets SET Status = 'Inactivo' WHERE ID = ?`;
+    const queryParamsDelete = [id];
+    const result = await connectionQuery(queryDelete, queryParamsDelete);
+
+    if (result.affectedRows > 0) {
+      methodOK(req, res, {
+        message: 'El recurso fue mandado a la boveda correctamente.',
+      });
+    } else {
+      methodNotFound(req, res);
+    }
+  } catch (error) {
+    methodError(req, res, error);
+  }
+};
+
 const EliminarActivo = async (req, res) => {
   try {
     const { id } = req.params;
@@ -144,9 +165,7 @@ const EliminarActivo = async (req, res) => {
         message: 'El recurso fue eliminado correctamente.',
       });
     } else {
-      methodNotFound(req, res, {
-        message: 'No se encontró el recurso para eliminar.',
-      });
+      methodNotFound(req, res);
     }
   } catch (error) {
     methodError(req, res, error);
@@ -158,5 +177,6 @@ export default {
   ObtenerTodosLosActivosDesuso,
   InsertarActivo,
   EditarActivo,
+  MoverABovedaEliminados,
   EliminarActivo,
 };
