@@ -1,13 +1,12 @@
 import crypto from 'node:crypto';
 
-const timestamp = new Date().toISOString();
-const requestId = crypto.randomUUID();
-const errorId = crypto.randomUUID();
-
 const methodOK = (req, res, result) => {
+  const timestamp = new Date().toISOString();
+  const requestId = crypto.randomUUID();
+
   res.status(200).json({
     success: true,
-    data: result,
+    data: result || {},
     message: 'Consulta realizada correctamente',
     metadata: {
       timestamp: timestamp,
@@ -18,6 +17,9 @@ const methodOK = (req, res, result) => {
 };
 
 const methodCreated = (req, res, result) => {
+  const timestamp = new Date().toISOString();
+  const requestId = crypto.randomUUID();
+
   res.status(201).json({
     success: true,
     data: result,
@@ -31,6 +33,9 @@ const methodCreated = (req, res, result) => {
 };
 
 const methodIncorrect = (req, res) => {
+  const timestamp = new Date().toISOString();
+  const requestId = crypto.randomUUID();
+
   res.status(400).json({
     success: false,
     error: {
@@ -44,6 +49,9 @@ const methodIncorrect = (req, res) => {
   });
 };
 const methodUnauthorized = (req, res) => {
+  const timestamp = new Date().toISOString();
+  const requestId = crypto.randomUUID();
+
   res.status(401).json({
     success: false,
     error: {
@@ -58,6 +66,9 @@ const methodUnauthorized = (req, res) => {
 };
 
 const methodNotFound = (req, res) => {
+  const timestamp = new Date().toISOString();
+  const requestId = crypto.randomUUID();
+
   res.status(404).json({
     success: false,
     error: {
@@ -71,6 +82,9 @@ const methodNotFound = (req, res) => {
 };
 
 const methodConflicts = (req, res) => {
+  const timestamp = new Date().toISOString();
+  const requestId = crypto.randomUUID();
+
   res.status(409).json({
     success: false,
     error: {
@@ -86,15 +100,21 @@ const methodConflicts = (req, res) => {
 };
 
 const methodError = (req, res, error) => {
+  const timestamp = new Date().toISOString();
+  const errorId = crypto.randomUUID();
+
   res.status(500).json({
     success: false,
     error: {
-      message: error.message,
+      message: error.message || 'Se produjo un error inesperado.',
       code: 'INTERNAL_SERVER_ERROR',
       details:
         'Ocurrió un problema en el servidor. Por favor, intenta más tarde.',
       timestamp: timestamp,
       errorId: errorId,
+      stack: error.stack || 'No se dispone de información adicional.',
+      path: req.originalUrl,
+      method: req.method,
     },
   });
 };

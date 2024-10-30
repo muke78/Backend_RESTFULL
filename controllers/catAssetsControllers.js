@@ -1,4 +1,11 @@
 import { connectionQuery } from '../helpers/connection.helper.js';
+import {
+  methodOK,
+  methodNotFound,
+  methodError,
+  methodIncorrect,
+  methodCreated,
+} from '../server/serverMethods.js';
 
 const ObtenerTodosLosActivos = async (req, res) => {
   try {
@@ -6,12 +13,11 @@ const ObtenerTodosLosActivos = async (req, res) => {
       `SELECT * FROM catassets WHERE Status = "Activo"`
     );
 
-    if (result.length === 0)
-      return res.status(404).json({ message: 'No hay nada en los activos' });
+    if (result.length === 0) return methodNotFound(req, res);
 
-    res.status(200).json(result);
+    methodOK(req, res, result);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    methodError(req, res, error);
   }
 };
 
@@ -21,14 +27,11 @@ const ObtenerTodosLosActivosDesuso = async (req, res) => {
       `SELECT * FROM catassets WHERE Status = "Inactivo"`
     );
 
-    if (result.length === 0)
-      return res
-        .status(404)
-        .json({ message: 'No hay nada en los activos no ocupados' });
+    if (result.length === 0) return methodNotFound(req, res);
 
-    res.status(200).json(result);
+    methodOK(req, res, result);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    methodError(req, res, error);
   }
 };
 
@@ -55,7 +58,7 @@ const InsertarActivo = async (req, res) => {
       !lastMaintenanceDate ||
       !warrantyEndDate
     ) {
-      return res.status(400).json({ message: 'Los campos son requeridos' });
+      return methodIncorrect(req, res);
     }
 
     const queryInsert = `INSERT INTO catassets(ID, Name, Description, PurchaseDate, Cost, Location, \`Condition\`, LastMaintenanceDate, WarrantyEndDate) 
@@ -72,11 +75,13 @@ const InsertarActivo = async (req, res) => {
       warrantyEndDate,
     ];
 
-    await connectionQuery(queryInsert, queryParamsInsert);
+    const result = await connectionQuery(queryInsert, queryParamsInsert);
 
-    res.status(201).json({ message: 'El activo fue creado con exito' });
+    if (result.affectedRows > 0) {
+      methodCreated(req, res, queryParamsInsert);
+    }
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    methodError(req, res, error);
   }
 };
 
@@ -109,10 +114,19 @@ const EditarActivo = async (req, res) => {
       id,
     ];
 
-    await connectionQuery(queryUpdate, queryUpdateParams);
-    res.status(200).json({ message: 'Se actualizo el activo' });
+    const result = await connectionQuery(queryUpdate, queryUpdateParams);
+
+    if (result.affectedRows > 0) {
+      methodOK(req, res, {
+        message: 'El recurso fue actualizado correctamente.',
+      });
+    } else {
+      methodNotFound(req, res, {
+        message: 'No se encontró el recurso para actualizar.',
+      });
+    }
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    methodError(req, res, error);
   }
 };
 
@@ -120,18 +134,22 @@ const EliminarActivo = async (req, res) => {
   try {
     const { id } = req.params;
 
-    if (!id) {
-      return res
-        .status(400)
-        .json({ message: 'No se envió el ID o no es válido' });
-    }
+    if (!id) return methodIncorrect(req, res);
 
     const queryDeleteSupplier = `DELETE FROM catassets WHERE ID = ?`;
-    await connectionQuery(queryDeleteSupplier, [id]);
+    const result = await connectionQuery(queryDeleteSupplier, [id]);
 
-    res.status(200).json({ message: 'Se elimino correctamente el activo' });
+    if (result.affectedRows > 0) {
+      methodOK(req, res, {
+        message: 'El recurso fue eliminado correctamente.',
+      });
+    } else {
+      methodNotFound(req, res, {
+        message: 'No se encontró el recurso para eliminar.',
+      });
+    }
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    methodError(req, res, error);
   }
 };
 

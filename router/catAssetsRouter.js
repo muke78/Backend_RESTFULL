@@ -54,7 +54,6 @@ const apiCatActivos = express.Router();
 
 apiCatActivos.get(
   '/lista-activos',
-  verificarToken,
   CatActivosControllers.ObtenerTodosLosActivos
 );
 
@@ -109,7 +108,6 @@ apiCatActivos.get(
 
 apiCatActivos.get(
   '/lista-activos-desuso',
-  verificarToken,
   CatActivosControllers.ObtenerTodosLosActivosDesuso
 );
 
@@ -198,11 +196,7 @@ apiCatActivos.get(
  *                   example: Error interno del servidor
  */
 
-apiCatActivos.post(
-  '/agregar-activo',
-  verificarToken,
-  CatActivosControllers.InsertarActivo
-);
+apiCatActivos.post('/agregar-activo', CatActivosControllers.InsertarActivo);
 
 /**
  * @swagger
@@ -278,11 +272,7 @@ apiCatActivos.post(
  *                   example: Error interno del servidor
  */
 
-apiCatActivos.put(
-  '/actualizar-activo',
-  verificarToken,
-  CatActivosControllers.EditarActivo
-);
+apiCatActivos.put('/actualizar-activo', CatActivosControllers.EditarActivo);
 
 /**
  * @swagger
@@ -333,7 +323,6 @@ apiCatActivos.put(
  */
 apiCatActivos.delete(
   '/eliminar-activo/:id',
-  verificarToken,
   CatActivosControllers.EliminarActivo
 );
 
