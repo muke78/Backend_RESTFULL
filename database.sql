@@ -222,7 +222,6 @@ CREATE TABLE `students` (
   `NameStudent` varchar(100) NOT NULL,
   `Grade` varchar(50) NOT NULL,
   `Group` varchar(10) NOT NULL,
-  `Average` decimal(5,2) DEFAULT NULL,
   `AgeStudent` int NOT NULL,
   `Curp` varchar(20) NOT NULL,
   `DateOfBirth` date NOT NULL,

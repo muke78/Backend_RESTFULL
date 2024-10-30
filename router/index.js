@@ -5,6 +5,7 @@ import { apiPadres } from './padresRouter.js';
 import { apiCatInventario } from './catInventarioRouter.js';
 import { apiCatInsumos } from './catSuppliesRouter.js';
 import { apiCatActivos } from './catAssetsRouter.js';
+import { apiEstudiantes } from './studentsRouter.js';
 
 const router = express.Router();
 
@@ -15,7 +16,8 @@ router.use(
   apiPadres,
   apiCatInventario,
   apiCatInsumos,
-  apiCatActivos
+  apiCatActivos,
+  apiEstudiantes
 );
 
 export { router };
