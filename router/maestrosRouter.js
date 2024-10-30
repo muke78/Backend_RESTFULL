@@ -1,8 +1,9 @@
-import express from 'express';
-import MaestrosControllers from '../controllers/maestrosControllers.js';
-import { verificarToken } from '../middleware/verificarToken.js';
-const apiMaestros = express.Router();
+import express from "express";
 
+import MaestrosControllers from "../controllers/maestrosControllers.js";
+import { verificarToken } from "../middleware/verificarToken.js";
+
+const apiMaestros = express.Router();
 
 /**
  * @swagger
@@ -59,9 +60,9 @@ const apiMaestros = express.Router();
  */
 
 apiMaestros.get(
-  '/lista-de-maestros',
+  "/lista-de-maestros",
   verificarToken,
-  MaestrosControllers.ObtenerTodosLosMaestros
+  MaestrosControllers.ObtenerTodosLosMaestros,
 );
 
 /**
@@ -119,9 +120,9 @@ apiMaestros.get(
  */
 
 apiMaestros.get(
-  '/lista-de-maestros-eliminados',
+  "/lista-de-maestros-eliminados",
   verificarToken,
-  MaestrosControllers.ObtenerLosUsuariosEliminados
+  MaestrosControllers.ObtenerLosUsuariosEliminados,
 );
 
 /**
@@ -197,9 +198,9 @@ apiMaestros.get(
  */
 
 apiMaestros.post(
-  '/buscar-maestro',
+  "/buscar-maestro",
   verificarToken,
-  MaestrosControllers.BusquedaDeMaestro
+  MaestrosControllers.BusquedaDeMaestro,
 );
 
 /**
@@ -331,9 +332,9 @@ apiMaestros.post(
  */
 
 apiMaestros.post(
-  '/agregar-maestro',
+  "/agregar-maestro",
   verificarToken,
-  MaestrosControllers.InsertarMaestro
+  MaestrosControllers.InsertarMaestro,
 );
 
 /**
@@ -468,9 +469,9 @@ apiMaestros.post(
  *                   example: Error interno del servidor
  */
 apiMaestros.put(
-  '/actualizar-maestro',
+  "/actualizar-maestro",
   verificarToken,
-  MaestrosControllers.ActualizarMaestro
+  MaestrosControllers.ActualizarMaestro,
 );
 
 /**
@@ -527,9 +528,9 @@ apiMaestros.put(
  */
 
 apiMaestros.put(
-  '/borrar-maestro-boveda/:id',
+  "/borrar-maestro-boveda/:id",
   verificarToken,
-  MaestrosControllers.MoverABovedaEliminados
+  MaestrosControllers.MoverABovedaEliminados,
 );
 
 /**
@@ -596,9 +597,9 @@ apiMaestros.put(
  */
 
 apiMaestros.delete(
-  '/borrar-maestro-def/:id',
+  "/borrar-maestro-def/:id",
   verificarToken,
-  MaestrosControllers.EliminarMaestro
+  MaestrosControllers.EliminarMaestro,
 );
 
 export { apiMaestros };

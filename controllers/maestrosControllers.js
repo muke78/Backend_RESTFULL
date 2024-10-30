@@ -1,5 +1,5 @@
-import { connectionQuery } from '../helpers/connection.helper.js';
-import { deleteUserByTeacherID } from '../helpers/teachersEliminatedStatus.js';
+import { connectionQuery } from "../helpers/connection.helper.js";
+import { deleteUserByTeacherID } from "../helpers/teachersEliminatedStatus.js";
 
 const ObtenerTodosLosMaestros = async (req, res) => {
   try {
@@ -7,7 +7,7 @@ const ObtenerTodosLosMaestros = async (req, res) => {
     const result = await connectionQuery(obtenerUser);
 
     if (result.length === 0)
-      return res.status(404).json({ message: 'No se encontraron maestros' });
+      return res.status(404).json({ message: "No se encontraron maestros" });
 
     res.status(200).json(result);
   } catch (error) {
@@ -21,7 +21,7 @@ const ObtenerLosUsuariosEliminados = async (req, res) => {
     const result = await connectionQuery(obtenerUserDelete);
 
     if (result.length === 0)
-      return res.status(404).json({ message: 'No hay maestros eliminados' });
+      return res.status(404).json({ message: "No hay maestros eliminados" });
 
     res.status(200).json(result);
   } catch (error) {
@@ -36,17 +36,17 @@ const BusquedaDeMaestro = async (req, res) => {
     const queryParamsSearch = [];
 
     if (email) {
-      querySearch += ' AND email LIKE ?';
+      querySearch += " AND email LIKE ?";
       queryParamsSearch.push(`%${email}%`);
     }
 
     if (firstName) {
-      querySearch += ' AND FirstName LIKE ?';
+      querySearch += " AND FirstName LIKE ?";
       queryParamsSearch.push(`%${firstName}%`);
     }
 
     if (lastName) {
-      querySearch += ' AND LastName LIKE ?';
+      querySearch += " AND LastName LIKE ?";
       queryParamsSearch.push(`%${lastName}%`);
     }
 
@@ -55,7 +55,7 @@ const BusquedaDeMaestro = async (req, res) => {
     if (resultSearch.length === 0) {
       return res
         .status(404)
-        .json({ message: 'Maestro no encontrado, intente buscar con otro' });
+        .json({ message: "Maestro no encontrado, intente buscar con otro" });
     }
 
     res.status(200).json(resultSearch);
@@ -109,27 +109,27 @@ const InsertarMaestro = async (req, res) => {
       !emergencyContact ||
       !emergencyPhone
     )
-      return res.status(400).json({ message: 'Los campos son requeridos' });
+      return res.status(400).json({ message: "Los campos son requeridos" });
 
     if (email && email.trim()) {
       const queryValidate = `SELECT * FROM teachers WHERE Email = ?`;
       const queryParamsValidate = [email];
       const resultValidate = await connectionQuery(
         queryValidate,
-        queryParamsValidate
+        queryParamsValidate,
       );
 
       if (resultValidate.length > 0) {
         const { Status } = resultValidate[0];
 
-        if (Status === 'Activo') {
+        if (Status === "Activo") {
           return res.status(409).json({
-            message: 'El correo ya se encuentra registrado',
+            message: "El correo ya se encuentra registrado",
           });
-        } else if (Status === 'Inactivo') {
+        } else if (Status === "Inactivo") {
           return res.status(500).json({
             message:
-              'El correo existe pero el maestro está eliminado, eliminelo definitivamente o editelo',
+              "El correo existe pero el maestro está eliminado, eliminelo definitivamente o editelo",
           });
         }
       }
@@ -138,7 +138,7 @@ const InsertarMaestro = async (req, res) => {
     if (age > 100) {
       return res
         .status(400)
-        .json({ message: 'La edad no puede ser mayor a 100 años' });
+        .json({ message: "La edad no puede ser mayor a 100 años" });
     }
 
     const queryInsert = `INSERT INTO teachers(ID, TeacherID, FirstName, LastName, DateOfBirth,  NameSchool, LevelStudies, StudentsInCharge, Grade, \`Group\`, CCT, SchoolZone, WorkShift, Curp, Email, Phone, Age, Address, EmergencyContact, EmergencyPhone) 
@@ -167,9 +167,9 @@ const InsertarMaestro = async (req, res) => {
     ];
     await connectionQuery(queryInsert, queryParamsInsert);
 
-    res.status(201).json({ message: 'Maestro creado con exito' });
+    res.status(201).json({ message: "Maestro creado con exito" });
   } catch (error) {
-    res.status(500).json({ message: 'Error al crear el maestro', error });
+    res.status(500).json({ message: "Error al crear el maestro", error });
   }
 };
 
@@ -223,10 +223,10 @@ const ActualizarMaestro = async (req, res) => {
       id,
     ];
     await connectionQuery(queryUpdate, queryParamsUpdate);
-    res.status(200).json({ message: 'Se actualizo el maestro' });
+    res.status(200).json({ message: "Se actualizo el maestro" });
   } catch (error) {
     res.status(500).json({
-      message: 'Hubo un error en la actualizacion del registro',
+      message: "Hubo un error en la actualizacion del registro",
       error,
     });
   }
@@ -238,18 +238,18 @@ const MoverABovedaEliminados = async (req, res) => {
     if (!id)
       return res
         .status(400)
-        .json({ message: 'No se envio el ID o no es valido' });
+        .json({ message: "No se envio el ID o no es valido" });
 
     const queryDelete = `UPDATE teachers SET Status = 'Inactivo' WHERE ID = ?`;
     const queryParamsDelete = [id];
     await connectionQuery(queryDelete, queryParamsDelete);
 
     res.status(200).json({
-      message: 'Se mando a la boveda de eliminados o esta en la boveda',
+      message: "Se mando a la boveda de eliminados o esta en la boveda",
     });
   } catch (error) {
     res.status(500).json({
-      message: 'Hubo un error al mandar a la boveda de eliminados',
+      message: "Hubo un error al mandar a la boveda de eliminados",
       error,
     });
   }
@@ -262,18 +262,18 @@ const EliminarMaestro = async (req, res) => {
     if (!id) {
       return res
         .status(400)
-        .json({ message: 'No se envió el ID o no es válido' });
+        .json({ message: "No se envió el ID o no es válido" });
     }
 
     const queryValidate = `SELECT TeacherID FROM teachers WHERE ID = ?`;
     const queryParamsValidate = [id];
     const resultValidate = await connectionQuery(
       queryValidate,
-      queryParamsValidate
+      queryParamsValidate,
     );
 
     if (resultValidate.length === 0) {
-      return res.status(404).json({ message: 'El maestro no existe' });
+      return res.status(404).json({ message: "El maestro no existe" });
     }
 
     const { TeacherID } = resultValidate[0];
@@ -284,11 +284,11 @@ const EliminarMaestro = async (req, res) => {
     await deleteUserByTeacherID(TeacherID);
 
     res.status(200).json({
-      message: 'Se eliminó definitivamente el maestro y su usuario asociado',
+      message: "Se eliminó definitivamente el maestro y su usuario asociado",
     });
   } catch (error) {
     res.status(500).json({
-      message: 'Hubo un error al eliminar el maestro y su usuario',
+      message: "Hubo un error al eliminar el maestro y su usuario",
       error,
     });
   }

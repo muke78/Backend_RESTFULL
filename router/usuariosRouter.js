@@ -1,6 +1,7 @@
-import express from 'express';
-import { verificarToken } from '../middleware/verificarToken.js';
-import UsuariosControllers from '../controllers/usuariosControllers.js';
+import express from "express";
+
+import UsuariosControllers from "../controllers/usuariosControllers.js";
+import { verificarToken } from "../middleware/verificarToken.js";
 
 const apiUsuarios = express.Router();
 
@@ -71,9 +72,9 @@ const apiUsuarios = express.Router();
  */
 
 apiUsuarios.get(
-  '/lista-de-usuarios',
+  "/lista-de-usuarios",
   verificarToken,
-  UsuariosControllers.ObtenerTodosLosUsuarios
+  UsuariosControllers.ObtenerTodosLosUsuarios,
 );
 
 /**
@@ -151,8 +152,7 @@ apiUsuarios.get(
  *                   example: "La contraseña es incorrecta o está mal escrita"
  */
 
-apiUsuarios.post('/login', UsuariosControllers.Login);
-
+apiUsuarios.post("/login", UsuariosControllers.Login);
 
 /**
  * @swagger
@@ -225,9 +225,9 @@ apiUsuarios.post('/login', UsuariosControllers.Login);
  */
 
 apiUsuarios.post(
-  '/crear-usuario',
+  "/crear-usuario",
   verificarToken,
-  UsuariosControllers.InsertarUsario
+  UsuariosControllers.InsertarUsario,
 );
 
 /**
@@ -295,9 +295,9 @@ apiUsuarios.post(
  */
 
 apiUsuarios.put(
-  '/actualizar-usuario',
+  "/actualizar-usuario",
   verificarToken,
-  UsuariosControllers.EditarUsuario
+  UsuariosControllers.EditarUsuario,
 );
 
 /**
@@ -363,9 +363,9 @@ apiUsuarios.put(
  */
 
 apiUsuarios.delete(
-  '/eliminar-usuario/:id',
+  "/eliminar-usuario/:id",
   verificarToken,
-  UsuariosControllers.EliminarUsuario
+  UsuariosControllers.EliminarUsuario,
 );
 
 export { apiUsuarios };

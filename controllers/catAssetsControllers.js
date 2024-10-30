@@ -1,16 +1,16 @@
-import { connectionQuery } from '../helpers/connection.helper.js';
+import { connectionQuery } from "../helpers/connection.helper.js";
 import {
-  methodOK,
-  methodNotFound,
+  methodCreated,
   methodError,
   methodIncorrect,
-  methodCreated,
-} from '../server/serverMethods.js';
+  methodNotFound,
+  methodOK,
+} from "../server/serverMethods.js";
 
 const ObtenerTodosLosActivos = async (req, res) => {
   try {
     const result = await connectionQuery(
-      `SELECT * FROM catassets WHERE Status = "Activo"`
+      `SELECT * FROM catassets WHERE Status = "Activo"`,
     );
 
     if (result.length === 0) return methodNotFound(req, res);
@@ -24,7 +24,7 @@ const ObtenerTodosLosActivos = async (req, res) => {
 const ObtenerTodosLosActivosDesuso = async (req, res) => {
   try {
     const result = await connectionQuery(
-      `SELECT * FROM catassets WHERE Status = "Inactivo"`
+      `SELECT * FROM catassets WHERE Status = "Inactivo"`,
     );
 
     if (result.length === 0) return methodNotFound(req, res);
@@ -117,11 +117,11 @@ const EditarActivo = async (req, res) => {
 
     if (result.affectedRows > 0) {
       methodOK(req, res, {
-        message: 'El recurso fue actualizado correctamente.',
+        message: "El recurso fue actualizado correctamente.",
       });
     } else {
       methodNotFound(req, res, {
-        message: 'No se encontró el recurso para actualizar.',
+        message: "No se encontró el recurso para actualizar.",
       });
     }
   } catch (error) {
@@ -141,7 +141,7 @@ const MoverABovedaEliminados = async (req, res) => {
 
     if (result.affectedRows > 0) {
       methodOK(req, res, {
-        message: 'El recurso fue mandado a la boveda correctamente.',
+        message: "El recurso fue mandado a la boveda correctamente.",
       });
     } else {
       methodNotFound(req, res);
@@ -162,7 +162,7 @@ const EliminarActivo = async (req, res) => {
 
     if (result.affectedRows > 0) {
       methodOK(req, res, {
-        message: 'El recurso fue eliminado correctamente.',
+        message: "El recurso fue eliminado correctamente.",
       });
     } else {
       methodNotFound(req, res);

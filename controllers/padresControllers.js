@@ -1,11 +1,11 @@
-import { connectionQuery } from '../helpers/connection.helper.js';
+import { connectionQuery } from "../helpers/connection.helper.js";
 
 const ObtenerTodosLosPapas = async (req, res) => {
   try {
-    const [result] = await connectionQuery('CALL ObtenerPadresActivos()');
+    const [result] = await connectionQuery("CALL ObtenerPadresActivos()");
 
     if (result.length === 0)
-      return res.status(404).json({ message: 'No se encontraron padres' });
+      return res.status(404).json({ message: "No se encontraron padres" });
 
     res.status(200).json(result);
   } catch (error) {
@@ -19,7 +19,7 @@ const ObtenerPadresEliminados = async (req, res) => {
     const result = await connectionQuery(obtenerPadresDelete);
 
     if (result.length === 0)
-      return res.status(404).json({ message: 'No hay padres eliminados' });
+      return res.status(404).json({ message: "No hay padres eliminados" });
 
     res.status(200).json(result);
   } catch (error) {
@@ -37,7 +37,7 @@ const ObtenerPadresPorMaestro = async (req, res) => {
     if (resultVerify.length === 0)
       return res
         .status(404)
-        .json({ message: 'No se encontro ningun maestro con ese id' });
+        .json({ message: "No se encontro ningun maestro con ese id" });
 
     const [result] = await connectionQuery(`CALL ObtenerPadresPorMaestro(?)`, [
       id,
@@ -46,7 +46,7 @@ const ObtenerPadresPorMaestro = async (req, res) => {
     if (result.length === 0)
       return res.status(404).json({
         message:
-          'No se encontraron padres que se relacionen con el maestro o estan en la boveda',
+          "No se encontraron padres que se relacionen con el maestro o estan en la boveda",
       });
 
     res.status(200).json(result);
@@ -62,17 +62,17 @@ const BusquedaDePadres = async (req, res) => {
     const queryParams = [];
 
     if (email) {
-      querySearch += ' AND email LIKE ?';
+      querySearch += " AND email LIKE ?";
       queryParams.push(`%${email}%`);
     }
 
     if (firstName) {
-      querySearch += ' AND FirstName LIKE ?';
+      querySearch += " AND FirstName LIKE ?";
       queryParams.push(`%${firstName}%`);
     }
 
     if (lastName) {
-      querySearch += ' AND LastName LIKE ?';
+      querySearch += " AND LastName LIKE ?";
       queryParams.push(`%${lastName}%`);
     }
 
@@ -80,7 +80,7 @@ const BusquedaDePadres = async (req, res) => {
 
     if (resultSearch.length === 0)
       return res.status(404).json({
-        message: ' Papá o Mamá no encontrados, intente buscar con otro',
+        message: " Papá o Mamá no encontrados, intente buscar con otro",
       });
     res.status(200).json(resultSearch);
   } catch (error) {
@@ -121,7 +121,7 @@ const InsertarPadres = async (req, res) => {
       !emergencyContact ||
       !emergencyPhone
     ) {
-      return res.status(400).json({ message: 'Los campos son requeridos' });
+      return res.status(400).json({ message: "Los campos son requeridos" });
     }
 
     if (email && email.trim()) {
@@ -129,20 +129,20 @@ const InsertarPadres = async (req, res) => {
       const queryParamsValidate = [email];
       const resultValidate = await connectionQuery(
         queryValidate,
-        queryParamsValidate
+        queryParamsValidate,
       );
 
       if (resultValidate.length > 0) {
         const { Status } = resultValidate[0];
 
-        if (Status === 'Activo') {
+        if (Status === "Activo") {
           return res.status(409).json({
-            message: 'El correo ya se encuentra registrado',
+            message: "El correo ya se encuentra registrado",
           });
-        } else if (Status === 'Inactivo') {
+        } else if (Status === "Inactivo") {
           return res.status(500).json({
             message:
-              'El correo existe pero la mamá o el papá está eliminado, eliminelo definitivamente o editelo',
+              "El correo existe pero la mamá o el papá está eliminado, eliminelo definitivamente o editelo",
           });
         }
       }
@@ -151,7 +151,7 @@ const InsertarPadres = async (req, res) => {
     if (age > 100) {
       return res
         .status(400)
-        .json({ message: 'La edad no puede ser mayor a 100 años' });
+        .json({ message: "La edad no puede ser mayor a 100 años" });
     }
 
     const queryInsert = `INSERT INTO parents(ID, TeacherID, FirstName, LastName, DateOfBirth, Ocupation, Gender, Curp, Email, Phone, Age,
@@ -176,9 +176,9 @@ VALUES (UUID(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
     await connectionQuery(queryInsert, queryParamsInsert);
 
-    res.status(201).json({ message: 'Se creo con exito' });
+    res.status(201).json({ message: "Se creo con exito" });
   } catch (error) {
-    res.status(500).json({ message: 'Error al crear al papá o mamá', error });
+    res.status(500).json({ message: "Error al crear al papá o mamá", error });
   }
 };
 
@@ -224,10 +224,10 @@ const EditarPadres = async (req, res) => {
     ];
 
     await connectionQuery(queryUpdate, queryParamsUpdate);
-    res.status(200).json({ message: 'Se actualizo el papá o la mamá' });
+    res.status(200).json({ message: "Se actualizo el papá o la mamá" });
   } catch (error) {
     res.status(500).json({
-      message: 'Hubo un error en la actualizacion del registro',
+      message: "Hubo un error en la actualizacion del registro",
       error,
     });
   }
@@ -239,18 +239,18 @@ const MoverABovedaEliminados = async (req, res) => {
     if (!id)
       return res
         .status(400)
-        .json({ message: 'No se envio el ID o no es valido' });
+        .json({ message: "No se envio el ID o no es valido" });
 
     const queryDelete = `UPDATE parents SET Status = 'Inactivo' WHERE ID = ?`;
     const queryParamsDelete = [id];
     await connectionQuery(queryDelete, queryParamsDelete);
 
     res.status(200).json({
-      message: 'Se mando a la boveda de eliminados o esta en la boveda',
+      message: "Se mando a la boveda de eliminados o esta en la boveda",
     });
   } catch (error) {
     res.status(500).json({
-      message: 'Hubo un error al mandar a la boveda de eliminados',
+      message: "Hubo un error al mandar a la boveda de eliminados",
       error,
     });
   }
@@ -263,29 +263,29 @@ const EliminarPadre = async (req, res) => {
     if (!id) {
       return res
         .status(400)
-        .json({ message: 'No se envió el ID o no es válido' });
+        .json({ message: "No se envió el ID o no es válido" });
     }
 
     const queryValidate = `SELECT * FROM parents WHERE ID = ?`;
     const queryParamsValidate = [id];
     const resultValidate = await connectionQuery(
       queryValidate,
-      queryParamsValidate
+      queryParamsValidate,
     );
 
     if (resultValidate.length === 0) {
-      return res.status(404).json({ message: 'El papá o mamá no existe' });
+      return res.status(404).json({ message: "El papá o mamá no existe" });
     }
 
     const queryDeleteTeacher = `DELETE FROM parents WHERE ID = ?`;
     await connectionQuery(queryDeleteTeacher, [id]);
 
     res.status(200).json({
-      message: 'Se eliminó definitivamente el papá o mamá',
+      message: "Se eliminó definitivamente el papá o mamá",
     });
   } catch (error) {
     res.status(500).json({
-      message: 'Hubo un error al eliminar al papá o mamá',
+      message: "Hubo un error al eliminar al papá o mamá",
       error,
     });
   }

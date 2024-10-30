@@ -1,6 +1,8 @@
-import express from 'express';
-import CatInsumosControllers from '../controllers/catSuppliesControllers.js';
-import { verificarToken } from '../middleware/verificarToken.js';
+import express from "express";
+
+import CatInsumosControllers from "../controllers/catSuppliesControllers.js";
+import { verificarToken } from "../middleware/verificarToken.js";
+
 const apiCatInsumos = express.Router();
 /**
  * @swagger
@@ -72,9 +74,9 @@ const apiCatInsumos = express.Router();
  */
 
 apiCatInsumos.get(
-  '/lista-insumos',
+  "/lista-insumos",
   verificarToken,
-  CatInsumosControllers.ObtenerTodosLosInsumos
+  CatInsumosControllers.ObtenerTodosLosInsumos,
 );
 
 /**
@@ -83,7 +85,7 @@ apiCatInsumos.get(
  *   get:
  *     summary: Obtiene la lista de insumos en desuso
  *     description: Devuelve todos los insumos con estado "Inactivo" en el catálogo.
- *     tags: 
+ *     tags:
  *      - Catálogo de Insumo
  *     responses:
  *       200:
@@ -127,9 +129,9 @@ apiCatInsumos.get(
  */
 
 apiCatInsumos.get(
-  '/lista-insumos-desuso',
+  "/lista-insumos-desuso",
   verificarToken,
-  CatInsumosControllers.ObtenerTodosLosInsumosDesuso
+  CatInsumosControllers.ObtenerTodosLosInsumosDesuso,
 );
 
 /**
@@ -207,9 +209,9 @@ apiCatInsumos.get(
  */
 
 apiCatInsumos.post(
-  '/agregar-insumo',
+  "/agregar-insumo",
   verificarToken,
-  CatInsumosControllers.InsertarInsumo
+  CatInsumosControllers.InsertarInsumo,
 );
 
 /**
@@ -279,7 +281,7 @@ apiCatInsumos.post(
  *                   example: Error interno del servidor
  */
 
-apiCatInsumos.put('/actualizar-insumo', CatInsumosControllers.EditarInsumo);
+apiCatInsumos.put("/actualizar-insumo", CatInsumosControllers.EditarInsumo);
 
 /**
  * @swagger
@@ -330,9 +332,9 @@ apiCatInsumos.put('/actualizar-insumo', CatInsumosControllers.EditarInsumo);
  */
 
 apiCatInsumos.delete(
-  '/eliminar-insumo/:id',
+  "/eliminar-insumo/:id",
   verificarToken,
-  CatInsumosControllers.EliminarInsumo
+  CatInsumosControllers.EliminarInsumo,
 );
 
 export { apiCatInsumos };

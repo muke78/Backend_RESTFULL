@@ -1,4 +1,4 @@
-import crypto from 'node:crypto';
+import crypto from "node:crypto";
 
 const methodOK = (req, res, result) => {
   const timestamp = new Date().toISOString();
@@ -7,7 +7,7 @@ const methodOK = (req, res, result) => {
   res.status(200).json({
     success: true,
     data: result || {},
-    message: 'Consulta realizada correctamente',
+    message: "Consulta realizada correctamente",
     metadata: {
       timestamp: timestamp,
       requestId: requestId,
@@ -23,7 +23,7 @@ const methodCreated = (req, res, result) => {
   res.status(201).json({
     success: true,
     data: result,
-    message: 'Recurso creado exitosamente',
+    message: "Recurso creado exitosamente",
     metadata: {
       timestamp: timestamp,
       requestId: requestId,
@@ -39,10 +39,10 @@ const methodIncorrect = (req, res) => {
   res.status(400).json({
     success: false,
     error: {
-      message: 'Solicitud incorrecta. Verifica los datos enviados.',
-      code: 'BAD_REQUEST',
+      message: "Solicitud incorrecta. Verifica los datos enviados.",
+      code: "BAD_REQUEST",
       details:
-        'Algunos de los campos proporcionados no son válidos o están incompletos.',
+        "Algunos de los campos proporcionados no son válidos o están incompletos.",
       timestamp: timestamp,
       requestId: requestId,
     },
@@ -56,9 +56,9 @@ const methodUnauthorized = (req, res) => {
     success: false,
     error: {
       message:
-        'No autorizado. Es necesario autenticarse para acceder a este recurso.',
-      code: 'UNAUTHORIZED',
-      details: 'La solicitud requiere un token de autenticación válido.',
+        "No autorizado. Es necesario autenticarse para acceder a este recurso.",
+      code: "UNAUTHORIZED",
+      details: "La solicitud requiere un token de autenticación válido.",
       timestamp: timestamp,
       requestId: requestId,
     },
@@ -72,9 +72,9 @@ const methodNotFound = (req, res) => {
   res.status(404).json({
     success: false,
     error: {
-      message: 'Recurso no encontrado.',
-      code: 'NOT_FOUND',
-      details: 'El recurso que buscas no existe o no está disponible.',
+      message: "Recurso no encontrado.",
+      code: "NOT_FOUND",
+      details: "El recurso que buscas no existe o no está disponible.",
       timestamp: timestamp,
       requestId: requestId,
     },
@@ -89,10 +89,10 @@ const methodConflicts = (req, res) => {
     success: false,
     error: {
       message:
-        'Conflicto. El recurso ya existe o hay un conflicto con la solicitud.',
-      code: 'CONFLICT',
+        "Conflicto. El recurso ya existe o hay un conflicto con la solicitud.",
+      code: "CONFLICT",
       details:
-        'El recurso que intentas crear ya existe o la solicitud genera un conflicto con los datos actuales.',
+        "El recurso que intentas crear ya existe o la solicitud genera un conflicto con los datos actuales.",
       timestamp: timestamp,
       requestId: requestId,
     },
@@ -106,13 +106,13 @@ const methodError = (req, res, error) => {
   res.status(500).json({
     success: false,
     error: {
-      message: error.message || 'Se produjo un error inesperado.',
-      code: 'INTERNAL_SERVER_ERROR',
+      message: error.message || "Se produjo un error inesperado.",
+      code: "INTERNAL_SERVER_ERROR",
       details:
-        'Ocurrió un problema en el servidor. Por favor, intenta más tarde.',
+        "Ocurrió un problema en el servidor. Por favor, intenta más tarde.",
       timestamp: timestamp,
       errorId: errorId,
-      stack: error.stack || 'No se dispone de información adicional.',
+      stack: error.stack || "No se dispone de información adicional.",
       path: req.originalUrl,
       method: req.method,
     },

@@ -1,6 +1,8 @@
-import express from 'express';
-import CatActivosControllers from '../controllers/catAssetsControllers.js';
-import { verificarToken } from '../middleware/verificarToken.js';
+import express from "express";
+
+import CatActivosControllers from "../controllers/catAssetsControllers.js";
+import { verificarToken } from "../middleware/verificarToken.js";
+
 const apiCatActivos = express.Router();
 
 /**
@@ -60,9 +62,9 @@ const apiCatActivos = express.Router();
  *         description: Error interno del servidor.
  */
 apiCatActivos.get(
-  '/lista-activos',
+  "/lista-activos",
   verificarToken,
-  CatActivosControllers.ObtenerTodosLosActivos
+  CatActivosControllers.ObtenerTodosLosActivos,
 );
 
 /**
@@ -123,9 +125,9 @@ apiCatActivos.get(
  */
 
 apiCatActivos.get(
-  '/lista-activos-desuso',
+  "/lista-activos-desuso",
   verificarToken,
-  CatActivosControllers.ObtenerTodosLosActivosDesuso
+  CatActivosControllers.ObtenerTodosLosActivosDesuso,
 );
 
 /**
@@ -188,9 +190,9 @@ apiCatActivos.get(
  */
 
 apiCatActivos.post(
-  '/agregar-activo',
+  "/agregar-activo",
   verificarToken,
-  CatActivosControllers.InsertarActivo
+  CatActivosControllers.InsertarActivo,
 );
 
 /**
@@ -251,9 +253,9 @@ apiCatActivos.post(
  */
 
 apiCatActivos.put(
-  '/actualizar-activo',
+  "/actualizar-activo",
   verificarToken,
-  CatActivosControllers.EditarActivo
+  CatActivosControllers.EditarActivo,
 );
 
 /**
@@ -291,9 +293,9 @@ apiCatActivos.put(
  */
 
 apiCatActivos.put(
-  '/borrar-activo-boveda/:id',
+  "/borrar-activo-boveda/:id",
   verificarToken,
-  CatActivosControllers.MoverABovedaEliminados
+  CatActivosControllers.MoverABovedaEliminados,
 );
 
 /**
@@ -330,9 +332,9 @@ apiCatActivos.put(
  *         description: Error interno del servidor.
  */
 apiCatActivos.delete(
-  '/eliminar-activo/:id',
+  "/eliminar-activo/:id",
   verificarToken,
-  CatActivosControllers.EliminarActivo
+  CatActivosControllers.EliminarActivo,
 );
 
 export { apiCatActivos };

@@ -1,8 +1,9 @@
-process.loadEnvFile();
-import jwt from 'jwt-simple';
-import { addDay } from '@formkit/tempo';
+import { addDay } from "@formkit/tempo";
+import jwt from "jwt-simple";
 
-const secret = process.env.JWT_SECRET || 'defaultSecret';
+process.loadEnvFile();
+
+const secret = process.env.JWT_SECRET || "defaultSecret";
 
 export const createToken = (user) => {
   // Duracion de 2 minutos para probar que el toke se expire correctamente

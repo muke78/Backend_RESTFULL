@@ -1,13 +1,13 @@
-import { connectionQuery } from '../helpers/connection.helper.js';
+import { connectionQuery } from "../helpers/connection.helper.js";
 import {
-  methodOK,
-  methodNotFound,
   methodError,
-} from '../server/serverMethods.js';
+  methodNotFound,
+  methodOK,
+} from "../server/serverMethods.js";
 
 const ObtenerTodosLosEstudiantes = async (req, res) => {
   try {
-    const [result] = await connectionQuery('CALL ObtenerEstudiantesActivos()');
+    const [result] = await connectionQuery("CALL ObtenerEstudiantesActivos()");
 
     if (result.length === 0) return methodNotFound(req, res);
 

@@ -1,6 +1,8 @@
-import express from 'express';
-import CatInventarioControllers from '../controllers/catInventarioControllers.js';
-import { verificarToken } from '../middleware/verificarToken.js';
+import express from "express";
+
+import CatInventarioControllers from "../controllers/catInventarioControllers.js";
+import { verificarToken } from "../middleware/verificarToken.js";
+
 const apiCatInventario = express.Router();
 
 /**
@@ -84,9 +86,9 @@ const apiCatInventario = express.Router();
  */
 
 apiCatInventario.get(
-  '/lista-inventario',
+  "/lista-inventario",
   verificarToken,
-  CatInventarioControllers.ObtenerTodoElInnventario
+  CatInventarioControllers.ObtenerTodoElInnventario,
 );
 
 /**
@@ -170,9 +172,9 @@ apiCatInventario.get(
  */
 
 apiCatInventario.get(
-  '/lista-inventario-desuso',
+  "/lista-inventario-desuso",
   verificarToken,
-  CatInventarioControllers.ObtenerInventarioDesuso
+  CatInventarioControllers.ObtenerInventarioDesuso,
 );
 
 /**
@@ -258,9 +260,9 @@ apiCatInventario.get(
  */
 
 apiCatInventario.post(
-  '/agregar-inventario',
+  "/agregar-inventario",
   verificarToken,
-  CatInventarioControllers.InsertarInventario
+  CatInventarioControllers.InsertarInventario,
 );
 
 /**
@@ -362,9 +364,9 @@ apiCatInventario.post(
  */
 
 apiCatInventario.put(
-  '/actualizar-inventario',
+  "/actualizar-inventario",
   verificarToken,
-  CatInventarioControllers.EditarInventario
+  CatInventarioControllers.EditarInventario,
 );
 
 /**
@@ -427,9 +429,9 @@ apiCatInventario.put(
  */
 
 apiCatInventario.put(
-  '/borrar-inventario-boveda/:id',
+  "/borrar-inventario-boveda/:id",
   verificarToken,
-  CatInventarioControllers.MoverABovedaEliminados
+  CatInventarioControllers.MoverABovedaEliminados,
 );
 
 /**
@@ -491,9 +493,9 @@ apiCatInventario.put(
  */
 
 apiCatInventario.delete(
-  '/eliminar-inventario/:id',
+  "/eliminar-inventario/:id",
   verificarToken,
-  CatInventarioControllers.EliminarInventario
+  CatInventarioControllers.EliminarInventario,
 );
 
 export { apiCatInventario };

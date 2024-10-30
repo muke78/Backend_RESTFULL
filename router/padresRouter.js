@@ -1,6 +1,7 @@
-import express from 'express';
-import { verificarToken } from '../middleware/verificarToken.js';
-import PadresControllers from '../controllers/padresControllers.js';
+import express from "express";
+
+import PadresControllers from "../controllers/padresControllers.js";
+import { verificarToken } from "../middleware/verificarToken.js";
 
 const apiPadres = express.Router();
 
@@ -40,9 +41,9 @@ const apiPadres = express.Router();
  *         description: Error interno del servidor
  */
 apiPadres.get(
-  '/lista-de-padres',
+  "/lista-de-padres",
   verificarToken,
-  PadresControllers.ObtenerTodosLosPapas
+  PadresControllers.ObtenerTodosLosPapas,
 );
 
 /**
@@ -85,9 +86,9 @@ apiPadres.get(
  *         description: Error interno del servidor
  */
 apiPadres.get(
-  '/lista-de-padres-eliminados',
+  "/lista-de-padres-eliminados",
   verificarToken,
-  PadresControllers.ObtenerPadresEliminados
+  PadresControllers.ObtenerPadresEliminados,
 );
 
 /**
@@ -155,9 +156,9 @@ apiPadres.get(
  */
 
 apiPadres.post(
-  '/lista-padres-maestro/:id',
+  "/lista-padres-maestro/:id",
   verificarToken,
-  PadresControllers.ObtenerPadresPorMaestro
+  PadresControllers.ObtenerPadresPorMaestro,
 );
 
 /**
@@ -232,9 +233,9 @@ apiPadres.post(
  */
 
 apiPadres.post(
-  '/busqueda-padres',
+  "/busqueda-padres",
   verificarToken,
-  PadresControllers.BusquedaDePadres
+  PadresControllers.BusquedaDePadres,
 );
 
 /**
@@ -365,9 +366,9 @@ apiPadres.post(
  */
 
 apiPadres.post(
-  '/insertar-padres',
+  "/insertar-padres",
   verificarToken,
-  PadresControllers.InsertarPadres
+  PadresControllers.InsertarPadres,
 );
 
 /**
@@ -488,9 +489,9 @@ apiPadres.post(
  */
 
 apiPadres.put(
-  '/actualizar-padres',
+  "/actualizar-padres",
   verificarToken,
-  PadresControllers.EditarPadres
+  PadresControllers.EditarPadres,
 );
 
 /**
@@ -545,9 +546,9 @@ apiPadres.put(
  */
 
 apiPadres.put(
-  '/borrar-padres-boveda/:id',
+  "/borrar-padres-boveda/:id",
   verificarToken,
-  PadresControllers.MoverABovedaEliminados
+  PadresControllers.MoverABovedaEliminados,
 );
 
 /**
@@ -612,9 +613,9 @@ apiPadres.put(
  */
 
 apiPadres.delete(
-  '/borrar-padres-def/:id',
+  "/borrar-padres-def/:id",
   verificarToken,
-  PadresControllers.EliminarPadre
+  PadresControllers.EliminarPadre,
 );
 
 export { apiPadres };

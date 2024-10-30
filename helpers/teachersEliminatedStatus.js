@@ -1,4 +1,4 @@
-import { connectionQuery } from './connection.helper.js';
+import { connectionQuery } from "./connection.helper.js";
 
 const deleteUserByTeacherID = async (teacherID) => {
   try {

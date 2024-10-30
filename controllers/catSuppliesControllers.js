@@ -1,13 +1,13 @@
-import { connectionQuery } from '../helpers/connection.helper.js';
+import { connectionQuery } from "../helpers/connection.helper.js";
 
 const ObtenerTodosLosInsumos = async (req, res) => {
   try {
     const result = await connectionQuery(
-      `SELECT * FROM catsupplies WHERE Status = "Activo"`
+      `SELECT * FROM catsupplies WHERE Status = "Activo"`,
     );
 
     if (result.length === 0)
-      return res.status(404).json({ message: 'No hay nada en los insumos' });
+      return res.status(404).json({ message: "No hay nada en los insumos" });
 
     res.status(200).json(result);
   } catch (error) {
@@ -18,13 +18,13 @@ const ObtenerTodosLosInsumos = async (req, res) => {
 const ObtenerTodosLosInsumosDesuso = async (req, res) => {
   try {
     const result = await connectionQuery(
-      `SELECT * FROM catsupplies WHERE Status = "Inactivo"`
+      `SELECT * FROM catsupplies WHERE Status = "Inactivo"`,
     );
 
     if (result.length === 0)
       return res
         .status(404)
-        .json({ message: 'No hay nada en los insumos en desuso' });
+        .json({ message: "No hay nada en los insumos en desuso" });
 
     res.status(200).json(result);
   } catch (error) {
@@ -54,7 +54,7 @@ const InsertarInsumo = async (req, res) => {
       !purchaseDate ||
       !cost
     ) {
-      return res.status(400).json({ message: 'Los campos son requeridos' });
+      return res.status(400).json({ message: "Los campos son requeridos" });
     }
 
     const queryInsert = `INSERT INTO catsupplies (ID, Name, Description, Quantity, Unit, Supplier, PurchaseDate, ExpiryDate, Cost) 
@@ -73,7 +73,7 @@ const InsertarInsumo = async (req, res) => {
 
     await connectionQuery(queryInsert, queryParamsInsert);
 
-    res.status(201).json({ message: 'El insumo fue creado con exito' });
+    res.status(201).json({ message: "El insumo fue creado con exito" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -109,7 +109,7 @@ const EditarInsumo = async (req, res) => {
     ];
 
     await connectionQuery(queryUpdate, queryUpdateParams);
-    res.status(200).json({ message: 'Se actualizo el insumo' });
+    res.status(200).json({ message: "Se actualizo el insumo" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -122,13 +122,13 @@ const EliminarInsumo = async (req, res) => {
     if (!id) {
       return res
         .status(400)
-        .json({ message: 'No se envió el ID o no es válido' });
+        .json({ message: "No se envió el ID o no es válido" });
     }
 
     const queryDeleteSupplier = `DELETE FROM catsupplies WHERE ID = ?`;
     await connectionQuery(queryDeleteSupplier, [id]);
 
-    res.status(200).json({ message: 'Se elimino correctamente el insumo' });
+    res.status(200).json({ message: "Se elimino correctamente el insumo" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

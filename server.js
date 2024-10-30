@@ -1,9 +1,10 @@
-import express from 'express';
-import { createServer } from 'node:http';
-import { setupSwagger } from './config/swaggerConfig.js';
-import { corsMiddleware } from './middleware/cors.js';
-import { securityHeadersMiddleware } from './middleware/securityHeaders.js';
-import { router } from './router/index.js';
+import express from "express";
+import { createServer } from "node:http";
+
+import { setupSwagger } from "./config/swaggerConfig.js";
+import { corsMiddleware } from "./middleware/cors.js";
+import { securityHeadersMiddleware } from "./middleware/securityHeaders.js";
+import { router } from "./router/index.js";
 
 const app = express();
 
@@ -19,11 +20,11 @@ app.use(router);
 // Middleware de manejo de errores
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).json('Error interno del servidor');
+  res.status(500).json("Error interno del servidor");
 });
 
 // Crear y arrancar el servidor
 const server = createServer(app);
 server.listen(3000, () => {
-  console.log('El servidor está escuchando en el puerto 3000');
+  console.log("El servidor está escuchando en el puerto 3000");
 });

@@ -1,23 +1,24 @@
-import express from 'express';
-import { apiMaestros } from './maestrosRouter.js';
-import { apiUsuarios } from './usuariosRouter.js';
-import { apiPadres } from './padresRouter.js';
-import { apiCatInventario } from './catInventarioRouter.js';
-import { apiCatInsumos } from './catSuppliesRouter.js';
-import { apiCatActivos } from './catAssetsRouter.js';
-import { apiEstudiantes } from './studentsRouter.js';
+import express from "express";
+
+import { apiCatActivos } from "./catAssetsRouter.js";
+import { apiCatInventario } from "./catInventarioRouter.js";
+import { apiCatInsumos } from "./catSuppliesRouter.js";
+import { apiMaestros } from "./maestrosRouter.js";
+import { apiPadres } from "./padresRouter.js";
+import { apiEstudiantes } from "./studentsRouter.js";
+import { apiUsuarios } from "./usuariosRouter.js";
 
 const router = express.Router();
 
 router.use(
-  '/api/v1',
+  "/api/v1",
   apiMaestros,
   apiUsuarios,
   apiPadres,
   apiCatInventario,
   apiCatInsumos,
   apiCatActivos,
-  apiEstudiantes
+  apiEstudiantes,
 );
 
 export { router };
