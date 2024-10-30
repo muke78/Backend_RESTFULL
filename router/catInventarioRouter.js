@@ -3,7 +3,6 @@ import CatInventarioControllers from '../controllers/catInventarioControllers.js
 import { verificarToken } from '../middleware/verificarToken.js';
 const apiCatInventario = express.Router();
 
-
 /**
  * @swagger
  * /lista-inventario:
@@ -64,6 +63,59 @@ apiCatInventario.get(
   '/lista-inventario',
   verificarToken,
   CatInventarioControllers.ObtenerTodoElInnventario
+);
+
+/**
+ * @swagger
+ * /lista-inventario-desuso:
+ *   get:
+ *     summary: Obtiene la lista de inventario en desuso
+ *     description: Devuelve todos los elementos del inventario con estado "Inactivo".
+ *     tags: [Catálogo de Inventario]
+ *     responses:
+ *       200:
+ *         description: Lista de inventario en desuso obtenida exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                     description: ID del artículo
+ *                   nombre:
+ *                     type: string
+ *                     description: Nombre del artículo
+ *                   status:
+ *                     type: string
+ *                     description: Estado del artículo (esperado "Inactivo")
+ *       404:
+ *         description: No se encontró ningún artículo en el inventario en desuso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: No hay nada en el inventario no utilizado
+ *       500:
+ *         description: Error del servidor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Error interno del servidor
+ */
+
+apiCatInventario.get(
+  '/lista-inventario-desuso',
+  CatInventarioControllers.ObtenerInventarioDesuso
 );
 
 /**

@@ -2,10 +2,28 @@ import { connectionQuery } from '../helpers/connection.helper.js';
 
 const ObtenerTodoElInnventario = async (req, res) => {
   try {
-    const result = await connectionQuery('SELECT * FROM catinventory');
+    const result = await connectionQuery(
+      'SELECT * FROM catinventory WHERE Status = "Activo"'
+    );
 
     if (result.length === 0)
       return res.status(404).json({ message: 'No hay nada en el inventario' });
+
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const ObtenerInventarioDesuso = async (req, res) => {
+  try {
+    const result = await connectionQuery(
+      'SELECT * FROM catinventory WHERE Status = "Inactivo"'
+    );
+    if (result.length === 0)
+      return res
+        .status(404)
+        .json({ message: 'No hay nada en el inventario no utilizado' });
 
     res.status(200).json(result);
   } catch (error) {
@@ -80,10 +98,11 @@ const EditarInventario = async (req, res) => {
       location,
       condition,
       purchaseDate,
+      status,
       id,
     } = req.body;
 
-    const queryUpdate = `UPDATE catinventory SET ItemCode = ?, Name = ?, Description = ?, Quantity = ?, Weight = ?, Width = ?, Height = ?, Location = ?, \`Condition\` = ?, PurchaseDate = ? WHERE ID = ?`;
+    const queryUpdate = `UPDATE catinventory SET ItemCode = ?, Name = ?, Description = ?, Quantity = ?, Weight = ?, Width = ?, Height = ?, Location = ?, \`Condition\` = ?, PurchaseDate = ?, Status = ? WHERE ID = ?`;
     const queryParamsUpdate = [
       itemCode,
       name,
@@ -95,10 +114,11 @@ const EditarInventario = async (req, res) => {
       location,
       condition,
       purchaseDate,
+      status,
       id,
     ];
     await connectionQuery(queryUpdate, queryParamsUpdate);
-    res.status(200).json({ message: 'Se actualizo el item' });
+    res.status(200).json({ message: 'Se actualizo el registro' });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -125,6 +145,7 @@ const EliminarInventario = async (req, res) => {
 
 export default {
   ObtenerTodoElInnventario,
+  ObtenerInventarioDesuso,
   InsertarInventario,
   EditarInventario,
   EliminarInventario,
