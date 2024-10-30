@@ -1,21 +1,23 @@
 import { connectionQuery } from '../helpers/connection.helper.js';
+import {
+  methodOK,
+  methodNotFound,
+  methodError,
+} from '../server/serverMethods.js';
 
 const ObtenerTodosLosEstudiantes = async (req, res) => {
   try {
     const [result] = await connectionQuery('CALL ObtenerEstudiantesActivos()');
 
-    if (result.length === 0)
-      return res.status(404).json({ message: 'No se encontraron estudiantes' });
+    if (result.length === 0) return methodNotFound(req, res);
 
-    res.status(200).json(result);
+    methodOK(req, res, result);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    methodError(req, res, error);
   }
 };
 
-const ObtenerEstudiantesDadosBaja = async (req, res) => {};
-
-const ObtenerEsttudiantesPorMaestro = async (req, res) => {};
+const ObtenerEstudiantesPorMaestro = async (req, res) => {};
 
 const ObtenerEstudiantesPorPapas = async (req, res) => {};
 
@@ -31,8 +33,7 @@ const EliminarEstudiante = async (req, res) => {};
 
 export default {
   ObtenerTodosLosEstudiantes,
-  ObtenerEstudiantesDadosBaja,
-  ObtenerEsttudiantesPorMaestro,
+  ObtenerEstudiantesPorMaestro,
   ObtenerEstudiantesPorPapas,
   BusquedaDeEstudiantes,
   InsertarEstudiantes,

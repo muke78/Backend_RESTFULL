@@ -4,4 +4,9 @@ import EstudiantesControllers from '../controllers/studentsController.js';
 
 const apiEstudiantes = express.Router();
 
+apiEstudiantes.get(
+  '/lista-estudiantes',
+  EstudiantesControllers.ObtenerTodosLosEstudiantes
+);
+
 export { apiEstudiantes };
