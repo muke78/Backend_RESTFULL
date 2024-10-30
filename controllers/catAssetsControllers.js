@@ -2,10 +2,29 @@ import { connectionQuery } from '../helpers/connection.helper.js';
 
 const ObtenerTodosLosActivos = async (req, res) => {
   try {
-    const result = await connectionQuery(`SELECT * FROM catassets`);
+    const result = await connectionQuery(
+      `SELECT * FROM catassets WHERE Status = "Activo"`
+    );
 
     if (result.length === 0)
       return res.status(404).json({ message: 'No hay nada en los activos' });
+
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const ObtenerTodosLosActivosDesuso = async (req, res) => {
+  try {
+    const result = await connectionQuery(
+      `SELECT * FROM catassets WHERE Status = "Inactivo"`
+    );
+
+    if (result.length === 0)
+      return res
+        .status(404)
+        .json({ message: 'No hay nada en los activos no ocupados' });
 
     res.status(200).json(result);
   } catch (error) {
@@ -118,6 +137,7 @@ const EliminarActivo = async (req, res) => {
 
 export default {
   ObtenerTodosLosActivos,
+  ObtenerTodosLosActivosDesuso,
   InsertarActivo,
   EditarActivo,
   EliminarActivo,

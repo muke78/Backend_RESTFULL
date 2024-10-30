@@ -8,6 +8,11 @@ apiCatActivos.get(
   CatActivosControllers.ObtenerTodosLosActivos
 );
 
+apiCatActivos.get(
+  '/lista-activos-desuso',
+  CatActivosControllers.ObtenerTodosLosActivosDesuso
+);
+
 apiCatActivos.post('/agregar-activo', CatActivosControllers.InsertarActivo);
 
 apiCatActivos.put('/actualizar-activo', CatActivosControllers.EditarActivo);

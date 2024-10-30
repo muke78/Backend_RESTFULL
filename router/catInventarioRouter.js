@@ -115,6 +115,7 @@ apiCatInventario.get(
 
 apiCatInventario.get(
   '/lista-inventario-desuso',
+  verificarToken,
   CatInventarioControllers.ObtenerInventarioDesuso
 );
 
