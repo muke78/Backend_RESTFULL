@@ -7,13 +7,13 @@ const apiCatActivos = express.Router();
  * @swagger
  * /lista-activos:
  *   get:
- *     summary: Obtiene la lista de activos
- *     description: Devuelve todos los activos con estado "Activo" en el catálogo.
+ *     summary: Obtener activos activos
+ *     description: Recupera una lista de todos los activos que están marcados como activos en la base de datos.
  *     tags:
- *        - Catálogo de Activos
+ *       - Catálogo de Activos
  *     responses:
  *       200:
- *         description: Lista de activos obtenida exitosamente
+ *         description: Lista de activos activos recuperada correctamente.
  *         content:
  *           application/json:
  *             schema:
@@ -23,37 +23,45 @@ const apiCatActivos = express.Router();
  *                 properties:
  *                   id:
  *                     type: integer
- *                     description: ID del activo
- *                   nombre:
+ *                     description: ID del activo.
+ *                   name:
  *                     type: string
- *                     description: Nombre del activo
+ *                     description: Nombre del activo.
+ *                   description:
+ *                     type: string
+ *                     description: Descripción del activo.
+ *                   purchaseDate:
+ *                     type: string
+ *                     format: date
+ *                     description: Fecha de compra del activo.
+ *                   cost:
+ *                     type: number
+ *                     description: Costo del activo.
+ *                   location:
+ *                     type: string
+ *                     description: Ubicación del activo.
+ *                   condition:
+ *                     type: string
+ *                     description: Condición del activo.
  *                   status:
  *                     type: string
- *                     description: Estado del activo (esperado "Activo")
+ *                     description: Estado del activo.
+ *                   lastMaintenanceDate:
+ *                     type: string
+ *                     format: date
+ *                     description: Fecha de la última mantenimiento del activo.
+ *                   warrantyEndDate:
+ *                     type: string
+ *                     format: date
+ *                     description: Fecha de finalización de la garantía del activo.
  *       404:
- *         description: No se encontró ningún activo
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: No hay nada en los activos
+ *         description: No se encontraron activos activos.
  *       500:
- *         description: Error del servidor
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Error interno del servidor
+ *         description: Error interno del servidor.
  */
-
 apiCatActivos.get(
   '/lista-activos',
+  verificarToken,
   CatActivosControllers.ObtenerTodosLosActivos
 );
 
@@ -61,13 +69,13 @@ apiCatActivos.get(
  * @swagger
  * /lista-activos-desuso:
  *   get:
- *     summary: Obtiene la lista de activos en desuso
- *     description: Devuelve todos los activos con estado "Inactivo" en el catálogo.
+ *     summary: Obtener activos en desuso
+ *     description: Recupera una lista de todos los activos que están marcados como inactivos en la base de datos.
  *     tags:
  *       - Catálogo de Activos
  *     responses:
  *       200:
- *         description: Lista de activos en desuso obtenida exitosamente
+ *         description: Lista de activos inactivos recuperada correctamente.
  *         content:
  *           application/json:
  *             schema:
@@ -77,37 +85,46 @@ apiCatActivos.get(
  *                 properties:
  *                   id:
  *                     type: integer
- *                     description: ID del activo
- *                   nombre:
+ *                     description: ID del activo.
+ *                   name:
  *                     type: string
- *                     description: Nombre del activo
+ *                     description: Nombre del activo.
+ *                   description:
+ *                     type: string
+ *                     description: Descripción del activo.
+ *                   purchaseDate:
+ *                     type: string
+ *                     format: date
+ *                     description: Fecha de compra del activo.
+ *                   cost:
+ *                     type: number
+ *                     description: Costo del activo.
+ *                   location:
+ *                     type: string
+ *                     description: Ubicación del activo.
+ *                   condition:
+ *                     type: string
+ *                     description: Condición del activo.
  *                   status:
  *                     type: string
- *                     description: Estado del activo (esperado "Inactivo")
+ *                     description: Estado del activo.
+ *                   lastMaintenanceDate:
+ *                     type: string
+ *                     format: date
+ *                     description: Fecha de la última mantenimiento del activo.
+ *                   warrantyEndDate:
+ *                     type: string
+ *                     format: date
+ *                     description: Fecha de finalización de la garantía del activo.
  *       404:
- *         description: No se encontró ningún activo en desuso
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: No hay nada en los activos no ocupados
+ *         description: No se encontraron activos en desuso.
  *       500:
- *         description: Error del servidor
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Error interno del servidor
+ *         description: Error interno del servidor.
  */
 
 apiCatActivos.get(
   '/lista-activos-desuso',
+  verificarToken,
   CatActivosControllers.ObtenerTodosLosActivosDesuso
 );
 
@@ -115,8 +132,8 @@ apiCatActivos.get(
  * @swagger
  * /agregar-activo:
  *   post:
- *     summary: Agrega un nuevo activo al catálogo
- *     description: Crea un nuevo registro de activo en el catálogo con la información proporcionada.
+ *     summary: Agregar un nuevo activo
+ *     description: Inserta un nuevo activo en la base de datos con la información proporcionada.
  *     tags:
  *       - Catálogo de Activos
  *     requestBody:
@@ -128,44 +145,34 @@ apiCatActivos.get(
  *             properties:
  *               name:
  *                 type: string
- *                 description: Nombre del activo
+ *                 description: Nombre del activo.
  *               description:
  *                 type: string
- *                 description: Descripción del activo
+ *                 description: Descripción del activo.
  *               purchaseDate:
  *                 type: string
  *                 format: date
- *                 description: Fecha de compra del activo
+ *                 description: Fecha de compra del activo.
  *               cost:
  *                 type: number
- *                 format: float
- *                 description: Costo del activo
+ *                 description: Costo del activo.
  *               location:
  *                 type: string
- *                 description: Ubicación del activo
+ *                 description: Ubicación del activo.
  *               condition:
  *                 type: string
- *                 description: Condición actual del activo
+ *                 description: Condición del activo.
  *               lastMaintenanceDate:
  *                 type: string
  *                 format: date
- *                 description: Fecha de la última manutención
+ *                 description: Fecha de la última mantenimiento del activo.
  *               warrantyEndDate:
  *                 type: string
  *                 format: date
- *                 description: Fecha de finalización de la garantía
- *             required:
- *               - name
- *               - description
- *               - purchaseDate
- *               - cost
- *               - location
- *               - condition
- *               - lastMaintenanceDate
- *               - warrantyEndDate
+ *                 description: Fecha de finalización de la garantía del activo.
  *     responses:
  *       201:
- *         description: Activo creado exitosamente
+ *         description: El recurso fue creado correctamente.
  *         content:
  *           application/json:
  *             schema:
@@ -173,37 +180,25 @@ apiCatActivos.get(
  *               properties:
  *                 message:
  *                   type: string
- *                   example: El activo fue creado con exito
+ *                   example: 'Activo agregado correctamente.'
  *       400:
- *         description: Error en los datos de entrada
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Los campos son requeridos
+ *         description: Se produjo un error en la solicitud. Verifique que todos los campos sean válidos.
  *       500:
- *         description: Error del servidor
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Error interno del servidor
+ *         description: Error interno del servidor.
  */
 
-apiCatActivos.post('/agregar-activo', CatActivosControllers.InsertarActivo);
+apiCatActivos.post(
+  '/agregar-activo',
+  verificarToken,
+  CatActivosControllers.InsertarActivo
+);
 
 /**
  * @swagger
  * /actualizar-activo:
  *   put:
- *     summary: Actualiza un activo en el catálogo
- *     description: Modifica los detalles de un activo existente en el catálogo utilizando su ID.
+ *     summary: Actualizar un activo
+ *     description: Actualiza la información de un activo en la base de datos utilizando el ID y otros datos.
  *     tags:
  *       - Catálogo de Activos
  *     requestBody:
@@ -213,45 +208,32 @@ apiCatActivos.post('/agregar-activo', CatActivosControllers.InsertarActivo);
  *           schema:
  *             type: object
  *             properties:
- *               id:
- *                 type: string
- *                 description: ID del activo a actualizar
  *               name:
  *                 type: string
- *                 description: Nombre del activo
  *               description:
  *                 type: string
- *                 description: Descripción del activo
  *               purchaseDate:
  *                 type: string
  *                 format: date
- *                 description: Fecha de compra del activo
  *               cost:
  *                 type: number
- *                 format: float
- *                 description: Costo del activo
  *               location:
  *                 type: string
- *                 description: Ubicación del activo
  *               condition:
  *                 type: string
- *                 description: Condición actual del activo
  *               status:
  *                 type: string
- *                 description: Estado actual del activo (ej. "Activo" o "Inactivo")
  *               lastMaintenanceDate:
  *                 type: string
  *                 format: date
- *                 description: Fecha de la última manutención
  *               warrantyEndDate:
  *                 type: string
  *                 format: date
- *                 description: Fecha de finalización de la garantía
- *             required:
- *               - id
+ *               id:
+ *                 type: integer
  *     responses:
  *       200:
- *         description: Activo actualizado exitosamente
+ *         description: El recurso fue actualizado correctamente.
  *         content:
  *           application/json:
  *             schema:
@@ -259,23 +241,58 @@ apiCatActivos.post('/agregar-activo', CatActivosControllers.InsertarActivo);
  *               properties:
  *                 message:
  *                   type: string
- *                   example: Se actualizo el activo
+ *                   example: 'El recurso fue actualizado correctamente.'
+ *       404:
+ *         description: No se encontró el recurso para actualizar.
+ *       400:
+ *         description: Se produjo un error en la solicitud.
  *       500:
- *         description: Error del servidor
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Error interno del servidor
+ *         description: Error interno del servidor.
  */
 
-apiCatActivos.put('/actualizar-activo', CatActivosControllers.EditarActivo);
+apiCatActivos.put(
+  '/actualizar-activo',
+  verificarToken,
+  CatActivosControllers.EditarActivo
+);
+
+/**
+ * @swagger
+ * /borrar-activo-boveda/{id}:
+ *   put:
+ *     summary: Mover un activo a la bóveda de eliminados
+ *     description: Actualiza el estado de un activo a 'Inactivo', moviéndolo a la bóveda de eliminados.
+ *     tags:
+ *       - Catálogo de Activos
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: ID del activo que se desea mover a la bóveda de eliminados.
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: El recurso fue mandado a la boveda correctamente.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: 'El recurso fue mandado a la boveda correctamente.'
+ *       404:
+ *         description: El activo no fue encontrado.
+ *       400:
+ *         description: Se produjo un error en la solicitud.
+ *       500:
+ *         description: Error interno del servidor.
+ */
 
 apiCatActivos.put(
   '/borrar-activo-boveda/:id',
+  verificarToken,
   CatActivosControllers.MoverABovedaEliminados
 );
 
@@ -283,20 +300,20 @@ apiCatActivos.put(
  * @swagger
  * /eliminar-activo/{id}:
  *   delete:
- *     summary: Elimina un activo del catálogo
- *     description: Elimina un activo específico del catálogo utilizando su ID.
+ *     summary: Eliminar un activo
+ *     description: Elimina un activo de la base de datos utilizando su ID.
  *     tags:
  *       - Catálogo de Activos
  *     parameters:
- *       - in: path
- *         name: id
+ *       - name: id
+ *         in: path
  *         required: true
+ *         description: ID del activo que se desea eliminar.
  *         schema:
- *           type: string
- *         description: ID del activo a eliminar
+ *           type: integer
  *     responses:
  *       200:
- *         description: Activo eliminado exitosamente
+ *         description: El recurso fue eliminado correctamente.
  *         content:
  *           application/json:
  *             schema:
@@ -304,30 +321,17 @@ apiCatActivos.put(
  *               properties:
  *                 message:
  *                   type: string
- *                   example: Se eliminó correctamente el activo
+ *                   example: 'El recurso fue eliminado correctamente.'
+ *       404:
+ *         description: El activo no fue encontrado.
  *       400:
- *         description: ID no válido o faltante
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: No se envió el ID o no es válido
+ *         description: Se produjo un error en la solicitud.
  *       500:
- *         description: Error del servidor
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Error interno del servidor
+ *         description: Error interno del servidor.
  */
 apiCatActivos.delete(
   '/eliminar-activo/:id',
+  verificarToken,
   CatActivosControllers.EliminarActivo
 );
 
