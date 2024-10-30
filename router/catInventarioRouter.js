@@ -7,13 +7,13 @@ const apiCatInventario = express.Router();
  * @swagger
  * /lista-inventario:
  *   get:
- *     summary: Obtiene la lista completa del inventario
- *     description: Recupera todos los elementos del inventario. Si no hay elementos, devuelve un mensaje adecuado.
+ *     summary: Obtiene la lista completa del inventario activo
+ *     description: Recupera todos los elementos en el inventario cuyo estado es "Activo".
  *     tags:
- *       - Catálogo de Inventario
+ *       - CatInventario
  *     responses:
  *       200:
- *         description: Lista del inventario recuperada con éxito.
+ *         description: Lista completa del inventario activo obtenida exitosamente.
  *         content:
  *           application/json:
  *             schema:
@@ -23,22 +23,46 @@ const apiCatInventario = express.Router();
  *                 properties:
  *                   ID:
  *                     type: string
- *                     example: "1"
- *                   Name:
+ *                     example: "123e4567-e89b-12d3-a456-426614174000"
+ *                   itemCode:
  *                     type: string
- *                     example: "Producto A"
- *                   Quantity:
+ *                     example: "A1001"
+ *                   name:
+ *                     type: string
+ *                     example: "Laptop Dell"
+ *                   description:
+ *                     type: string
+ *                     example: "Laptop de 15 pulgadas"
+ *                   quantity:
  *                     type: integer
- *                     example: 100
- *                   Price:
+ *                     example: 10
+ *                   weight:
  *                     type: number
  *                     format: float
- *                     example: 29.99
- *                   Description:
+ *                     example: 2.5
+ *                   width:
+ *                     type: number
+ *                     format: float
+ *                     example: 35.0
+ *                   height:
+ *                     type: number
+ *                     format: float
+ *                     example: 24.0
+ *                   location:
  *                     type: string
- *                     example: "Descripción del producto A"
+ *                     example: "Depósito principal"
+ *                   condition:
+ *                     type: string
+ *                     example: "Nuevo"
+ *                   purchaseDate:
+ *                     type: string
+ *                     format: date
+ *                     example: "2022-05-15"
+ *                   status:
+ *                     type: string
+ *                     example: "Activo"
  *       404:
- *         description: No se encontraron elementos en el inventario.
+ *         description: No se encontró inventario activo.
  *         content:
  *           application/json:
  *             schema:
@@ -46,9 +70,9 @@ const apiCatInventario = express.Router();
  *               properties:
  *                 message:
  *                   type: string
- *                   example: "No hya nada en el inventario"
+ *                   example: "No se encontró inventario activo."
  *       500:
- *         description: Error interno del servidor al recuperar el inventario.
+ *         description: Error del servidor.
  *         content:
  *           application/json:
  *             schema:
@@ -56,7 +80,7 @@ const apiCatInventario = express.Router();
  *               properties:
  *                 message:
  *                   type: string
- *                   example: "Error al recuperar el inventario"
+ *                   example: "Error al procesar la solicitud."
  */
 
 apiCatInventario.get(
@@ -70,11 +94,12 @@ apiCatInventario.get(
  * /lista-inventario-desuso:
  *   get:
  *     summary: Obtiene la lista de inventario en desuso
- *     description: Devuelve todos los elementos del inventario con estado "Inactivo".
- *     tags: [Catálogo de Inventario]
+ *     description: Recupera todos los elementos en el inventario cuyo estado es "Inactivo".
+ *     tags:
+ *       - CatInventario
  *     responses:
  *       200:
- *         description: Lista de inventario en desuso obtenida exitosamente
+ *         description: Lista de inventario en desuso obtenida exitosamente.
  *         content:
  *           application/json:
  *             schema:
@@ -82,17 +107,48 @@ apiCatInventario.get(
  *               items:
  *                 type: object
  *                 properties:
- *                   id:
- *                     type: integer
- *                     description: ID del artículo
- *                   nombre:
+ *                   ID:
  *                     type: string
- *                     description: Nombre del artículo
+ *                     example: "123e4567-e89b-12d3-a456-426614174000"
+ *                   itemCode:
+ *                     type: string
+ *                     example: "B2002"
+ *                   name:
+ *                     type: string
+ *                     example: "Monitor Samsung"
+ *                   description:
+ *                     type: string
+ *                     example: "Monitor de 24 pulgadas"
+ *                   quantity:
+ *                     type: integer
+ *                     example: 5
+ *                   weight:
+ *                     type: number
+ *                     format: float
+ *                     example: 3.2
+ *                   width:
+ *                     type: number
+ *                     format: float
+ *                     example: 54.6
+ *                   height:
+ *                     type: number
+ *                     format: float
+ *                     example: 32.1
+ *                   location:
+ *                     type: string
+ *                     example: "Oficina 3"
+ *                   condition:
+ *                     type: string
+ *                     example: "Usado"
+ *                   purchaseDate:
+ *                     type: string
+ *                     format: date
+ *                     example: "2021-08-10"
  *                   status:
  *                     type: string
- *                     description: Estado del artículo (esperado "Inactivo")
+ *                     example: "Inactivo"
  *       404:
- *         description: No se encontró ningún artículo en el inventario en desuso
+ *         description: No se encontró inventario en desuso.
  *         content:
  *           application/json:
  *             schema:
@@ -100,9 +156,9 @@ apiCatInventario.get(
  *               properties:
  *                 message:
  *                   type: string
- *                   example: No hay nada en el inventario no utilizado
+ *                   example: "No se encontró inventario en desuso."
  *       500:
- *         description: Error del servidor
+ *         description: Error del servidor.
  *         content:
  *           application/json:
  *             schema:
@@ -110,7 +166,7 @@ apiCatInventario.get(
  *               properties:
  *                 message:
  *                   type: string
- *                   example: Error interno del servidor
+ *                   example: "Error al procesar la solicitud."
  */
 
 apiCatInventario.get(
@@ -123,10 +179,10 @@ apiCatInventario.get(
  * @swagger
  * /agregar-inventario:
  *   post:
- *     summary: Agrega un nuevo elemento al inventario
- *     description: Permite agregar un nuevo elemento al inventario con los detalles necesarios. Todos los campos son obligatorios.
+ *     summary: Agrega un nuevo registro al inventario
+ *     description: Crea un nuevo activo en el inventario con los datos proporcionados en el cuerpo de la solicitud.
  *     tags:
- *       - Catálogo de Inventario
+ *       - CatInventario
  *     requestBody:
  *       required: true
  *       content:
@@ -136,41 +192,41 @@ apiCatInventario.get(
  *             properties:
  *               itemCode:
  *                 type: string
- *                 example: "ABC123"
+ *                 example: "B2002"
  *               name:
  *                 type: string
- *                 example: "Producto A"
+ *                 example: "Monitor Samsung"
  *               description:
  *                 type: string
- *                 example: "Descripción del producto A"
+ *                 example: "Monitor de 24 pulgadas"
  *               quantity:
  *                 type: integer
- *                 example: 100
+ *                 example: 5
  *               weight:
  *                 type: number
  *                 format: float
- *                 example: 1.5
+ *                 example: 3.2
  *               width:
  *                 type: number
  *                 format: float
- *                 example: 10.5
+ *                 example: 54.6
  *               height:
  *                 type: number
  *                 format: float
- *                 example: 20.0
+ *                 example: 32.1
  *               location:
  *                 type: string
- *                 example: "Almacén 1"
+ *                 example: "Oficina 3"
  *               condition:
  *                 type: string
  *                 example: "Nuevo"
  *               purchaseDate:
  *                 type: string
  *                 format: date
- *                 example: "2024-01-01"
+ *                 example: "2023-08-10"
  *     responses:
  *       201:
- *         description: Inventario creado con éxito.
+ *         description: Recurso creado exitosamente en el inventario.
  *         content:
  *           application/json:
  *             schema:
@@ -178,9 +234,9 @@ apiCatInventario.get(
  *               properties:
  *                 message:
  *                   type: string
- *                   example: "Inventario creado con exito"
+ *                   example: "El recurso fue agregado al inventario correctamente."
  *       400:
- *         description: Los campos requeridos no fueron enviados.
+ *         description: Datos faltantes o incorrectos en la solicitud.
  *         content:
  *           application/json:
  *             schema:
@@ -188,9 +244,9 @@ apiCatInventario.get(
  *               properties:
  *                 message:
  *                   type: string
- *                   example: "Los campos son requeridos"
+ *                   example: "Método incorrecto."
  *       500:
- *         description: Error interno del servidor al agregar el inventario.
+ *         description: Error del servidor.
  *         content:
  *           application/json:
  *             schema:
@@ -198,7 +254,7 @@ apiCatInventario.get(
  *               properties:
  *                 message:
  *                   type: string
- *                   example: "Error al agregar el inventario"
+ *                   example: "Error al procesar la solicitud."
  */
 
 apiCatInventario.post(
@@ -211,10 +267,10 @@ apiCatInventario.post(
  * @swagger
  * /actualizar-inventario:
  *   put:
- *     summary: Actualiza un elemento del inventario
- *     description: Permite actualizar un elemento existente en el inventario con los nuevos detalles. Todos los campos son obligatorios, incluido el ID del elemento.
+ *     summary: Actualiza un registro de inventario existente
+ *     description: Modifica la información de un activo en el inventario especificado por su ID en el cuerpo de la solicitud.
  *     tags:
- *       - Catálogo de Inventario
+ *       - CatInventario
  *     requestBody:
  *       required: true
  *       content:
@@ -224,44 +280,47 @@ apiCatInventario.post(
  *             properties:
  *               itemCode:
  *                 type: string
- *                 example: "ABC123"
+ *                 example: "A1001"
  *               name:
  *                 type: string
- *                 example: "Producto A"
+ *                 example: "Laptop Dell"
  *               description:
  *                 type: string
- *                 example: "Descripción del producto A"
+ *                 example: "Laptop para oficina"
  *               quantity:
  *                 type: integer
- *                 example: 100
+ *                 example: 10
  *               weight:
  *                 type: number
  *                 format: float
- *                 example: 1.5
+ *                 example: 2.5
  *               width:
  *                 type: number
  *                 format: float
- *                 example: 10.5
+ *                 example: 35.6
  *               height:
  *                 type: number
  *                 format: float
- *                 example: 20.0
+ *                 example: 23.4
  *               location:
  *                 type: string
- *                 example: "Almacén 1"
+ *                 example: "Almacén A"
  *               condition:
  *                 type: string
  *                 example: "Nuevo"
  *               purchaseDate:
  *                 type: string
  *                 format: date
- *                 example: "2024-01-01"
- *               id:
+ *                 example: "2023-05-15"
+ *               status:
  *                 type: string
- *                 example: "1"  # ID del elemento a actualizar
+ *                 example: "Activo"
+ *               id:
+ *                 type: integer
+ *                 example: 1
  *     responses:
  *       200:
- *         description: El elemento del inventario fue actualizado con éxito.
+ *         description: Recurso actualizado correctamente.
  *         content:
  *           application/json:
  *             schema:
@@ -269,9 +328,19 @@ apiCatInventario.post(
  *               properties:
  *                 message:
  *                   type: string
- *                   example: "Se actualizo el item"
+ *                   example: "El recurso fue actualizado correctamente."
+ *       404:
+ *         description: Recurso no encontrado para actualizar.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "No se encontró el recurso para actualizar."
  *       400:
- *         description: El ID del elemento o campos requeridos no fueron enviados.
+ *         description: Solicitud incorrecta, datos incompletos o incorrectos.
  *         content:
  *           application/json:
  *             schema:
@@ -279,9 +348,9 @@ apiCatInventario.post(
  *               properties:
  *                 message:
  *                   type: string
- *                   example: "Los campos son requeridos"
+ *                   example: "Método incorrecto."
  *       500:
- *         description: Error interno del servidor al actualizar el inventario.
+ *         description: Error del servidor.
  *         content:
  *           application/json:
  *             schema:
@@ -289,8 +358,9 @@ apiCatInventario.post(
  *               properties:
  *                 message:
  *                   type: string
- *                   example: "Error al actualizar el inventario"
+ *                   example: "Error al procesar la solicitud."
  */
+
 apiCatInventario.put(
   '/actualizar-inventario',
   verificarToken,
@@ -299,23 +369,23 @@ apiCatInventario.put(
 
 /**
  * @swagger
- * /eliminar-inventario/{id}:
- *   delete:
- *     summary: Elimina un elemento del inventario
- *     description: Permite eliminar un elemento del inventario utilizando su ID. Asegúrese de que el ID proporcionado es válido y corresponde a un elemento existente.
+ * /borrar-inventario-boveda/{id}:
+ *   put:
+ *     summary: Mueve un activo a la bóveda de eliminados
+ *     description: Cambia el estado de un activo en `catinventory` a "Inactivo" utilizando su `ID`.
  *     tags:
- *       - Catálogo de Inventario
+ *       - CatInventario
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
- *         description: ID del elemento a eliminar.
  *         schema:
- *           type: string
- *           example: "1"
+ *           type: integer
+ *           example: 1
+ *         description: ID del activo que se desea mover a la bóveda.
  *     responses:
  *       200:
- *         description: El elemento del inventario fue eliminado con éxito.
+ *         description: Recurso movido a la bóveda correctamente.
  *         content:
  *           application/json:
  *             schema:
@@ -323,19 +393,9 @@ apiCatInventario.put(
  *               properties:
  *                 message:
  *                   type: string
- *                   example: "Se elimino correctamente el item"
- *       400:
- *         description: El ID del elemento no fue enviado o no es válido.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "No se envió el ID o no es válido"
+ *                   example: "El recurso fue mandado a la boveda correctamente."
  *       404:
- *         description: No se encontró el elemento en el inventario con el ID proporcionado.
+ *         description: Activo no encontrado.
  *         content:
  *           application/json:
  *             schema:
@@ -343,9 +403,19 @@ apiCatInventario.put(
  *               properties:
  *                 message:
  *                   type: string
- *                   example: "El item no existe"
+ *                   example: "Recurso no encontrado."
+ *       400:
+ *         description: Solicitud incorrecta, falta el ID.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Método incorrecto."
  *       500:
- *         description: Error interno del servidor al eliminar el elemento del inventario.
+ *         description: Error del servidor.
  *         content:
  *           application/json:
  *             schema:
@@ -353,7 +423,71 @@ apiCatInventario.put(
  *               properties:
  *                 message:
  *                   type: string
- *                   example: "Error al eliminar el inventario"
+ *                   example: "Error al procesar la solicitud."
+ */
+
+apiCatInventario.put(
+  '/borrar-inventario-boveda/:id',
+  verificarToken,
+  CatInventarioControllers.MoverABovedaEliminados
+);
+
+/**
+ * @swagger
+ * /eliminar-inventario/{id}:
+ *   delete:
+ *     summary: Elimina un elemento del inventario
+ *     description: Elimina un elemento específico del inventario mediante su ID.
+ *     tags:
+ *       - CatInventario
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID del elemento de inventario a eliminar
+ *     responses:
+ *       200:
+ *         description: El recurso fue eliminado correctamente.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "El recurso fue eliminado correctamente."
+ *       404:
+ *         description: No se encontró el recurso para eliminar.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "No se encontró el recurso para eliminar."
+ *       400:
+ *         description: ID no válido o faltante en la solicitud.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "ID inválido o no proporcionado."
+ *       500:
+ *         description: Error del servidor.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Error al procesar la solicitud."
  */
 
 apiCatInventario.delete(
