@@ -4,7 +4,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node ",
-    "dev": "nodemon",
+    "dev": "node --watch server.js",
     "format": "prettier . --write"
   },
   "license": "MIT",
@@ -17,7 +17,6 @@
     "jsonwebtoken": "^9.0.2",
     "jwt-simple": "^0.5.6",
     "mysql2": "^3.11.3",
-    "nodemon": "^3.1.7",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1"
   },

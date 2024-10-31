@@ -12,7 +12,7 @@ const apiCatInventario = express.Router();
  *     summary: Obtiene la lista completa del inventario activo
  *     description: Recupera todos los elementos en el inventario cuyo estado es "Activo".
  *     tags:
- *       - CatInventario
+ *       - Catálogo Inventario
  *     responses:
  *       200:
  *         description: Lista completa del inventario activo obtenida exitosamente.
@@ -98,7 +98,7 @@ apiCatInventario.get(
  *     summary: Obtiene la lista de inventario en desuso
  *     description: Recupera todos los elementos en el inventario cuyo estado es "Inactivo".
  *     tags:
- *       - CatInventario
+ *       - Catálogo Inventario
  *     responses:
  *       200:
  *         description: Lista de inventario en desuso obtenida exitosamente.
@@ -184,7 +184,7 @@ apiCatInventario.get(
  *     summary: Agrega un nuevo registro al inventario
  *     description: Crea un nuevo activo en el inventario con los datos proporcionados en el cuerpo de la solicitud.
  *     tags:
- *       - CatInventario
+ *       - Catálogo Inventario
  *     requestBody:
  *       required: true
  *       content:
@@ -272,7 +272,7 @@ apiCatInventario.post(
  *     summary: Actualiza un registro de inventario existente
  *     description: Modifica la información de un activo en el inventario especificado por su ID en el cuerpo de la solicitud.
  *     tags:
- *       - CatInventario
+ *       - Catálogo Inventario
  *     requestBody:
  *       required: true
  *       content:
@@ -376,7 +376,7 @@ apiCatInventario.put(
  *     summary: Mueve un activo a la bóveda de eliminados
  *     description: Cambia el estado de un activo en `catinventory` a "Inactivo" utilizando su `ID`.
  *     tags:
- *       - CatInventario
+ *       - Catálogo Inventario
  *     parameters:
  *       - in: path
  *         name: id
@@ -441,7 +441,7 @@ apiCatInventario.put(
  *     summary: Elimina un elemento del inventario
  *     description: Elimina un elemento específico del inventario mediante su ID.
  *     tags:
- *       - CatInventario
+ *       - Catálogo Inventario
  *     parameters:
  *       - in: path
  *         name: id
