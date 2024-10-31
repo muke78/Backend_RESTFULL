@@ -1,4 +1,11 @@
 import { connectionQuery } from "../helpers/connection.helper.js";
+import {
+  methodCreated,
+  methodError,
+  methodIncorrect,
+  methodNotFound,
+  methodOK,
+} from "../server/serverMethods.js";
 
 const ObtenerTodosLosInsumos = async (req, res) => {
   try {
@@ -6,12 +13,11 @@ const ObtenerTodosLosInsumos = async (req, res) => {
       `SELECT * FROM catsupplies WHERE Status = "Activo"`,
     );
 
-    if (result.length === 0)
-      return res.status(404).json({ message: "No hay nada en los insumos" });
+    if (result.length === 0) return methodNotFound(req, res);
 
-    res.status(200).json(result);
+    methodOK(req, res, result);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    methodError(req, res, error);
   }
 };
 
@@ -21,14 +27,11 @@ const ObtenerTodosLosInsumosDesuso = async (req, res) => {
       `SELECT * FROM catsupplies WHERE Status = "Inactivo"`,
     );
 
-    if (result.length === 0)
-      return res
-        .status(404)
-        .json({ message: "No hay nada en los insumos en desuso" });
+    if (result.length === 0) return methodNotFound(req, res);
 
-    res.status(200).json(result);
+    methodOK(req, res, result);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    methodError(req, res, error);
   }
 };
 
@@ -54,7 +57,7 @@ const InsertarInsumo = async (req, res) => {
       !purchaseDate ||
       !cost
     ) {
-      return res.status(400).json({ message: "Los campos son requeridos" });
+      return methodIncorrect(req, res);
     }
 
     const queryInsert = `INSERT INTO catsupplies (ID, Name, Description, Quantity, Unit, Supplier, PurchaseDate, ExpiryDate, Cost) 
@@ -71,11 +74,12 @@ const InsertarInsumo = async (req, res) => {
       cost,
     ];
 
-    await connectionQuery(queryInsert, queryParamsInsert);
+    const result = await connectionQuery(queryInsert, queryParamsInsert);
 
-    res.status(201).json({ message: "El insumo fue creado con exito" });
+    if (result.affectedRows > 0)
+      return methodCreated(req, res, queryParamsInsert);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    methodError(req, res, error);
   }
 };
 
@@ -108,10 +112,40 @@ const EditarInsumo = async (req, res) => {
       id,
     ];
 
-    await connectionQuery(queryUpdate, queryUpdateParams);
-    res.status(200).json({ message: "Se actualizo el insumo" });
+    const result = await connectionQuery(queryUpdate, queryUpdateParams);
+    if (result.affectedRows > 0) {
+      methodOK(req, res, {
+        message: "El recurso fue actualizado correctamente.",
+      });
+    } else {
+      methodNotFound(req, res, {
+        message: "No se encontró el recurso para actualizar.",
+      });
+    }
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    methodError(req, res, error);
+  }
+};
+
+const MoverABovedaEliminados = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!id) return methodIncorrect(req, res);
+
+    const queryDelete = `UPDATE catsupplies SET Status = 'Inactivo' WHERE ID = ?`;
+    const queryParamsDelete = [id];
+    const result = await connectionQuery(queryDelete, queryParamsDelete);
+
+    if (result.affectedRows > 0) {
+      methodOK(req, res, {
+        message: "El recurso fue mandado a la boveda correctamente.",
+      });
+    } else {
+      methodNotFound(req, res);
+    }
+  } catch (error) {
+    methodError(req, res, error);
   }
 };
 
@@ -119,18 +153,20 @@ const EliminarInsumo = async (req, res) => {
   try {
     const { id } = req.params;
 
-    if (!id) {
-      return res
-        .status(400)
-        .json({ message: "No se envió el ID o no es válido" });
-    }
+    if (!id) return methodIncorrect(req, res);
 
     const queryDeleteSupplier = `DELETE FROM catsupplies WHERE ID = ?`;
-    await connectionQuery(queryDeleteSupplier, [id]);
+    const result = await connectionQuery(queryDeleteSupplier, [id]);
 
-    res.status(200).json({ message: "Se elimino correctamente el insumo" });
+    if (result.affectedRows > 0) {
+      methodOK(req, res, {
+        message: "El recurso fue eliminado correctamente.",
+      });
+    } else {
+      methodNotFound(req, res);
+    }
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    methodError(req, res, error);
   }
 };
 
@@ -139,5 +175,6 @@ export default {
   ObtenerTodosLosInsumosDesuso,
   InsertarInsumo,
   EditarInsumo,
+  MoverABovedaEliminados,
   EliminarInsumo,
 };
