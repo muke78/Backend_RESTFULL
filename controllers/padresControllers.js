@@ -1,15 +1,22 @@
 import { connectionQuery } from "../helpers/connection.helper.js";
+import {
+  methodConflicts,
+  methodCreated,
+  methodError,
+  methodIncorrect,
+  methodNotFound,
+  methodOK,
+} from "../server/serverMethods.js";
 
 const ObtenerTodosLosPapas = async (req, res) => {
   try {
     const [result] = await connectionQuery("CALL ObtenerPadresActivos()");
 
-    if (result.length === 0)
-      return res.status(404).json({ message: "No se encontraron padres" });
+    if (result.length === 0) return methodNotFound(req, res);
 
-    res.status(200).json(result);
+    methodOK(req, res, result);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    methodError(req, res, error);
   }
 };
 
@@ -18,12 +25,11 @@ const ObtenerPadresEliminados = async (req, res) => {
     const obtenerPadresDelete = `SELECT * FROM parents WHERE Status = "Inactivo" ORDER BY LastName ASC;`;
     const result = await connectionQuery(obtenerPadresDelete);
 
-    if (result.length === 0)
-      return res.status(404).json({ message: "No hay padres eliminados" });
+    if (result.length === 0) return methodNotFound(req, res);
 
-    res.status(200).json(result);
+    methodOK(req, res, result);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    methodError(req, res, error);
   }
 };
 
@@ -34,24 +40,21 @@ const ObtenerPadresPorMaestro = async (req, res) => {
     const verifyTeacher = `SELECT * FROM parents WHERE TeacherID = ?;`;
     const resultVerify = await connectionQuery(verifyTeacher, [id]);
 
-    if (resultVerify.length === 0)
-      return res
-        .status(404)
-        .json({ message: "No se encontro ningun maestro con ese id" });
+    if (resultVerify.length === 0) return methodNotFound(req, res);
 
     const [result] = await connectionQuery(`CALL ObtenerPadresPorMaestro(?)`, [
       id,
     ]);
 
     if (result.length === 0)
-      return res.status(404).json({
+      return methodNotFound(req, res, {
         message:
           "No se encontraron padres que se relacionen con el maestro o estan en la boveda",
       });
 
-    res.status(200).json(result);
+    methodOK(req, res, result);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    methodError(req, res, error);
   }
 };
 
@@ -78,13 +81,11 @@ const BusquedaDePadres = async (req, res) => {
 
     const resultSearch = await connectionQuery(querySearch, queryParams);
 
-    if (resultSearch.length === 0)
-      return res.status(404).json({
-        message: " Papá o Mamá no encontrados, intente buscar con otro",
-      });
-    res.status(200).json(resultSearch);
+    if (resultSearch.length === 0) return methodNotFound(req, res);
+
+    methodOK(req, res, resultSearch);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    methodError(req, res, error);
   }
 };
 
@@ -120,9 +121,8 @@ const InsertarPadres = async (req, res) => {
       !address ||
       !emergencyContact ||
       !emergencyPhone
-    ) {
-      return res.status(400).json({ message: "Los campos son requeridos" });
-    }
+    )
+      return methodIncorrect(req, res);
 
     if (email && email.trim()) {
       const queryValidate = `SELECT * FROM parents WHERE Email = ?`;
@@ -136,11 +136,9 @@ const InsertarPadres = async (req, res) => {
         const { Status } = resultValidate[0];
 
         if (Status === "Activo") {
-          return res.status(409).json({
-            message: "El correo ya se encuentra registrado",
-          });
+          return methodConflicts(req, res);
         } else if (Status === "Inactivo") {
-          return res.status(500).json({
+          return methodError(req, res, {
             message:
               "El correo existe pero la mamá o el papá está eliminado, eliminelo definitivamente o editelo",
           });
@@ -148,11 +146,10 @@ const InsertarPadres = async (req, res) => {
       }
     }
 
-    if (age > 100) {
-      return res
-        .status(400)
-        .json({ message: "La edad no puede ser mayor a 100 años" });
-    }
+    if (age >= 100)
+      return methodIncorrect(req, res, {
+        message: "La edad no puede ser mayor a 100 años",
+      });
 
     const queryInsert = `INSERT INTO parents(ID, TeacherID, FirstName, LastName, DateOfBirth, Ocupation, Gender, Curp, Email, Phone, Age,
                     Address, EmergencyContact, EmergencyPhone)
@@ -174,11 +171,12 @@ VALUES (UUID(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
       emergencyPhone,
     ];
 
-    await connectionQuery(queryInsert, queryParamsInsert);
+    const result = await connectionQuery(queryInsert, queryParamsInsert);
 
-    res.status(201).json({ message: "Se creo con exito" });
+    if (result.affectedRows > 0)
+      return methodCreated(req, res, queryParamsInsert);
   } catch (error) {
-    res.status(500).json({ message: "Error al crear al papá o mamá", error });
+    methodError(req, res, error);
   }
 };
 
@@ -223,36 +221,40 @@ const EditarPadres = async (req, res) => {
       id,
     ];
 
-    await connectionQuery(queryUpdate, queryParamsUpdate);
-    res.status(200).json({ message: "Se actualizo el papá o la mamá" });
+    const result = await connectionQuery(queryUpdate, queryParamsUpdate);
+    if (result.affectedRows > 0) {
+      methodOK(req, res, {
+        message: "El recurso fue actualizado correctamente.",
+      });
+    } else {
+      methodNotFound(req, res, {
+        message: "No se encontró el recurso para actualizar.",
+      });
+    }
   } catch (error) {
-    res.status(500).json({
-      message: "Hubo un error en la actualizacion del registro",
-      error,
-    });
+    methodError(req, res, error);
   }
 };
 
 const MoverABovedaEliminados = async (req, res) => {
   try {
     const { id } = req.params;
-    if (!id)
-      return res
-        .status(400)
-        .json({ message: "No se envio el ID o no es valido" });
+
+    if (!id) return methodIncorrect(req, res);
 
     const queryDelete = `UPDATE parents SET Status = 'Inactivo' WHERE ID = ?`;
     const queryParamsDelete = [id];
-    await connectionQuery(queryDelete, queryParamsDelete);
+    const result = await connectionQuery(queryDelete, queryParamsDelete);
 
-    res.status(200).json({
-      message: "Se mando a la boveda de eliminados o esta en la boveda",
-    });
+    if (result.affectedRows > 0) {
+      methodOK(req, res, {
+        message: "El recurso fue mandado a la boveda correctamente.",
+      });
+    } else {
+      methodNotFound(req, res);
+    }
   } catch (error) {
-    res.status(500).json({
-      message: "Hubo un error al mandar a la boveda de eliminados",
-      error,
-    });
+    methodError(req, res, error);
   }
 };
 
@@ -260,11 +262,7 @@ const EliminarPadre = async (req, res) => {
   try {
     const { id } = req.params;
 
-    if (!id) {
-      return res
-        .status(400)
-        .json({ message: "No se envió el ID o no es válido" });
-    }
+    if (!id) return methodIncorrect(req, res);
 
     const queryValidate = `SELECT * FROM parents WHERE ID = ?`;
     const queryParamsValidate = [id];
@@ -273,21 +271,20 @@ const EliminarPadre = async (req, res) => {
       queryParamsValidate,
     );
 
-    if (resultValidate.length === 0) {
-      return res.status(404).json({ message: "El papá o mamá no existe" });
-    }
+    if (resultValidate.length === 0) return methodNotFound(req, res);
 
     const queryDeleteTeacher = `DELETE FROM parents WHERE ID = ?`;
-    await connectionQuery(queryDeleteTeacher, [id]);
+    const result = await connectionQuery(queryDeleteTeacher, [id]);
 
-    res.status(200).json({
-      message: "Se eliminó definitivamente el papá o mamá",
-    });
+    if (result.affectedRows > 0) {
+      methodOK(req, res, {
+        message: "El recurso fue eliminado correctamente.",
+      });
+    } else {
+      methodNotFound(req, res);
+    }
   } catch (error) {
-    res.status(500).json({
-      message: "Hubo un error al eliminar al papá o mamá",
-      error,
-    });
+    methodError(req, res, error);
   }
 };
 

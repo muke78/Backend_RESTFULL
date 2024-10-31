@@ -48,7 +48,7 @@ const methodIncorrect = (req, res, message) => {
     },
   });
 };
-const methodUnauthorized = (req, res) => {
+const methodUnauthorized = (req, res, message) => {
   const timestamp = new Date().toISOString();
   const requestId = crypto.randomUUID();
 
@@ -58,9 +58,13 @@ const methodUnauthorized = (req, res) => {
       message:
         "No autorizado. Es necesario autenticarse para acceder a este recurso.",
       code: "UNAUTHORIZED",
-      details: "La solicitud requiere un token de autenticación válido.",
+      details:
+        message || "La solicitud requiere un token de autenticación válido.",
       timestamp: timestamp,
       requestId: requestId,
+      stack: error.stack || "No se dispone de información adicional.",
+      path: req.originalUrl,
+      method: req.method,
     },
   });
 };
@@ -95,6 +99,8 @@ const methodConflicts = (req, res) => {
         "El recurso que intentas crear ya existe o la solicitud genera un conflicto con los datos actuales.",
       timestamp: timestamp,
       requestId: requestId,
+      path: req.originalUrl,
+      method: req.method,
     },
   });
 };
