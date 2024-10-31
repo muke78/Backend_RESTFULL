@@ -78,6 +78,7 @@ const apiCatInsumos = express.Router();
 
 apiCatInsumos.get(
   "/lista-insumos",
+  verificarToken,
   CatInsumosControllers.ObtenerTodosLosInsumos,
 );
 
@@ -154,6 +155,7 @@ apiCatInsumos.get(
 
 apiCatInsumos.get(
   "/lista-insumos-desuso",
+  verificarToken,
   CatInsumosControllers.ObtenerTodosLosInsumosDesuso,
 );
 
@@ -232,7 +234,11 @@ apiCatInsumos.get(
  *                   example: "Error al procesar la solicitud."
  */
 
-apiCatInsumos.post("/agregar-insumo", CatInsumosControllers.InsertarInsumo);
+apiCatInsumos.post(
+  "/agregar-insumo",
+  verificarToken,
+  CatInsumosControllers.InsertarInsumo,
+);
 
 /**
  * @swagger
@@ -325,7 +331,11 @@ apiCatInsumos.post("/agregar-insumo", CatInsumosControllers.InsertarInsumo);
  *                   example: "Error al procesar la solicitud."
  */
 
-apiCatInsumos.put("/actualizar-insumo", CatInsumosControllers.EditarInsumo);
+apiCatInsumos.put(
+  "/actualizar-insumo",
+  verificarToken,
+  CatInsumosControllers.EditarInsumo,
+);
 
 /**
  * @swagger
@@ -387,6 +397,7 @@ apiCatInsumos.put("/actualizar-insumo", CatInsumosControllers.EditarInsumo);
 
 apiCatInsumos.put(
   "/mover-insumo-boveda/:id",
+  verificarToken,
   CatInsumosControllers.MoverABovedaEliminados,
 );
 
@@ -450,6 +461,7 @@ apiCatInsumos.put(
 
 apiCatInsumos.delete(
   "/eliminar-insumo/:id",
+  verificarToken,
   CatInsumosControllers.EliminarInsumo,
 );
 
