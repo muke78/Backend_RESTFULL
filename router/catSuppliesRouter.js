@@ -242,7 +242,7 @@ apiCatInsumos.post(
 
 /**
  * @swagger
- * /apiCatInsumos/actualizar-insumo:
+ * /actualizar-insumo:
  *   put:
  *     summary: Actualiza un insumo existente
  *     description: Modifica los detalles de un insumo en la base de datos.
