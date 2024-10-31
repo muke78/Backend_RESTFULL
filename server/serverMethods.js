@@ -32,14 +32,14 @@ const methodCreated = (req, res, result) => {
   });
 };
 
-const methodIncorrect = (req, res) => {
+const methodIncorrect = (req, res, message) => {
   const timestamp = new Date().toISOString();
   const requestId = crypto.randomUUID();
 
   res.status(400).json({
     success: false,
     error: {
-      message: "Solicitud incorrecta. Verifica los datos enviados.",
+      message: message || "Solicitud incorrecta. Verifica los datos enviados.",
       code: "BAD_REQUEST",
       details:
         "Algunos de los campos proporcionados no son válidos o están incompletos.",
@@ -65,14 +65,14 @@ const methodUnauthorized = (req, res) => {
   });
 };
 
-const methodNotFound = (req, res) => {
+const methodNotFound = (req, res, message) => {
   const timestamp = new Date().toISOString();
   const requestId = crypto.randomUUID();
 
   res.status(404).json({
     success: false,
     error: {
-      message: "Recurso no encontrado.",
+      message: message || "Recurso no encontrado.",
       code: "NOT_FOUND",
       details: "El recurso que buscas no existe o no está disponible.",
       timestamp: timestamp,

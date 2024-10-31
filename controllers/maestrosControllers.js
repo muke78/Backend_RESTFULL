@@ -1,17 +1,23 @@
 import { connectionQuery } from "../helpers/connection.helper.js";
 import { deleteUserByTeacherID } from "../helpers/teachersEliminatedStatus.js";
+import {
+  methodConflicts,
+  methodError,
+  methodIncorrect,
+  methodNotFound,
+  methodOK,
+} from "../server/serverMethods.js";
 
 const ObtenerTodosLosMaestros = async (req, res) => {
   try {
     const obtenerUser = `SELECT * FROM teachers WHERE Status = "Activo" ORDER BY LastName ASC;`;
     const result = await connectionQuery(obtenerUser);
 
-    if (result.length === 0)
-      return res.status(404).json({ message: "No se encontraron maestros" });
+    if (result.length === 0) return methodNotFound(req, res);
 
-    res.status(200).json(result);
+    methodOK(req, res, result);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    methodError(req, res, error);
   }
 };
 
@@ -20,12 +26,11 @@ const ObtenerLosUsuariosEliminados = async (req, res) => {
     const obtenerUserDelete = `SELECT * FROM teachers WHERE Status = "Inactivo" ORDER BY LastName ASC;`;
     const result = await connectionQuery(obtenerUserDelete);
 
-    if (result.length === 0)
-      return res.status(404).json({ message: "No hay maestros eliminados" });
+    if (result.length === 0) return methodNotFound(req, res);
 
-    res.status(200).json(result);
+    methodOK(req, res, result);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    methodError(req, res, error);
   }
 };
 
@@ -52,15 +57,11 @@ const BusquedaDeMaestro = async (req, res) => {
 
     const resultSearch = await connectionQuery(querySearch, queryParamsSearch);
 
-    if (resultSearch.length === 0) {
-      return res
-        .status(404)
-        .json({ message: "Maestro no encontrado, intente buscar con otro" });
-    }
+    if (resultSearch.length === 0) return methodNotFound(req, res);
 
-    res.status(200).json(resultSearch);
+    methodOK(req, res, resultSearch);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    methodError(req, res, error);
   }
 };
 
@@ -109,7 +110,7 @@ const InsertarMaestro = async (req, res) => {
       !emergencyContact ||
       !emergencyPhone
     )
-      return res.status(400).json({ message: "Los campos son requeridos" });
+      return methodIncorrect(req, res);
 
     if (email && email.trim()) {
       const queryValidate = `SELECT * FROM teachers WHERE Email = ?`;
@@ -123,11 +124,9 @@ const InsertarMaestro = async (req, res) => {
         const { Status } = resultValidate[0];
 
         if (Status === "Activo") {
-          return res.status(409).json({
-            message: "El correo ya se encuentra registrado",
-          });
+          return methodConflicts(req, res);
         } else if (Status === "Inactivo") {
-          return res.status(500).json({
+          return methodError(req, res, {
             message:
               "El correo existe pero el maestro está eliminado, eliminelo definitivamente o editelo",
           });
@@ -135,11 +134,10 @@ const InsertarMaestro = async (req, res) => {
       }
     }
 
-    if (age > 100) {
-      return res
-        .status(400)
-        .json({ message: "La edad no puede ser mayor a 100 años" });
-    }
+    if (age >= 100)
+      return methodIncorrect(req, res, {
+        message: "La edad no puede ser mayor a 100 años",
+      });
 
     const queryInsert = `INSERT INTO teachers(ID, TeacherID, FirstName, LastName, DateOfBirth,  NameSchool, LevelStudies, StudentsInCharge, Grade, \`Group\`, CCT, SchoolZone, WorkShift, Curp, Email, Phone, Age, Address, EmergencyContact, EmergencyPhone) 
     VALUES (UUID(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ?, ?, ?, ?, ?, ?)`;
@@ -165,11 +163,12 @@ const InsertarMaestro = async (req, res) => {
       emergencyContact,
       emergencyPhone,
     ];
-    await connectionQuery(queryInsert, queryParamsInsert);
+    const result = await connectionQuery(queryInsert, queryParamsInsert);
 
-    res.status(201).json({ message: "Maestro creado con exito" });
+    if (result.affectedRows > 0)
+      return methodCreated(req, res, queryParamsInsert);
   } catch (error) {
-    res.status(500).json({ message: "Error al crear el maestro", error });
+    methodError(req, res, error);
   }
 };
 
@@ -222,36 +221,40 @@ const ActualizarMaestro = async (req, res) => {
       status,
       id,
     ];
-    await connectionQuery(queryUpdate, queryParamsUpdate);
-    res.status(200).json({ message: "Se actualizo el maestro" });
+    const result = await connectionQuery(queryUpdate, queryParamsUpdate);
+    if (result.affectedRows > 0) {
+      methodOK(req, res, {
+        message: "El recurso fue actualizado correctamente.",
+      });
+    } else {
+      methodNotFound(req, res, {
+        message: "No se encontró el recurso para actualizar.",
+      });
+    }
   } catch (error) {
-    res.status(500).json({
-      message: "Hubo un error en la actualizacion del registro",
-      error,
-    });
+    methodError(req, res, error);
   }
 };
 
 const MoverABovedaEliminados = async (req, res) => {
   try {
     const { id } = req.params;
-    if (!id)
-      return res
-        .status(400)
-        .json({ message: "No se envio el ID o no es valido" });
+
+    if (!id) return methodIncorrect(req, res);
 
     const queryDelete = `UPDATE teachers SET Status = 'Inactivo' WHERE ID = ?`;
     const queryParamsDelete = [id];
-    await connectionQuery(queryDelete, queryParamsDelete);
+    const result = await connectionQuery(queryDelete, queryParamsDelete);
 
-    res.status(200).json({
-      message: "Se mando a la boveda de eliminados o esta en la boveda",
-    });
+    if (result.affectedRows > 0) {
+      methodOK(req, res, {
+        message: "El recurso fue mandado a la boveda correctamente.",
+      });
+    } else {
+      methodNotFound(req, res);
+    }
   } catch (error) {
-    res.status(500).json({
-      message: "Hubo un error al mandar a la boveda de eliminados",
-      error,
-    });
+    methodError(req, res, error);
   }
 };
 
@@ -259,11 +262,7 @@ const EliminarMaestro = async (req, res) => {
   try {
     const { id } = req.params;
 
-    if (!id) {
-      return res
-        .status(400)
-        .json({ message: "No se envió el ID o no es válido" });
-    }
+    if (!id) return methodIncorrect(req, res);
 
     const queryValidate = `SELECT TeacherID FROM teachers WHERE ID = ?`;
     const queryParamsValidate = [id];
@@ -272,25 +271,24 @@ const EliminarMaestro = async (req, res) => {
       queryParamsValidate,
     );
 
-    if (resultValidate.length === 0) {
-      return res.status(404).json({ message: "El maestro no existe" });
-    }
+    if (resultValidate.length === 0) return methodNotFound(req, res);
 
     const { TeacherID } = resultValidate[0];
 
     const queryDeleteTeacher = `DELETE FROM teachers WHERE ID = ?`;
-    await connectionQuery(queryDeleteTeacher, [id]);
+    const result = await connectionQuery(queryDeleteTeacher, [id]);
 
     await deleteUserByTeacherID(TeacherID);
 
-    res.status(200).json({
-      message: "Se eliminó definitivamente el maestro y su usuario asociado",
-    });
+    if (result.affectedRows > 0) {
+      methodOK(req, res, {
+        message: "El recurso fue eliminado correctamente.",
+      });
+    } else {
+      methodNotFound(req, res);
+    }
   } catch (error) {
-    res.status(500).json({
-      message: "Hubo un error al eliminar el maestro y su usuario",
-      error,
-    });
+    methodError(req, res, error);
   }
 };
 
