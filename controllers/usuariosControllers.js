@@ -5,18 +5,25 @@ import { deleteTeacherByUser } from "../helpers/deleteTeacherByUser.js";
 import { insertTeacherBeforeUser } from "../helpers/insertTeacherWithUser.js";
 import { createToken } from "../helpers/jwt.js";
 import { lastLogin } from "../helpers/userLastLogin.js";
+import {
+  methodCreated,
+  methodError,
+  methodForbidden,
+  methodIncorrect,
+  methodNotFound,
+  methodOK,
+} from "../server/serverMethods.js";
 
 const ObtenerTodosLosUsuarios = async (req, res) => {
   try {
     const obtenerUsuarios = `SELECT * FROM users ORDER BY NameUser ASC;`;
     const result = await connectionQuery(obtenerUsuarios);
 
-    if (result.length === 0)
-      return res.status(404).json({ message: "No se encontraron usuarios" });
+    if (result.length === 0) return methodNotFound(req, res);
 
-    res.status(200).json(result);
+    methodOK(req, res, result);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    methodError(req, res, error);
   }
 };
 
@@ -25,7 +32,7 @@ const InsertarUsario = async (req, res) => {
     const { nameUser, email, password, role } = req.body;
 
     if (!nameUser || !email || !password || !role)
-      return res.status(400).json({ message: "Los campos son requeridos" });
+      return methodIncorrect(req, res);
 
     const queryValidate = `SELECT * FROM users WHERE Email = ?`;
     const queryParamsValidate = [email];
@@ -34,25 +41,22 @@ const InsertarUsario = async (req, res) => {
       queryParamsValidate,
     );
 
-    if (resultValidate.length > 0) {
-      return res.status(500).json({
+    if (resultValidate.length > 0)
+      return methodError(req, res, {
         message: "El correo ya se encuentra registrado",
       });
-    }
 
     const hashedPasword = await hashedArg.hash(password);
     const queryInsert = `INSERT INTO users (ID, NameUser, Email, Password, Role, LastLogin) VALUES (UUID(), ?, ?, ?, ?, NULL)`;
     const queryParamsInsert = [nameUser, email, hashedPasword, role];
-    await connectionQuery(queryInsert, queryParamsInsert);
+    const result = await connectionQuery(queryInsert, queryParamsInsert);
 
     await insertTeacherBeforeUser(email);
-    await res
-      .status(201)
-      .json({ message: "Usuario creado exitosamente y maestro" });
+
+    if (result.affectedRows > 0)
+      return methodCreated(req, res, queryParamsInsert);
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error al crear el usuario y su maestro", error });
+    methodError(req, res, error);
   }
 };
 
@@ -75,30 +79,22 @@ const EditarUsuario = async (req, res) => {
       }
     }
 
-    // if (email) {
-    //   const queryValidateEmailUpdate = `SELECT * FROM users WHERE Email = ?`;
-    //   const queryParamsEmailUpdate = [email];
-    //   const resulQueryEmailValidate = await connectionQuery(
-    //     queryValidateEmailUpdate,
-    //     queryParamsEmailUpdate
-    //   );
-    //   if (resulQueryEmailValidate.length > 0)
-    //     return res.status(409).json({
-    //       message: 'Usuario ya existe y el correo esta siendo utilizado',
-    //     });
-    // }
-
     const hashedPasswordUpdate = await hashedArg.hash(password);
     const queryUpdate = `UPDATE users SET NameUser = ?, Email = ?, Password = '${hashedPasswordUpdate}', Role = ?, AccountStatus = ?  WHERE ID = ?`;
     const queryParamsUpdate = [nameUser, email, role, accountStatus, id];
 
-    await connectionQuery(queryUpdate, queryParamsUpdate);
-    res.status(200).json({ message: "El usuario se actualizo con exito" });
+    const result = await connectionQuery(queryUpdate, queryParamsUpdate);
+    if (result.affectedRows > 0) {
+      methodOK(req, res, {
+        message: "El recurso fue actualizado correctamente.",
+      });
+    } else {
+      methodNotFound(req, res, {
+        message: "No se encontró el recurso para actualizar.",
+      });
+    }
   } catch (error) {
-    res.status(500).json({
-      message: "Hubo un error en la actualizacion del usuario",
-      error,
-    });
+    methodError(req, res, error);
   }
 };
 
@@ -106,10 +102,7 @@ const EliminarUsuario = async (req, res) => {
   try {
     const { id } = req.params;
 
-    if (!id)
-      return res
-        .status(400)
-        .json({ message: "No se envio el ID o no es valido" });
+    if (!id) return methodIncorrect(req, res);
 
     if (id) {
       const queryValidate = `SELECT * FROM users WHERE id = ?`;
@@ -119,25 +112,22 @@ const EliminarUsuario = async (req, res) => {
         queryParamsValidate,
       );
 
-      if (resultValidate.length === 0) {
-        return res.status(400).json({
-          message: "El usuario no existe",
-        });
-      }
+      if (resultValidate.length === 0) return methodNotFound(req, res);
     }
     const queryDelete = `DELETE FROM users WHERE id = ?`;
-    await connectionQuery(queryDelete, [id]);
+    const result = await connectionQuery(queryDelete, [id]);
 
     await deleteTeacherByUser(id);
 
-    res
-      .status(200)
-      .json({ message: "Usuario eliminado exitosamente y el maestro" });
+    if (result.affectedRows > 0) {
+      methodOK(req, res, {
+        message: "El recurso fue eliminado correctamente.",
+      });
+    } else {
+      methodNotFound(req, res);
+    }
   } catch (error) {
-    res.status(500).json({
-      message: "Hubo un error al eliminar el usuario",
-      error,
-    });
+    methodError(req, res, error);
   }
 };
 
@@ -147,17 +137,19 @@ const Login = async (req, res) => {
 
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/gm;
     if (!email)
-      return res
-        .status(400)
-        .json({ message: "El correo electrónico es requerido" });
+      return methodIncorrect(req, res, {
+        message: "El correo electrónico es requerido",
+      });
 
     if (!regex.test(email))
-      return res
-        .status(400)
-        .json({ message: "El correo electrónico no es válido" });
+      return methodIncorrect(req, res, {
+        message: "El correo electrónico no es válido",
+      });
 
     if (!password)
-      return res.status(400).json({ message: "La contraseña es requerida" });
+      return methodIncorrect(req, res, {
+        message: "La contraseña es requerida",
+      });
 
     const queryValidate = `SELECT * FROM users WHERE Email = ?`;
     const queryParamsValidate = [email];
@@ -166,23 +158,19 @@ const Login = async (req, res) => {
       queryParamsValidate,
     );
 
-    if (resultValidate.length === 0) {
-      return res
-        .status(404)
-        .json({ message: "El usuario no se encuentra registrado" });
-    }
+    if (resultValidate.length === 0) return methodNotFound(req, res);
 
     const user = resultValidate[0];
 
     const argonVerify = await hashedArg.verify(user.Password, password);
 
     if (!argonVerify)
-      return res
-        .status(500)
-        .json({ message: "La contraseña es incorrecta o está mal escrita" });
+      return methodError(req, res, {
+        message: "La contraseña es incorrecta o está mal escrita",
+      });
 
     if (user.AccountStatus === "Inactivo")
-      return res.status(403).json({
+      return methodForbidden(req, res, {
         message:
           "El usuario está inactivo, pida la reactivación a un administrador",
       });
@@ -199,9 +187,9 @@ const Login = async (req, res) => {
 
     await lastLogin(user.ID);
 
-    return res.status(200).json({ token });
+    methodOK(req, res, token);
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    methodError(req, res, error);
   }
 };
 

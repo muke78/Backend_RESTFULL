@@ -3,9 +3,9 @@ import { connectionQuery } from "./connection.helper.js";
 const deleteTeacherByUser = async (userId) => {
   try {
     const resultQuery = await connectionQuery(
-      "SELECT ID FROM teachers WHERE TeacherID = ?",
-      [userId],
+      "SELECT ID FROM teachers WHERE TeacherID = ?",[userId],
     );
+    console.log("Eliminando maestro");
 
     if (resultQuery.length === 0) {
       console.log("No se encontró ningún maestro con el userId proporcionado.");

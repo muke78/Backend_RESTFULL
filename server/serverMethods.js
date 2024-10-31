@@ -69,6 +69,24 @@ const methodUnauthorized = (req, res, message) => {
   });
 };
 
+const methodForbidden = (req, res, message) => {
+  const timestamp = new Date().toISOString();
+  const requestId = crypto.randomUUID();
+
+  res.status(403).json({
+    success: false,
+    error: {
+      message: "Acceso denegado. No tienes permiso para acceder a este recurso.",
+      code: "FORBIDDEN",
+      details: message || "La solicitud requiere un token de autenticación válido.",
+      timestamp: timestamp,
+      requestId: requestId,
+      path: req.originalUrl,
+      method: req.method,
+    },
+  });
+};
+
 const methodNotFound = (req, res, message) => {
   const timestamp = new Date().toISOString();
   const requestId = crypto.randomUUID();
@@ -130,6 +148,7 @@ export {
   methodCreated,
   methodIncorrect,
   methodUnauthorized,
+  methodForbidden,
   methodNotFound,
   methodConflicts,
   methodError,

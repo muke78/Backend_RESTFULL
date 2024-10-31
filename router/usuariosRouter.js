@@ -73,7 +73,6 @@ const apiUsuarios = express.Router();
 
 apiUsuarios.get(
   "/lista-de-usuarios",
-  verificarToken,
   UsuariosControllers.ObtenerTodosLosUsuarios,
 );
 
@@ -224,11 +223,7 @@ apiUsuarios.post("/login", UsuariosControllers.Login);
  *                   type: object
  */
 
-apiUsuarios.post(
-  "/crear-usuario",
-  verificarToken,
-  UsuariosControllers.InsertarUsario,
-);
+apiUsuarios.post("/crear-usuario", UsuariosControllers.InsertarUsario);
 
 /**
  * @swagger
@@ -294,11 +289,7 @@ apiUsuarios.post(
  *                   type: object
  */
 
-apiUsuarios.put(
-  "/actualizar-usuario",
-  verificarToken,
-  UsuariosControllers.EditarUsuario,
-);
+apiUsuarios.put("/actualizar-usuario", UsuariosControllers.EditarUsuario);
 
 /**
  * @swagger
@@ -364,7 +355,6 @@ apiUsuarios.put(
 
 apiUsuarios.delete(
   "/eliminar-usuario/:id",
-  verificarToken,
   UsuariosControllers.EliminarUsuario,
 );
 
