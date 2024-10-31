@@ -4,10 +4,12 @@
 
 - Hacer la api de los estudiantes
 - Hacer el trigger para que cuando se agregue un alumno a una maestra los niños a cargo en la tabla maestros incremente solo
+
 - Hacer la api en usuarios de buscar un usuario
 - Hacer la api en usuarios de ver los usuarios eliminados
 - Arreglar la funciones de eliminacion de usuarios y que se elimine directo el maestro
 - Arreglar la funcion de eliminacion de un maestro y que se elimine directo el usuario
+- Poner el verificador de token cuando se acabe bien el modulo de usuarios en los routes
 
 ## Cambios que se puedan ir haciendo
 
