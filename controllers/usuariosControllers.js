@@ -152,11 +152,25 @@ const Login = async (req, res) => {
         message: "La contraseña es incorrecta o está mal escrita",
       });
 
-    if (user.AccountStatus === "Inactivo")
-      return methodForbidden(req, res, {
-        message:
-          "El usuario está inactivo, pida la reactivación a un administrador",
+    if (user.AccountStatus === "Inactivo") {
+      const timestamp = new Date().toISOString();
+      const requestId = crypto.randomUUID();
+      return res.status(403).json({
+        success: false,
+        error: {
+          message:
+            "El usuario está inactivo, pida la reactivación a un administrador",
+          code: "FORBIDDEN",
+          details:
+            req.body?.message ||
+            "La solicitud requiere un token de autenticación válido.",
+          timestamp: timestamp,
+          requestId: requestId,
+          path: req.originalUrl,
+          method: req.method,
+        },
       });
+    }
 
     // Crea el token
     const token = createToken({
