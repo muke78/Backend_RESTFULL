@@ -29,10 +29,9 @@ const ObtenerTodosLosUsuarios = async (req, res) => {
 
 const InsertarUsario = async (req, res) => {
   try {
-    const { nameUser, email, password, role } = req.body;
+    const { nameUser, email, password, role = "user" } = req.body;
 
-    if (!nameUser || !email || !password || !role)
-      return methodIncorrect(req, res);
+    if (!nameUser || !email || !password) return methodIncorrect(req, res);
 
     const queryValidate = `SELECT * FROM users WHERE Email = ?`;
     const queryParamsValidate = [email];
