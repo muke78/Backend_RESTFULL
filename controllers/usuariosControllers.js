@@ -135,22 +135,6 @@ const Login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/gm;
-    if (!email)
-      return methodIncorrect(req, res, {
-        message: "El correo electrónico es requerido",
-      });
-
-    if (!regex.test(email))
-      return methodIncorrect(req, res, {
-        message: "El correo electrónico no es válido",
-      });
-
-    if (!password)
-      return methodIncorrect(req, res, {
-        message: "La contraseña es requerida",
-      });
-
     const queryValidate = `SELECT * FROM users WHERE Email = ?`;
     const queryParamsValidate = [email];
     const resultValidate = await connectionQuery(
