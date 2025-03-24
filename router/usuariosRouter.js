@@ -224,7 +224,11 @@ apiUsuarios.post("/login", UsuariosControllers.Login);
  *                   type: object
  */
 
-apiUsuarios.post("/crear-usuario", UsuariosControllers.InsertarUsario);
+apiUsuarios.post(
+  "/crear-usuario",
+  verificarToken,
+  UsuariosControllers.InsertarUsario,
+);
 
 /**
  * @swagger
@@ -290,7 +294,11 @@ apiUsuarios.post("/crear-usuario", UsuariosControllers.InsertarUsario);
  *                   type: object
  */
 
-apiUsuarios.put("/actualizar-usuario", UsuariosControllers.EditarUsuario);
+apiUsuarios.put(
+  "/actualizar-usuario",
+  verificarToken,
+  UsuariosControllers.EditarUsuario,
+);
 
 /**
  * @swagger
@@ -356,6 +364,7 @@ apiUsuarios.put("/actualizar-usuario", UsuariosControllers.EditarUsuario);
 
 apiUsuarios.delete(
   "/eliminar-usuario/:id",
+  verificarToken,
   UsuariosControllers.EliminarUsuario,
 );
 

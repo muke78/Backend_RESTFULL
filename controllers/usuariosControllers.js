@@ -52,8 +52,13 @@ const InsertarUsario = async (req, res) => {
 
     await insertTeacherBeforeUser(email);
 
-    if (result.affectedRows > 0)
-      return methodCreated(req, res, queryParamsInsert);
+    // Verificar si se insertó correctamente
+    if (result.affectedRows > 0) {
+      const queryGetUser = `SELECT NameUser, Email, Role, AccountStatus FROM users WHERE Email = ?`;
+      const newUser = await connectionQuery(queryGetUser, [email]);
+
+      return methodCreated(req, res, newUser[0]);
+    }
   } catch (error) {
     methodError(req, res, error);
   }
