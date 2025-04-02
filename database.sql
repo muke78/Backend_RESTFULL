@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.38, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.41, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: backend
+-- Host: localhost    Database: backend
 -- ------------------------------------------------------
--- Server version	8.0.39
+-- Server version	8.4.4
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -218,7 +218,7 @@ CREATE TABLE `parents` (
   `Created` datetime DEFAULT (now()),
   `Updated` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `Status` varchar(20) DEFAULT 'Activo',
-  PRIMARY KEY (`ID`,`TeacherID`),
+  PRIMARY KEY (`ID`),
   KEY `fk_teacher` (`TeacherID`),
   CONSTRAINT `fk_teacher` FOREIGN KEY (`TeacherID`) REFERENCES `teachers` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -323,17 +323,16 @@ CREATE TABLE `students` (
   `Allergies` varchar(255) NOT NULL,
   `MedicalConditions` varchar(255) NOT NULL,
   `EnrollmentDate` date NOT NULL,
-  `Status` varchar(20) DEFAULT 'Activo' /*!80023 INVISIBLE */,
+  `Status` varchar(20) DEFAULT 'Activo',
   `Created` datetime DEFAULT CURRENT_TIMESTAMP,
   `Updated` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`ID`),
-  KEY `IDMom` (`IDMom`),
-  KEY `IDDad` (`IDDad`),
-  KEY `IDTeacher` (`IDTeacher`),
-  CONSTRAINT `students_ibfk_1` FOREIGN KEY (`IDMom`) REFERENCES `parents` (`ID`),
-  CONSTRAINT `students_ibfk_2` FOREIGN KEY (`IDMom`) REFERENCES `parents` (`ID`),
-  CONSTRAINT `students_ibfk_3` FOREIGN KEY (`IDDad`) REFERENCES `parents` (`ID`),
-  CONSTRAINT `students_ibfk_4` FOREIGN KEY (`IDTeacher`) REFERENCES `parents` (`TeacherID`)
+  KEY `fk_students_mom` (`IDMom`),
+  KEY `fk_students_dad` (`IDDad`),
+  KEY `fk_students_teacher` (`IDTeacher`),
+  CONSTRAINT `fk_students_dad` FOREIGN KEY (`IDDad`) REFERENCES `parents` (`ID`),
+  CONSTRAINT `fk_students_mom` FOREIGN KEY (`IDMom`) REFERENCES `parents` (`ID`),
+  CONSTRAINT `fk_students_teacher` FOREIGN KEY (`IDTeacher`) REFERENCES `teachers` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -374,11 +373,12 @@ CREATE TABLE `teachers` (
   `Address` varchar(255) NOT NULL,
   `EmergencyContact` varchar(100) NOT NULL,
   `EmergencyPhone` varchar(15) NOT NULL,
-  `Created` datetime DEFAULT (now()),
+  `Created` datetime DEFAULT CURRENT_TIMESTAMP,
   `Updated` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `Status` varchar(20) DEFAULT 'Activo',
-  PRIMARY KEY (`ID`,`TeacherID`),
-  KEY `teachers_ibfk_1` (`TeacherID`)
+  PRIMARY KEY (`ID`),
+  KEY `fk_teachers_user` (`TeacherID`),
+  CONSTRAINT `fk_teachers_user` FOREIGN KEY (`TeacherID`) REFERENCES `users` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -452,7 +452,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES ('024b0f46-8092-11ef-bf4d-d843ae0db894','Maria Jose','petite.mary05@gmail.com','$argon2id$v=19$m=65536,t=3,p=4$y2fgA8SOm5ShtqhIdOJoPA$SjUR7rIqxoenvzGPWVc4kPOZpiL4YMNHfA46l4RP6yY','https://i.pinimg.com/736x/45/e6/48/45e6481de019b1b0fe4a6b866bf093e6.jpg','admin','normal','2025-03-29 06:08:06','Activo','2024-10-02 01:43:26','2025-03-29 06:08:06'),('a79da5d1-0b70-11f0-ae9f-d843ae0db894','Aurora','aurora@gmail.com','$argon2id$v=19$m=65536,t=3,p=4$tRWgBBUiFWwPNUSx8REa4g$r6udsrT8xBH4FyQRNXvimFsCkBWX+8br7nXnoSeI3io',NULL,'user','normal',NULL,'Activo','2025-03-27 19:04:52','2025-03-29 02:41:07'),('b6b4d5ff-8167-11ef-a62a-00e04c360195','Erick Muke','muke7881@gmail.com','$argon2id$v=19$m=65536,t=3,p=4$y0S1I/qx152uwXeeC8dF9g$m/G4GtEfcDhMngGaO5TSfPC6FQxMoclnydpRha0xp5c',NULL,'user','normal','2025-03-29 03:31:17','Activo','2024-10-03 03:13:11','2025-03-29 03:31:17'),('d1773f12-86b3-11ef-8a8b-00e04c360195','La pecas','daires2509@gmail.com','$argon2id$v=19$m=65536,t=3,p=4$h06TyYbTW1uo6xog1jl96w$7o9T7++3WsH6mW3vTWsAlRstJoOTn0OBAz1kOC/Pj9U',NULL,'user','normal','2025-03-29 02:14:15','Activo','2024-10-09 21:00:34','2025-03-29 02:41:07'),('d1b6c3a4-0c86-11f0-ae9f-d843ae0db894','Erick Gonzalez','erickm.gonzalez.rivera@gmail.com',NULL,'https://lh3.googleusercontent.com/a/ACg8ocIr7l_94AWgFXpAuxJRF_w_5f1MSBIK1AlWbej6rvteFmdG0dU=s96-c','user','google','2025-03-29 06:18:05','Activo','2025-03-29 04:16:03','2025-03-29 06:18:05');
+INSERT INTO `users` VALUES ('024b0f46-8092-11ef-bf4d-d843ae0db894','Maria Jose','petite.mary05@gmail.com','$argon2id$v=19$m=65536,t=3,p=4$y2fgA8SOm5ShtqhIdOJoPA$SjUR7rIqxoenvzGPWVc4kPOZpiL4YMNHfA46l4RP6yY','https://i.pinimg.com/736x/45/e6/48/45e6481de019b1b0fe4a6b866bf093e6.jpg','admin','normal','2025-04-01 22:30:16','Activo','2024-10-02 01:43:26','2025-04-01 22:30:16'),('a79da5d1-0b70-11f0-ae9f-d843ae0db894','Aurora','aurora@gmail.com','$argon2id$v=19$m=65536,t=3,p=4$tRWgBBUiFWwPNUSx8REa4g$r6udsrT8xBH4FyQRNXvimFsCkBWX+8br7nXnoSeI3io',NULL,'user','normal',NULL,'Activo','2025-03-27 19:04:52','2025-03-29 02:41:07'),('b6b4d5ff-8167-11ef-a62a-00e04c360195','Erick Muke','muke7881@gmail.com','$argon2id$v=19$m=65536,t=3,p=4$y0S1I/qx152uwXeeC8dF9g$m/G4GtEfcDhMngGaO5TSfPC6FQxMoclnydpRha0xp5c',NULL,'user','normal','2025-03-29 03:31:17','Activo','2024-10-03 03:13:11','2025-03-29 03:31:17'),('d1773f12-86b3-11ef-8a8b-00e04c360195','La pecas','daires2509@gmail.com','$argon2id$v=19$m=65536,t=3,p=4$h06TyYbTW1uo6xog1jl96w$7o9T7++3WsH6mW3vTWsAlRstJoOTn0OBAz1kOC/Pj9U',NULL,'user','normal','2025-03-29 02:14:15','Activo','2024-10-09 21:00:34','2025-03-29 02:41:07'),('d1b6c3a4-0c86-11f0-ae9f-d843ae0db894','Erick Gonzalez','erickm.gonzalez.rivera@gmail.com',NULL,'https://lh3.googleusercontent.com/a/ACg8ocIr7l_94AWgFXpAuxJRF_w_5f1MSBIK1AlWbej6rvteFmdG0dU=s96-c','user','google','2025-03-29 06:18:05','Activo','2025-03-29 04:16:03','2025-03-29 06:18:05');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -649,4 +649,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-01 20:05:28
+-- Dump completed on 2025-04-01 22:32:40
