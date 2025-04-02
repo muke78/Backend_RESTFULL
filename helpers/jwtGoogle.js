@@ -5,7 +5,7 @@ process.loadEnvFile();
 
 const secret = process.env.JWT_SECRET;
 
-export const createToken = (user) => {
+export const createTokenGoogle = (user) => {
   // Duracion de 2 minutos para probar que el toke se expire correctamente
   // const expirationDate = addMinute(new Date(), 2);
 
@@ -14,14 +14,14 @@ export const createToken = (user) => {
   const expirationTime = Math.floor(expirationDate.getTime() / 1000);
 
   const payload = {
-    id: user.id,
-    nameUser: user.nameUser,
+    id: user.ID,
+    nameUser: user.NameUser,
     email: user.email,
-    profilePicture: user.profilePicture,
-    role: user.role,
-    accountType: user.accountType,
-    lastLogin: user.lastLogin,
-    accountStatus: user.accountStatus,
+    profilePicture: user.ProfilePicture,
+    role: user.Role,
+    accountType: user.AccountType,
+    lastLogin: user.LastLogin,
+    accountStatus: user.AccountStatus,
     iat: Math.floor(Date.now() / 1000),
     exp: expirationTime,
   };

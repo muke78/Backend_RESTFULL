@@ -29,25 +29,25 @@ const ObtenerTodosLosUsuarios = async (req, res) => {
 
 const InsertarUsario = async (req, res) => {
   try {
-    const { nameUser, email, password, role = "user" } = req.body;
+    const { nameUser, email, password } = req.body;
 
     if (!nameUser || !email || !password) return methodIncorrect(req, res);
 
-    const queryValidate = `SELECT * FROM users WHERE Email = ?`;
-    const queryParamsValidate = [email];
-    const resultValidate = await connectionQuery(
-      queryValidate,
-      queryParamsValidate,
-    );
+    const queryValidate = `SELECT AccountType FROM users WHERE Email = ?`;
+    const resultValidate = await connectionQuery(queryValidate, [email]);
 
     if (resultValidate.length > 0)
       return methodError(req, res, {
         message: "El correo ya se encuentra registrado",
       });
 
+    // Hashear la contraseña
     const hashedPasword = await hashedArg.hash(password);
-    const queryInsert = `INSERT INTO users (ID, NameUser, Email, Password, Role, LastLogin) VALUES (UUID(), ?, ?, ?, ?, NULL)`;
-    const queryParamsInsert = [nameUser, email, hashedPasword, role];
+    const queryInsert = `
+    INSERT INTO users (ID, NameUser, Email, Password, Role, AccountType, LastLogin) 
+    VALUES (UUID(), ?, ?, ?, 'user', 'normal', NULL)
+  `;
+    const queryParamsInsert = [nameUser, email, hashedPasword];
     const result = await connectionQuery(queryInsert, queryParamsInsert);
 
     await insertTeacherBeforeUser(email);
@@ -176,23 +176,11 @@ const Login = async (req, res) => {
       });
 
     if (user.AccountStatus === "Inactivo") {
-      const timestamp = new Date().toISOString();
-      const requestId = crypto.randomUUID();
-      return res.status(403).json({
-        success: false,
-        error: {
-          message:
-            "El usuario está inactivo, pida la reactivación a un administrador",
-          code: "FORBIDDEN",
-          details:
-            req.body?.message ||
-            "La solicitud requiere un token de autenticación válido.",
-          timestamp: timestamp,
-          requestId: requestId,
-          path: req.originalUrl,
-          method: req.method,
-        },
-      });
+      return methodForbidden(
+        req,
+        res,
+        "El usuario está inactivo, pida la reactivación a un administrador",
+      );
     }
 
     // Crea el token
@@ -200,7 +188,9 @@ const Login = async (req, res) => {
       id: user.ID,
       nameUser: user.NameUser,
       email: user.Email,
+      profilePicture: user.ProfilePicture,
       role: user.Role,
+      accountType: user.AccountType,
       lastLogin: user.LastLogin,
       accountStatus: user.AccountStatus,
     });

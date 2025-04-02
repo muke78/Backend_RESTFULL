@@ -76,9 +76,8 @@ const methodForbidden = (req, res, message) => {
   res.status(403).json({
     success: false,
     error: {
-      message: "Acceso denegado. No tienes permiso para acceder a este recurso.",
+      message: message,
       code: "FORBIDDEN",
-      details: message || "La solicitud requiere un token de autenticación válido.",
       timestamp: timestamp,
       requestId: requestId,
       path: req.originalUrl,
