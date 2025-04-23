@@ -24,7 +24,17 @@ app.use((err, req, res, next) => {
 });
 
 // Crear y arrancar el servidor
+const PORT = 3000;
 const server = createServer(app);
-server.listen(3000, () => {
-  console.log("El servidor está escuchando en el puerto 3000");
+server.on("error", (error) => {
+  if (error.code === "EADDRINUSE") {
+    console.log(`Port ${PORT} is busy, trying ${PORT + 1}`);
+    server.listen(PORT + 1);
+  } else {
+    console.error("Serve error:", error);
+  }
+});
+
+server.listen(PORT, () => {
+  console.log(`Server is listening on port ${server.address().port}`);
 });
