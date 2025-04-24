@@ -27,6 +27,45 @@ const ObtenerTodosLosUsuarios = async (req, res) => {
   }
 };
 
+// const ObtenerTodosLosUsuarios = async (req, res) => {
+//   try {
+//     // Tomar parámetros de paginación
+//     const page = parseInt(req.query.page) || 1;
+//     const limit = parseInt(req.query.limit) || 7;
+//     const offset = (page - 1) * limit;
+
+//     // Consulta paginada
+//     const obtenerUsuarios = `
+//       SELECT * FROM users ORDER BY NameUser ASC LIMIT ? OFFSET ?;
+//     `;
+//     const totalUsuarios = `SELECT COUNT(*) AS total FROM users;`;
+
+//     const [result, countResult] = await Promise.all([
+//       connectionQuery(obtenerUsuarios, [limit, offset]),
+//       connectionQuery(totalUsuarios),
+//     ]);
+
+//     const total = countResult[0].total;
+
+//     if (result.length === 0) return methodNotFound(req, res);
+
+//     // Puedes devolver los datos junto a un `metadata`
+//     res.status(200).json({
+//       success: true,
+//       data: result,
+//       message: "Consulta realizada correctamente",
+//       metadata: {
+//         currentPage: page,
+//         pageSize: limit,
+//         totalPages: Math.ceil(total / limit),
+//         dataCount: total
+//       },
+//     });
+//   } catch (error) {
+//     methodError(req, res, error);
+//   }
+// };
+
 const InsertarUsario = async (req, res) => {
   try {
     const { nameUser, email, password } = req.body;
