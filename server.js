@@ -1,9 +1,11 @@
+import cors from "cors";
 import express from "express";
+import helmet from "helmet";
+import morgan from "morgan";
 import { createServer } from "node:http";
 
 import { setupSwagger } from "./config/swaggerConfig.js";
-import { corsMiddleware } from "./middleware/cors.js";
-import { securityHeadersMiddleware } from "./middleware/securityHeaders.js";
+import { corsOptions } from "./middleware/cors.js";
 import { router } from "./router/index.js";
 
 const app = express();
@@ -12,9 +14,10 @@ const app = express();
 setupSwagger(app);
 
 // Middleware
-app.use(corsMiddleware);
-app.use(securityHeadersMiddleware);
+app.use(cors(corsOptions));
 app.use(express.json());
+app.use(morgan("dev"));
+app.use(helmet());
 app.use(router);
 
 // Middleware de manejo de errores
