@@ -368,4 +368,10 @@ apiUsuarios.delete(
   UsuariosControllers.EliminarUsuario,
 );
 
+apiUsuarios.delete(
+  "/bulk-delete-users",
+  verificarToken,
+  UsuariosControllers.DeleteUserBulk,
+);
+
 export { apiUsuarios };

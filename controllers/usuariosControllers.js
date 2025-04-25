@@ -192,6 +192,37 @@ const EliminarUsuario = async (req, res) => {
   }
 };
 
+const DeleteUserBulk = async (req, res) => {
+  try {
+    const { ids } = req.body;
+    if (!Array.isArray(ids) || ids.length === 0)
+      return methodIncorrect(req, res);
+
+    const MAX_IDS = 600;
+    if (ids.length > MAX_IDS) {
+      return methodIncorrect(req, res, {
+        message: `No se pueden eliminar más de ${MAX_IDS} tareas en una sola solicitud`,
+      });
+    }
+
+    const batchSize = 100;
+    const totalBatches = Math.ceil(ids.length / batchSize);
+
+    for (let i = 0; i < totalBatches; i++) {
+      const batch = ids.slice(i * batchSize, (i + 1) * batchSize);
+      const placeholders = batch.map(() => "?").join(",");
+      const queryDeleteBulkUsers = `DELETE FROM users WHERE id IN (${placeholders})`;
+
+      await connectionQuery(queryDeleteBulkUsers, batch);
+    }
+    methodOK(req, res, {
+      message: `Se eliminaron ${ids.length} usuarios correctamente`,
+    });
+  } catch (error) {
+    methodError(req, res, error);
+  }
+};
+
 const Login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -247,5 +278,6 @@ export default {
   InsertarUsario,
   EditarUsuario,
   EliminarUsuario,
+  DeleteUserBulk,
   Login,
 };
