@@ -72,7 +72,7 @@ const apiUsuarios = express.Router();
  */
 
 apiUsuarios.get(
-  "/lista-de-usuarios",
+  "/lista-de-usuarios/:status",
   verificarToken,
   UsuariosControllers.ObtenerTodosLosUsuarios,
 );

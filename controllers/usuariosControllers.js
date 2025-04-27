@@ -16,8 +16,30 @@ import {
 
 const ObtenerTodosLosUsuarios = async (req, res) => {
   try {
-    const obtenerUsuarios = `SELECT * FROM users ORDER BY NameUser ASC;`;
-    const result = await connectionQuery(obtenerUsuarios);
+    const { status } = req.params;
+    const { correo, rol } = req.query;
+
+    let query = `SELECT * FROM users WHERE 1=1`;
+    const params = [];
+
+    if (status && status !== "All") {
+      query += ` AND AccountStatus = ?`;
+      params.push(status);
+    }
+
+    if (correo && correo !== "All") {
+      query += ` AND AccountType = ?`;
+      params.push(correo);
+    }
+
+    if (rol && rol !== "All") {
+      query += ` AND Role = ?`;
+      params.push(rol);
+    }
+
+    query += ` ORDER BY NameUser ASC`;
+
+    const result = await connectionQuery(query, params);
 
     if (result.length === 0) return methodNotFound(req, res);
 
@@ -72,10 +94,12 @@ const InsertarUsario = async (req, res) => {
 
     if (!nameUser || !email || !password) return methodIncorrect(req, res);
 
-    const queryValidate = `SELECT AccountType FROM users WHERE Email = ?`;
-    const resultValidate = await connectionQuery(queryValidate, [email]);
+    const [existingUser] = await connectionQuery(
+      `SELECT AccountType FROM users WHERE Email = ?`,
+      [email],
+    );
 
-    if (resultValidate.length > 0)
+    if (existingUser)
       return methodError(req, res, {
         message: "El correo ya se encuentra registrado",
       });
@@ -89,7 +113,7 @@ const InsertarUsario = async (req, res) => {
     const queryParamsInsert = [nameUser, email, hashedPasword];
     const result = await connectionQuery(queryInsert, queryParamsInsert);
 
-    await insertTeacherBeforeUser(email);
+    // await insertTeacherBeforeUser(email);
 
     // Verificar si se insertó correctamente
     if (result.affectedRows > 0) {
@@ -195,14 +219,17 @@ const EliminarUsuario = async (req, res) => {
 const DeleteUserBulk = async (req, res) => {
   try {
     const { ids } = req.body;
+
     if (!Array.isArray(ids) || ids.length === 0)
       return methodIncorrect(req, res);
 
     const MAX_IDS = 600;
     if (ids.length > MAX_IDS) {
-      return methodIncorrect(req, res, {
-        message: `No se pueden eliminar más de ${MAX_IDS} tareas en una sola solicitud`,
-      });
+      return methodIncorrect(
+        req,
+        res,
+        `No se pueden eliminar más de ${MAX_IDS} usuarios en una sola solicitud`,
+      );
     }
 
     const batchSize = 100;
@@ -212,12 +239,9 @@ const DeleteUserBulk = async (req, res) => {
       const batch = ids.slice(i * batchSize, (i + 1) * batchSize);
       const placeholders = batch.map(() => "?").join(",");
       const queryDeleteBulkUsers = `DELETE FROM users WHERE id IN (${placeholders})`;
-
       await connectionQuery(queryDeleteBulkUsers, batch);
     }
-    methodOK(req, res, {
-      message: `Se eliminaron ${ids.length} usuarios correctamente`,
-    });
+    methodOK(req, res, `Se eliminaron ${ids.length} usuarios correctamente`);
   } catch (error) {
     methodError(req, res, error);
   }
