@@ -3,6 +3,8 @@ import crypto from "node:crypto";
 const methodOK = (req, res, result) => {
   const timestamp = new Date().toISOString();
   const requestId = crypto.randomUUID();
+  const totalDataCount = Array.isArray(result) ? result.length : result ? 1 : 0;
+  const formattedDataCount = totalDataCount.toLocaleString("es-MX");
 
   res.status(200).json({
     success: true,
@@ -11,7 +13,7 @@ const methodOK = (req, res, result) => {
     metadata: {
       timestamp: timestamp,
       requestId: requestId,
-      dataCount: Array.isArray(result) ? result.length : result ? 1 : 0,
+      dataCount: formattedDataCount,
     },
   });
 };
