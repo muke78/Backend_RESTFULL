@@ -241,7 +241,9 @@ const DeleteUserBulk = async (req, res) => {
       const queryDeleteBulkUsers = `DELETE FROM users WHERE id IN (${placeholders})`;
       await connectionQuery(queryDeleteBulkUsers, batch);
     }
-    methodOK(req, res, `Se eliminaron ${ids.length} usuarios correctamente`);
+    methodOK(req, res, {
+      message: `Se eliminaron ${ids.length} usuarios correctamente`,
+    });
   } catch (error) {
     methodError(req, res, error);
   }
