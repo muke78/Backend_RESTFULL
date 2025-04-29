@@ -49,6 +49,30 @@ const ObtenerTodosLosUsuarios = async (req, res) => {
   }
 };
 
+const BusquedaDeUsuarios = async (req, res) => {
+  try {
+    const { email } = req.params;
+    let querySearchUsers = `SELECT * FROM users WHERE 1=1`;
+    const queryParamsSearch = [];
+
+    if (email) {
+      querySearchUsers += ` AND Email LIKE ?`;
+      queryParamsSearch.push(`%${email}%`);
+    }
+
+    const resultSearch = await connectionQuery(
+      querySearchUsers,
+      queryParamsSearch,
+    );
+
+    methodOK(req, res, resultSearch);
+
+    if (resultSearch.length === 0) return methodNotFound(req, res);
+  } catch (error) {
+    methodError(req, res, error);
+  }
+};
+
 // const ObtenerTodosLosUsuarios = async (req, res) => {
 //   try {
 //     // Tomar parámetros de paginación
@@ -301,6 +325,7 @@ const Login = async (req, res) => {
 
 export default {
   ObtenerTodosLosUsuarios,
+  BusquedaDeUsuarios,
   InsertarUsario,
   EditarUsuario,
   EliminarUsuario,

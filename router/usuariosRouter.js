@@ -77,6 +77,12 @@ apiUsuarios.get(
   UsuariosControllers.ObtenerTodosLosUsuarios,
 );
 
+apiUsuarios.get(
+  "/busqueda-usuario/:email",
+  verificarToken,
+  UsuariosControllers.BusquedaDeUsuarios,
+);
+
 /**
  * @swagger
  * /login:
