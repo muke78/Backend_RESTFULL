@@ -6,6 +6,7 @@ import { insertTeacherBeforeUser } from "../helpers/insertTeacherWithUser.js";
 import { createToken } from "../helpers/jwt.js";
 import { lastLogin } from "../helpers/userLastLogin.js";
 import {
+  methodConflicts,
   methodCreated,
   methodError,
   methodForbidden,
@@ -118,9 +119,10 @@ const BusquedaDeUsuarios = async (req, res) => {
 
 const InsertarUsario = async (req, res) => {
   try {
-    const { nameUser, email, password } = req.body;
+    const { nameUser, email, password, role } = req.body;
 
-    if (!nameUser || !email || !password) return methodIncorrect(req, res);
+    if (!nameUser || !email || !password || !role)
+      return methodIncorrect(req, res);
 
     const [existingUser] = await connectionQuery(
       `SELECT AccountType FROM users WHERE Email = ?`,
@@ -128,7 +130,7 @@ const InsertarUsario = async (req, res) => {
     );
 
     if (existingUser)
-      return methodError(req, res, {
+      return methodConflicts(req, res, {
         message: "El correo ya se encuentra registrado",
       });
 
@@ -136,9 +138,9 @@ const InsertarUsario = async (req, res) => {
     const hashedPasword = await hashedArg.hash(password);
     const queryInsert = `
     INSERT INTO users (ID, NameUser, Email, Password, Role, AccountType, LastLogin) 
-    VALUES (UUID(), ?, ?, ?, 'user', 'normal', NULL)
+    VALUES (UUID(), ?, ?, ?, ?, 'normal', NULL)
   `;
-    const queryParamsInsert = [nameUser, email, hashedPasword];
+    const queryParamsInsert = [nameUser, email, hashedPasword, role];
     const result = await connectionQuery(queryInsert, queryParamsInsert);
 
     // await insertTeacherBeforeUser(email);
@@ -158,6 +160,16 @@ const InsertarUsario = async (req, res) => {
 const EditarUsuario = async (req, res) => {
   try {
     const { nameUser, email, password, role, accountStatus, id } = req.body;
+
+    const [existingUser] = await connectionQuery(
+      `SELECT id FROM users WHERE Email = ? AND ID != ?`,
+      [email, id],
+    );
+
+    if (existingUser)
+      return methodConflicts(req, res, {
+        message: "El correo ya existe y no se puede actualizar ",
+      });
 
     if (id) {
       const queryValidateUpdate = `SELECT * FROM users WHERE ID = ?`;

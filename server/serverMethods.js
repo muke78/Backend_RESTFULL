@@ -104,7 +104,7 @@ const methodNotFound = (req, res, message) => {
   });
 };
 
-const methodConflicts = (req, res) => {
+const methodConflicts = (req, res, error) => {
   const timestamp = new Date().toISOString();
   const requestId = crypto.randomUUID();
 
@@ -112,6 +112,7 @@ const methodConflicts = (req, res) => {
     success: false,
     error: {
       message:
+        error.message ||
         "Conflicto. El recurso ya existe o hay un conflicto con la solicitud.",
       code: "CONFLICT",
       details:
