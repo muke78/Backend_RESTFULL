@@ -7,17 +7,39 @@ const apiUsuarios = express.Router();
 
 /**
  * @swagger
- * /lista-de-usuarios:
+ * /lista-de-usuarios/{status}:
  *   get:
- *     summary: Obtener todos los usuarios
- *     description: Devuelve una lista de todos los usuarios ordenados por nombre de usuario en orden ascendente.
+ *     summary: Obtener todos los usuarios según filtros opcionales
+ *     description: Retorna una lista de usuarios filtrados por estado, tipo de cuenta y rol. Si algún filtro tiene el valor "All", no se aplica.
  *     tags:
- *       - Users
+ *       - Usuarios
  *     security:
  *       - BearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: status
+ *         required: true
+ *         schema:
+ *           type: string
+ *           example: Activo
+ *         description: Estado de la cuenta del usuario (ej. "Activo", "Inactivo", "All")
+ *       - in: query
+ *         name: correo
+ *         required: false
+ *         schema:
+ *           type: string
+ *           example: normal
+ *         description: Tipo de cuenta del usuario (ej. "normal", "admin", "All")
+ *       - in: query
+ *         name: rol
+ *         required: false
+ *         schema:
+ *           type: string
+ *           example: user
+ *         description: Rol del usuario (ej. "maestro", "admin", "All")
  *     responses:
  *       200:
- *         description: Lista de usuarios obtenida con éxito
+ *         description: Lista de usuarios encontrada exitosamente
  *         content:
  *           application/json:
  *             schema:
@@ -27,48 +49,23 @@ const apiUsuarios = express.Router();
  *                 properties:
  *                   ID:
  *                     type: string
- *                     description: ID del usuario.
- *                     example: "c4f2525c-8062-11ef-949a-00e04c360195"
  *                   NameUser:
  *                     type: string
- *                     description: Nombre del usuario.
- *                     example: "Juan Pérez"
  *                   Email:
  *                     type: string
- *                     description: Correo electrónico del usuario.
- *                     example: "juan.perez@example.com"
  *                   Role:
  *                     type: string
- *                     description: Rol del usuario.
- *                     example: "user"
+ *                   AccountType:
+ *                     type: string
  *                   AccountStatus:
  *                     type: string
- *                     description: Estado de la cuenta.
- *                     example: "active"
  *                   LastLogin:
  *                     type: string
- *                     description: Última fecha de inicio de sesión.
- *                     example: "2024-10-02 12:34:56"
+ *                     format: date-time
  *       404:
- *         description: No se encontraron usuarios
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "No se encontraron usuarios"
+ *         description: No se encontraron usuarios con los filtros proporcionados
  *       500:
  *         description: Error interno del servidor
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "Error interno del servidor"
  */
 
 apiUsuarios.get(
@@ -76,6 +73,57 @@ apiUsuarios.get(
   verificarToken,
   UsuariosControllers.ObtenerTodosLosUsuarios,
 );
+
+/**
+ * @swagger
+ * /busqueda-usuario/{email}:
+ *   get:
+ *     summary: Buscar un usuario por su correo electrónico
+ *     description: Retorna la información de un usuario que coincida parcialmente con el correo proporcionado.
+ *     tags:
+ *       - Usuarios
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: email
+ *         required: true
+ *         schema:
+ *           type: string
+ *           example: ejemplo@correo.com
+ *         description: Correo (o parte de él) del usuario a buscar
+ *     responses:
+ *       200:
+ *         description: Usuario encontrado exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   ID:
+ *                     type: string
+ *                   NameUser:
+ *                     type: string
+ *                   Email:
+ *                     type: string
+ *                   Role:
+ *                     type: string
+ *                   AccountType:
+ *                     type: string
+ *                   AccountStatus:
+ *                     type: string
+ *                   LastLogin:
+ *                     type: string
+ *                     format: date-time
+ *       400:
+ *         description: Petición incorrecta (falta el parámetro de email)
+ *       404:
+ *         description: No se encontró ningún usuario con el correo proporcionado
+ *       500:
+ *         description: Error interno del servidor
+ */
 
 apiUsuarios.get(
   "/busqueda-usuario/:email",
@@ -85,149 +133,64 @@ apiUsuarios.get(
 
 /**
  * @swagger
- * /login:
- *   post:
- *     summary: Inicia sesión de usuario
- *     description: Autentica a un usuario utilizando su correo electrónico y contraseña. Devuelve un token si la autenticación es exitosa.
- *     tags:
- *       - Users
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               email:
- *                 type: string
- *                 format: email
- *                 example: "usuario@example.com"
- *               password:
- *                 type: string
- *                 example: "TuContraseñaSecreta"
- *     responses:
- *       200:
- *         description: Inicio de sesión exitoso. Retorna un token JWT.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 token:
- *                   type: string
- *                   example: "eyJhbGciOiJIUzI1NiIsInR..."
- *       400:
- *         description: Error de validación de datos (correo o contraseña faltantes o inválidos).
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "El correo electrónico es requerido"
- *       403:
- *         description: El usuario está inactivo y no puede iniciar sesión.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "El usuario está inactivo, pida la reactivación a un administrador"
- *       404:
- *         description: El usuario no se encuentra registrado.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "El usuario no se encuentra registrado"
- *       500:
- *         description: Error interno del servidor durante la autenticación.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "La contraseña es incorrecta o está mal escrita"
- */
-
-apiUsuarios.post("/login", UsuariosControllers.Login);
-
-/**
- * @swagger
  * /crear-usuario:
  *   post:
- *     summary: Crea un nuevo usuario
- *     description: Este endpoint permite crear un nuevo usuario en el sistema. Los campos obligatorios son nameUser, email, password, role y accountStatus.
+ *     summary: Crear un nuevo usuario
+ *     description: Registra un nuevo usuario con los datos proporcionados. El correo debe ser único.
  *     tags:
- *       - Users
+ *       - Usuarios
+ *     security:
+ *       - BearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
  *             type: object
+ *             required:
+ *               - nameUser
+ *               - email
+ *               - password
+ *               - accountStatus
+ *               - role
  *             properties:
  *               nameUser:
  *                 type: string
- *                 description: Nombre del usuario.
- *                 example: "Juan Pérez"
+ *                 example: Juan Pérez
  *               email:
  *                 type: string
- *                 description: Correo electrónico del usuario.
- *                 example: "juan.perez@example.com"
+ *                 example: juan@example.com
  *               password:
  *                 type: string
- *                 description: Contraseña del usuario.
- *                 example: "securePassword123"
- *               role:
- *                 type: string
- *                 description: Rol del usuario (por ejemplo, 'admin', 'user').
- *                 example: "user"
+ *                 example: MiContraseñaSegura123!
  *               accountStatus:
  *                 type: string
- *                 description: Estado de la cuenta (por ejemplo, 'active', 'inactive').
- *                 example: "active"
+ *                 example: Activo
+ *               role:
+ *                 type: string
+ *                 example: maestro
  *     responses:
- *       200:
- *         description: Usuario creado con éxito
+ *       201:
+ *         description: Usuario creado exitosamente
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 message:
+ *                 NameUser:
  *                   type: string
- *                   example: "Usuario creado con exito"
+ *                 Email:
+ *                   type: string
+ *                 Role:
+ *                   type: string
+ *                 AccountStatus:
+ *                   type: string
  *       400:
- *         description: Falta un campo obligatorio
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "Los campos son requeridos"
+ *         description: Faltan campos requeridos en la solicitud
+ *       409:
+ *         description: El correo ya está registrado
  *       500:
  *         description: Error interno del servidor
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "Error al crear el usuario"
- *                 error:
- *                   type: object
  */
 
 apiUsuarios.post(
@@ -236,74 +199,117 @@ apiUsuarios.post(
   UsuariosControllers.InsertarUsario,
 );
 
-apiUsuarios.post(
-  "/registrar-usuario",
-  verificarToken,
-  UsuariosControllers.RegistrarUsuario,
-);
-
 /**
  * @swagger
- * /actualizar-usuario:
- *   put:
- *     summary: Actualiza un usuario existente
- *     description: Este endpoint permite actualizar la información de un usuario existente en el sistema. Los campos obligatorios son nameUser, email, password, role, accountStatus e id.
+ * /registrar-usuario:
+ *   post:
+ *     summary: Registro de nuevo usuario sin autenticación previa
+ *     description: Registra un nuevo usuario con rol definido. El usuario se crea con estado "Inactivo" y tipo de cuenta "normal".
  *     tags:
- *       - Users
+ *       - Usuarios
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
  *             type: object
+ *             required:
+ *               - nameUser
+ *               - email
+ *               - password
+ *               - role
+ *             properties:
+ *               nameUser:
+ *                 type: string
+ *                 example: Ana Torres
+ *               email:
+ *                 type: string
+ *                 example: ana@correo.com
+ *               password:
+ *                 type: string
+ *                 example: MiClaveSegura456!
+ *               role:
+ *                 type: string
+ *                 example: maestro
+ *     responses:
+ *       201:
+ *         description: Usuario registrado exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 NameUser:
+ *                   type: string
+ *                 Email:
+ *                   type: string
+ *                 Role:
+ *                   type: string
+ *                 AccountStatus:
+ *                   type: string
+ *                   example: Inactivo
+ *       400:
+ *         description: Faltan campos requeridos en la solicitud
+ *       409:
+ *         description: El correo ya está registrado
+ *       500:
+ *         description: Error interno del servidor
+ */
+
+apiUsuarios.post("/registrar-usuario", UsuariosControllers.RegistrarUsuario);
+
+/**
+ * @swagger
+ * /actualizar-usuario:
+ *   put:
+ *     summary: Actualizar datos de un usuario
+ *     description: Actualiza los datos de un usuario existente. Si se proporciona una nueva contraseña, será hasheada y actualizada. Se requiere token de autenticación.
+ *     tags:
+ *       - Usuarios
+ *     security:
+ *       - BearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - id
+ *               - nameUser
+ *               - email
+ *               - role
+ *               - accountStatus
  *             properties:
  *               id:
  *                 type: string
- *                 description: ID del usuario a actualizar.
- *                 example: "c4f2525c-8062-11ef-949a-00e04c360195"
+ *                 format: uuid
+ *                 example: 5f9c2f4e-1b2a-4c3d-a5b6-7c8d9e0f1a2b
  *               nameUser:
  *                 type: string
- *                 description: Nombre actualizado del usuario.
- *                 example: "Juan Pérez"
+ *                 example: Carlos Ramírez
  *               email:
  *                 type: string
- *                 description: Correo electrónico actualizado del usuario.
- *                 example: "juan.perez@example.com"
+ *                 example: carlos@correo.com
  *               password:
  *                 type: string
- *                 description: Contraseña actualizada del usuario.
- *                 example: "newSecurePassword456"
+ *                 example: NuevaClave789!
+ *                 description: Opcional. Si no se envía, la contraseña no se actualiza.
  *               role:
  *                 type: string
- *                 description: Rol actualizado del usuario.
- *                 example: "admin"
+ *                 example: admin
  *               accountStatus:
  *                 type: string
- *                 description: Estado actualizado de la cuenta.
- *                 example: "active"
+ *                 example: Activo
  *     responses:
  *       200:
- *         description: Usuario actualizado con éxito
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "El usuario se actualizo con exito"
+ *         description: El recurso fue actualizado correctamente
+ *       404:
+ *         description: No se encontró el recurso para actualizar
+ *       409:
+ *         description: El correo ya existe y no se puede actualizar
  *       500:
- *         description: Error en la actualización del usuario o el correo ya está registrado
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "El correo ya se encuentra registrado"
- *                 error:
- *                   type: object
+ *         description: Error interno del servidor
  */
 
 apiUsuarios.put(
@@ -316,62 +322,28 @@ apiUsuarios.put(
  * @swagger
  * /eliminar-usuario/{id}:
  *   delete:
- *     summary: Elimina un usuario
- *     description: Este endpoint elimina un usuario existente basado en el ID proporcionado.
+ *     summary: Eliminar un usuario
+ *     description: Elimina un usuario de la base de datos. Se requiere el ID del usuario como parámetro en la URL. El usuario será eliminado junto con sus registros asociados si existen.
  *     tags:
- *       - Users
+ *       - Usuarios
+ *     security:
+ *       - BearerAuth: []
  *     parameters:
- *       - name: id
- *         in: path
+ *       - in: path
+ *         name: id
  *         required: true
- *         description: ID del usuario a eliminar
  *         schema:
  *           type: string
- *           example: "123e4567-e89b-12d3-a456-426614174000"
+ *           format: uuid
+ *           example: 5f9c2f4e-1b2a-4c3d-a5b6-7c8d9e0f1a2b
+ *         description: ID del usuario que se desea eliminar.
  *     responses:
  *       200:
- *         description: Usuario eliminado exitosamente
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "Usuario eliminado exitosamente"
- *       400:
- *         description: ID no proporcionado o no válido
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "No se envio el ID o no es valido"
+ *         description: El recurso fue eliminado correctamente
  *       404:
- *         description: Usuario no encontrado
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "El usuario no existe"
+ *         description: No se encontró el usuario con el ID proporcionado
  *       500:
- *         description: Error al eliminar el usuario
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "Hubo un error al eliminar el usuario"
- *                 error:
- *                   type: string
- *                   example: "Detalles del error"
+ *         description: Error interno del servidor
  */
 
 apiUsuarios.delete(
@@ -380,10 +352,100 @@ apiUsuarios.delete(
   UsuariosControllers.EliminarUsuario,
 );
 
+/**
+ * @swagger
+ * /bulk-delete-users:
+ *   delete:
+ *     summary: Eliminar múltiples usuarios en una sola solicitud
+ *     description: Permite eliminar hasta 600 usuarios en una sola solicitud. Los IDs de los usuarios deben enviarse en un array en el cuerpo de la solicitud. La eliminación se realiza en lotes de 100 usuarios por vez.
+ *     tags:
+ *       - Usuarios
+ *     security:
+ *       - BearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               ids:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                   format: uuid
+ *                   example: 5f9c2f4e-1b2a-4c3d-a5b6-7c8d9e0f1a2b
+ *                 description: Lista de IDs de usuarios a eliminar
+ *             required:
+ *               - ids
+ *     responses:
+ *       200:
+ *         description: Se eliminaron los usuarios correctamente
+ *       400:
+ *         description: Los datos proporcionados son incorrectos o no se proporcionaron IDs
+ *       404:
+ *         description: Algunos usuarios no fueron encontrados para ser eliminados
+ *       413:
+ *         description: El número de IDs enviados supera el límite permitido de 600
+ *       500:
+ *         description: Error interno del servidor
+ */
+
 apiUsuarios.delete(
   "/bulk-delete-users",
   verificarToken,
   UsuariosControllers.DeleteUserBulk,
 );
+
+/**
+ * @swagger
+ * /login:
+ *   post:
+ *     summary: Iniciar sesión de usuario
+ *     description: Permite a los usuarios iniciar sesión proporcionando su correo electrónico y contraseña. Si las credenciales son correctas, se genera un token de autenticación. Si el usuario está inactivo, se devuelve un error de prohibición.
+ *     tags:
+ *       - Usuarios
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 example: "usuario@example.com"
+ *                 description: Correo electrónico del usuario
+ *               password:
+ *                 type: string
+ *                 format: password
+ *                 example: "password123"
+ *                 description: Contraseña del usuario
+ *             required:
+ *               - email
+ *               - password
+ *     responses:
+ *       200:
+ *         description: Token generado con éxito, sesión iniciada
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 token:
+ *                   type: string
+ *                   description: El token de autenticación JWT
+ *       400:
+ *         description: El correo electrónico o la contraseña no son correctos
+ *       404:
+ *         description: No se encontró un usuario con ese correo electrónico
+ *       403:
+ *         description: El usuario está inactivo
+ *       500:
+ *         description: Error interno del servidor
+ */
+
+apiUsuarios.post("/login", UsuariosControllers.Login);
 
 export { apiUsuarios };

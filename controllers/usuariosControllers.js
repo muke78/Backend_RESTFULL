@@ -149,8 +149,6 @@ const InsertarUsario = async (req, res) => {
     ];
     const result = await connectionQuery(queryInsert, queryParamsInsert);
 
-    // await insertTeacherBeforeUser(email);
-
     // Verificar si se insertó correctamente
     if (result.affectedRows > 0) {
       const queryGetUser = `SELECT NameUser, Email, Role, AccountStatus FROM users WHERE Email = ?`;
