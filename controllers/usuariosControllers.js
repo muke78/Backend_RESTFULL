@@ -119,9 +119,9 @@ const BusquedaDeUsuarios = async (req, res) => {
 
 const InsertarUsario = async (req, res) => {
   try {
-    const { nameUser, email, password, role } = req.body;
+    const { nameUser, email, password, accountStatus, role } = req.body;
 
-    if (!nameUser || !email || !password || !role)
+    if (!nameUser || !email || !password || !accountStatus || !role)
       return methodIncorrect(req, res);
 
     const [existingUser] = await connectionQuery(
@@ -137,10 +137,16 @@ const InsertarUsario = async (req, res) => {
     // Hashear la contraseña
     const hashedPasword = await hashedArg.hash(password);
     const queryInsert = `
-    INSERT INTO users (ID, NameUser, Email, Password, Role, AccountType, LastLogin) 
-    VALUES (UUID(), ?, ?, ?, ?, 'normal', NULL)
+    INSERT INTO users (ID, NameUser, Email, Password, Role, AccountType, AccountStatus, LastLogin) 
+    VALUES (UUID(), ?, ?, ?, ?, "normal", ?, NULL)
   `;
-    const queryParamsInsert = [nameUser, email, hashedPasword, role];
+    const queryParamsInsert = [
+      nameUser,
+      email,
+      hashedPasword,
+      role,
+      accountStatus,
+    ];
     const result = await connectionQuery(queryInsert, queryParamsInsert);
 
     // await insertTeacherBeforeUser(email);
