@@ -236,6 +236,12 @@ apiUsuarios.post(
   UsuariosControllers.InsertarUsario,
 );
 
+apiUsuarios.post(
+  "/registrar-usuario",
+  verificarToken,
+  UsuariosControllers.RegistrarUsuario,
+);
+
 /**
  * @swagger
  * /actualizar-usuario:
