@@ -1,6 +1,7 @@
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import swaggerJsdoc from "swagger-jsdoc";
+import { SwaggerTheme, SwaggerThemeNameEnum } from "swagger-themes";
 import swaggerUi from "swagger-ui-express";
 
 process.loadEnvFile();
@@ -46,12 +47,12 @@ const options = {
 const swaggerDocument = swaggerJsdoc(options);
 
 const setupSwagger = (app) => {
+  const theme = new SwaggerTheme();
   app.use(
     "/api-docs",
     swaggerUi.serve,
     swaggerUi.setup(swaggerDocument, {
-      customCssUrl:
-        "https://cdn.jsdelivr.net/npm/swagger-ui-themes@3.0.0/themes/3.x/theme-material.css",
+      customCss: theme.getBuffer(SwaggerThemeNameEnum.DARK),
     }),
   );
 };
