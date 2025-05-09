@@ -1,15 +1,32 @@
 {
   "name": "backend",
   "version": "1.0.0",
+  "description": "Backend API for the project, using Node.js, Express, and MySQL.",
   "main": "server.js",
   "scripts": {
-    "start": "node ",
+    "start": "node server.js",
     "dev": "node --watch server.js",
     "format": "prettier . --write",
     "prepare": "husky"
   },
   "license": "MIT",
   "type": "module",
+  "author": "Khelde muke78 muke7881@gmail.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/muke78/Backend_RESTFULL.git"
+  },
+  "keywords": [
+    "node",
+    "express",
+    "api",
+    "backend",
+    "mysql",
+    "swagger"
+  ],
+  "engines": {
+    "node": ">=v22.11.0"
+  },
   "dependencies": {
     "@formkit/tempo": "^0.1.2",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
@@ -31,7 +48,10 @@
     "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
+    "@eslint/js": "^9.26.0",
     "@faker-js/faker": "^9.7.0",
-    "prettier": "3.3.3"
+    "eslint": "^9.26.0",
+    "globals": "^16.1.0",
+    "prettier": "^3.5.3"
   }
 }
