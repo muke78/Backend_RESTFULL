@@ -58,13 +58,12 @@ const methodUnauthorized = (req, res, message) => {
     success: false,
     error: {
       message:
+        message ||
         "No autorizado. Es necesario autenticarse para acceder a este recurso.",
       code: "UNAUTHORIZED",
-      details:
-        message || "La solicitud requiere un token de autenticación válido.",
+      details: "La solicitud requiere un token de autenticación válido.",
       timestamp: timestamp,
       requestId: requestId,
-      stack: error.stack || "No se dispone de información adicional.",
       path: req.originalUrl,
       method: req.method,
     },
