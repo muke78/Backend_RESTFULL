@@ -199,6 +199,12 @@ apiUsuarios.post(
   UsuariosControllers.InsertarUsario,
 );
 
+apiUsuarios.post(
+  "/crear-usuario-masiva",
+  verificarToken,
+  UsuariosControllers.InsertarUsuariosRunnerMasive,
+);
+
 /**
  * @swagger
  * /registrar-usuario:
