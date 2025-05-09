@@ -1,6 +1,16 @@
 import express from "express";
 
-import UsuariosControllers from "../controllers/usuariosControllers.js";
+import {
+  BusquedaDeUsuarios,
+  DeleteUserBulk,
+  EditarUsuario,
+  EliminarUsuario,
+  InsertarUsario,
+  InsertarUsuariosRunnerMasive,
+  Login,
+  ObtenerTodosLosUsuarios,
+  RegistrarUsuario,
+} from "../controllers/users/usuariosControllers.js";
 import { verificarToken } from "../middleware/verificarToken.js";
 
 const apiUsuarios = express.Router();
@@ -71,7 +81,7 @@ const apiUsuarios = express.Router();
 apiUsuarios.get(
   "/lista-de-usuarios/:status",
   verificarToken,
-  UsuariosControllers.ObtenerTodosLosUsuarios,
+  ObtenerTodosLosUsuarios,
 );
 
 /**
@@ -125,11 +135,7 @@ apiUsuarios.get(
  *         description: Error interno del servidor
  */
 
-apiUsuarios.get(
-  "/busqueda-usuario/:email",
-  verificarToken,
-  UsuariosControllers.BusquedaDeUsuarios,
-);
+apiUsuarios.get("/busqueda-usuario/:email", BusquedaDeUsuarios);
 
 /**
  * @swagger
@@ -193,16 +199,12 @@ apiUsuarios.get(
  *         description: Error interno del servidor
  */
 
-apiUsuarios.post(
-  "/crear-usuario",
-  verificarToken,
-  UsuariosControllers.InsertarUsario,
-);
+apiUsuarios.post("/crear-usuario", verificarToken, InsertarUsario);
 
 apiUsuarios.post(
   "/crear-usuario-masiva",
   verificarToken,
-  UsuariosControllers.InsertarUsuariosRunnerMasive,
+  InsertarUsuariosRunnerMasive,
 );
 
 /**
@@ -262,7 +264,7 @@ apiUsuarios.post(
  *         description: Error interno del servidor
  */
 
-apiUsuarios.post("/registrar-usuario", UsuariosControllers.RegistrarUsuario);
+apiUsuarios.post("/registrar-usuario", RegistrarUsuario);
 
 /**
  * @swagger
@@ -318,11 +320,7 @@ apiUsuarios.post("/registrar-usuario", UsuariosControllers.RegistrarUsuario);
  *         description: Error interno del servidor
  */
 
-apiUsuarios.put(
-  "/actualizar-usuario",
-  verificarToken,
-  UsuariosControllers.EditarUsuario,
-);
+apiUsuarios.put("/actualizar-usuario", verificarToken, EditarUsuario);
 
 /**
  * @swagger
@@ -352,11 +350,7 @@ apiUsuarios.put(
  *         description: Error interno del servidor
  */
 
-apiUsuarios.delete(
-  "/eliminar-usuario/:id",
-  verificarToken,
-  UsuariosControllers.EliminarUsuario,
-);
+apiUsuarios.delete("/eliminar-usuario/:id", verificarToken, EliminarUsuario);
 
 /**
  * @swagger
@@ -397,11 +391,7 @@ apiUsuarios.delete(
  *         description: Error interno del servidor
  */
 
-apiUsuarios.delete(
-  "/bulk-delete-users",
-  verificarToken,
-  UsuariosControllers.DeleteUserBulk,
-);
+apiUsuarios.delete("/bulk-delete-users", verificarToken, DeleteUserBulk);
 
 /**
  * @swagger
@@ -452,6 +442,6 @@ apiUsuarios.delete(
  *         description: Error interno del servidor
  */
 
-apiUsuarios.post("/login", UsuariosControllers.Login);
+apiUsuarios.post("/login", Login);
 
 export { apiUsuarios };
