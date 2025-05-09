@@ -4,9 +4,9 @@ import helmet from "helmet";
 import morgan from "morgan";
 import { createServer } from "node:http";
 
-import { setupSwagger } from "./config/swaggerConfig.js";
-import { corsOptions } from "./middleware/cors.js";
-import { router } from "./router/index.js";
+import { setupSwagger } from "./src/config/swaggerConfig.js";
+import { corsOptions } from "./src/middleware/cors.js";
+import { router } from "./src/router/index.js";
 
 const app = express();
 
