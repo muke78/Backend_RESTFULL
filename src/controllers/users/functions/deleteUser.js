@@ -1,5 +1,4 @@
 import { connectionQuery } from "../../../helpers/connection.helper.js";
-import { deleteTeacherByUser } from "../../../helpers/deleteTeacherByUser.js";
 import {
   methodError,
   methodIncorrect,
@@ -25,8 +24,6 @@ export const EliminarUsuario = async (req, res) => {
     }
     const queryDelete = `DELETE FROM users WHERE id = ?`;
     const result = await connectionQuery(queryDelete, [id]);
-
-    await deleteTeacherByUser(id);
 
     if (result.affectedRows > 0) {
       methodOK(req, res, {

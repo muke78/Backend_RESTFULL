@@ -10,7 +10,7 @@ import {
   Login,
   ObtenerTodosLosUsuarios,
   RegistrarUsuario,
-} from "../controllers/users/usuariosControllers.js";
+} from "../controllers/users/usersControllers.js";
 import {
   bulkDeleteUserRateLimiter,
   createUserRateLimiter,
