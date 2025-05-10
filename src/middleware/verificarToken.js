@@ -1,19 +1,25 @@
 import jwt from "jsonwebtoken";
 
+import { methodUnauthorized } from "../server/serverMethods.js";
+
 const verificarToken = (req, res, next) => {
   const token = req.header("Authorization");
 
   if (!token) {
-    return res
-      .status(401)
-      .json({ message: "Acceso no autorizado. Token no proporcionado." });
+    return methodUnauthorized(
+      req,
+      res,
+      "Acceso no autorizado. Token no proporcionado.",
+    );
   }
 
   const bearerToken = token.split(" ")[1];
   if (!bearerToken) {
-    return res
-      .status(401)
-      .json({ message: "Acceso no autorizado. Token no proporcionado." });
+    return methodUnauthorized(
+      req,
+      res,
+      "Acceso no autorizado. Token no proporcionado.",
+    );
   }
 
   try {
@@ -22,9 +28,11 @@ const verificarToken = (req, res, next) => {
     req.usuario = decoded;
     next();
   } catch (error) {
-    return res
-      .status(401)
-      .json({ message: "Acceso no autorizado. Token inválido." });
+    return methodUnauthorized(
+      req,
+      res,
+      `Acceso no autorizado. Token inválido ${error}`,
+    );
   }
 };
 
