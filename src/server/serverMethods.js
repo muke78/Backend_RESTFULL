@@ -124,6 +124,26 @@ const methodConflicts = (req, res, error) => {
   });
 };
 
+const methodTooManyRequests = (req, res, message) => {
+  const timestamp = new Date().toISOString();
+  const requestId = crypto.randomUUID();
+
+  res.status(429).json({
+    success: false,
+    error: {
+      message:
+        message || "Demasiadas solicitudes. Por favor, inténtalo más tarde.",
+      code: "TOO_MANY_REQUESTS",
+      details:
+        "Has superado el número permitido de solicitudes en un periodo de tiempo. Esto puede deberse a un abuso del servicio o a una configuración estricta de límite de peticiones.",
+      timestamp: timestamp,
+      requestId: requestId,
+      path: req.originalUrl,
+      method: req.method,
+    },
+  });
+};
+
 const methodError = (req, res, error) => {
   const timestamp = new Date().toISOString();
   const errorId = crypto.randomUUID();
@@ -152,5 +172,6 @@ export {
   methodForbidden,
   methodNotFound,
   methodConflicts,
+  methodTooManyRequests,
   methodError,
 };

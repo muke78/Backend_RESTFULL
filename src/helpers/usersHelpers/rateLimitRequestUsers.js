@@ -6,8 +6,9 @@ import { rateLimitRequest } from "../../middleware/rateLimitRequest.js";
 export const loginRateLimiter = rateLimitRequest(
   5,
   5,
-  "Demasiados intentos de inicio de sesión desde esta IP, ",
+  "Demasiados intentos de inicio de sesión desde esta IP,",
 );
+
 export const listUsersRateLimiter = rateLimitRequest(
   60,
   1000,

@@ -1,7 +1,8 @@
 import { connectionQuery } from "../helpers/connection.helper.js";
-import { deleteUserByTeacherID } from "../helpers/teachersEliminatedStatus.js";
+// import { deleteUserByTeacherID } from "../helpers/teachersEliminatedStatus.js";
 import {
   methodConflicts,
+  methodCreated,
   methodError,
   methodIncorrect,
   methodNotFound,
@@ -273,12 +274,12 @@ const EliminarMaestro = async (req, res) => {
 
     if (resultValidate.length === 0) return methodNotFound(req, res);
 
-    const { TeacherID } = resultValidate[0];
+    // const { TeacherID } = resultValidate[0];
 
     const queryDeleteTeacher = `DELETE FROM teachers WHERE ID = ?`;
     const result = await connectionQuery(queryDeleteTeacher, [id]);
 
-    await deleteUserByTeacherID(TeacherID);
+    // await deleteUserByTeacherID(TeacherID);
 
     if (result.affectedRows > 0) {
       methodOK(req, res, {
