@@ -5,13 +5,11 @@ import {
   methodNotFound,
   methodOK,
 } from "../../../server/serverMethods.js";
-import { loginService } from "../../../services/users/functions/auth.service.js";
+import { loginService } from "../../../services/users/index.js";
 
 export const Login = async (req, res) => {
   try {
-    const { email, password } = req.body;
-
-    const token = await loginService(email, password);
+    const token = await loginService(req.body);
 
     methodOK(req, res, token);
   } catch (error) {

@@ -1,4 +1,4 @@
-import { listUsersModel } from "../../../models/usersModels.js";
+import { listUsersModel } from "../../../models/users/index.js";
 
 export const listUsersService = async (params, query) => {
   const { status } = params;
