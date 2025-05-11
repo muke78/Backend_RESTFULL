@@ -3,7 +3,7 @@ import {
   methodNotFound,
   methodOK,
 } from "../../../server/serverMethods.js";
-import { listUsersService } from "../../../services/users/usersServices.js";
+import { listUsersService } from "../../../services/users/index.js";
 
 export const ObtenerTodosLosUsuarios = async (req, res) => {
   try {

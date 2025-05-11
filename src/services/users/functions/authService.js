@@ -4,7 +4,7 @@ import { findUserByEmail } from "../../../helpers/findUserByEmail.js";
 import { createToken } from "../../../helpers/jwt.js";
 import { lastLogin } from "../../../helpers/userLastLogin.js";
 
-export const loginService = async (email, password) => {
+export const loginService = async ({ email, password }) => {
   const user = await findUserByEmail(email);
 
   if (!user) {
