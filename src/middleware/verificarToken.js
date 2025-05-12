@@ -5,7 +5,7 @@ import { methodUnauthorized } from "../server/serverMethods.js";
 
 dotenv.config();
 
-const verificarToken = (req, res, next) => {
+export const verificarToken = (req, res, next) => {
   const token = req.header("Authorization");
 
   if (!token) {
@@ -38,5 +38,3 @@ const verificarToken = (req, res, next) => {
     );
   }
 };
-
-export { verificarToken };

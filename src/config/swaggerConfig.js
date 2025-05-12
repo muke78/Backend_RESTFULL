@@ -45,9 +45,9 @@ const options = {
   apis: [resolve(__dirname, "../router/*.js")],
 };
 
-const swaggerDocument = swaggerJsdoc(options);
+export const swaggerDocument = swaggerJsdoc(options);
 
-const setupSwagger = (app) => {
+export const setupSwagger = (app) => {
   const theme = new SwaggerTheme();
   app.use(
     "/api-docs",
@@ -57,5 +57,3 @@ const setupSwagger = (app) => {
     }),
   );
 };
-
-export { swaggerDocument, setupSwagger };

@@ -1,6 +1,6 @@
 import crypto from "node:crypto";
 
-const methodOK = (req, res, result) => {
+export const methodOK = (req, res, result) => {
   const timestamp = new Date().toISOString();
   const requestId = crypto.randomUUID();
   const totalDataCount = Array.isArray(result) ? result.length : result ? 1 : 0;
@@ -18,7 +18,7 @@ const methodOK = (req, res, result) => {
   });
 };
 
-const methodCreated = (req, res, result) => {
+export const methodCreated = (req, res, result) => {
   const timestamp = new Date().toISOString();
   const requestId = crypto.randomUUID();
 
@@ -34,7 +34,7 @@ const methodCreated = (req, res, result) => {
   });
 };
 
-const methodIncorrect = (req, res, message) => {
+export const methodIncorrect = (req, res, message) => {
   const timestamp = new Date().toISOString();
   const requestId = crypto.randomUUID();
 
@@ -50,7 +50,7 @@ const methodIncorrect = (req, res, message) => {
     },
   });
 };
-const methodUnauthorized = (req, res, message) => {
+export const methodUnauthorized = (req, res, message) => {
   const timestamp = new Date().toISOString();
   const requestId = crypto.randomUUID();
 
@@ -70,7 +70,7 @@ const methodUnauthorized = (req, res, message) => {
   });
 };
 
-const methodForbidden = (req, res, message) => {
+export const methodForbidden = (req, res, message) => {
   const timestamp = new Date().toISOString();
   const requestId = crypto.randomUUID();
 
@@ -87,7 +87,7 @@ const methodForbidden = (req, res, message) => {
   });
 };
 
-const methodNotFound = (req, res, message) => {
+export const methodNotFound = (req, res, message) => {
   const timestamp = new Date().toISOString();
   const requestId = crypto.randomUUID();
 
@@ -103,7 +103,7 @@ const methodNotFound = (req, res, message) => {
   });
 };
 
-const methodConflicts = (req, res, error) => {
+export const methodConflicts = (req, res, error) => {
   const timestamp = new Date().toISOString();
   const requestId = crypto.randomUUID();
 
@@ -124,7 +124,7 @@ const methodConflicts = (req, res, error) => {
   });
 };
 
-const methodTooManyRequests = (req, res, message) => {
+export const methodTooManyRequests = (req, res, message) => {
   const timestamp = new Date().toISOString();
   const requestId = crypto.randomUUID();
 
@@ -144,7 +144,7 @@ const methodTooManyRequests = (req, res, message) => {
   });
 };
 
-const methodError = (req, res, error) => {
+export const methodError = (req, res, error) => {
   const timestamp = new Date().toISOString();
   const errorId = crypto.randomUUID();
 
@@ -162,16 +162,4 @@ const methodError = (req, res, error) => {
       method: req.method,
     },
   });
-};
-
-export {
-  methodOK,
-  methodCreated,
-  methodIncorrect,
-  methodUnauthorized,
-  methodForbidden,
-  methodNotFound,
-  methodConflicts,
-  methodTooManyRequests,
-  methodError,
 };
