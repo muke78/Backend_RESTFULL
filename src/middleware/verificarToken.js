@@ -1,8 +1,11 @@
+import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
 
 import { methodUnauthorized } from "../server/serverMethods.js";
 
-const verificarToken = (req, res, next) => {
+dotenv.config();
+
+export const verificarToken = (req, res, next) => {
   const token = req.header("Authorization");
 
   if (!token) {
@@ -35,5 +38,3 @@ const verificarToken = (req, res, next) => {
     );
   }
 };
-
-export { verificarToken };

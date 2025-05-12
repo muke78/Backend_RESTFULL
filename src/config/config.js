@@ -1,28 +1,67 @@
+import dotenv from "dotenv";
+import inquirer from "inquirer";
 import mysql from "mysql2";
 
-process.loadEnvFile();
+import { loadChalk } from "../middleware/loadChalk.js";
 
-// Configuracion de la conexion a la base de datos
-const dbConnection = {
-  host: process.env.DB_HOST_ESCRITURA,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASS,
-  database: process.env.DB_NAME,
-  connectTimeout: 30000,
-  waitForConnections: true,
-  connectionLimit: 100,
-  queueLimit: 0,
-};
+dotenv.config();
 
-const pool = mysql.createPool(dbConnection);
+export async function selectDatabaseConnection() {
+  const chalk = await loadChalk();
+  const { envChoice } = await inquirer.prompt([
+    {
+      type: "list",
+      name: "envChoice",
+      message: "¿Qué base de datos deseas usar?",
+      choices: [
+        { name: "🔧 Local", value: "local" },
+        { name: "🚀 Producción", value: "prod" },
+      ],
+    },
+  ]);
 
-pool.on("connection", (connection) => {
-  console.log("Conexion exitosa a la basde de datos");
-  connection.query("SET SESSION wait_timeout = 28800");
-});
+  console.log(
+    chalk.green(
+      `✔  Conectando a la base de datos ${envChoice === "prod" ? "de Producción" : "Local"}...\n`,
+    ),
+  );
 
-pool.on("error", (err) => {
-  console.error("Error a la conexion de la base de datos", err);
-});
+  const dbConfig = {
+    local: {
+      host: process.env.DB_HOST_LOCAL,
+      user: process.env.DB_USER_LOCAL,
+      password: process.env.DB_PASS_LOCAL,
+      database: process.env.DB_NAME_LOCAL,
+    },
+    prod: {
+      host: process.env.DB_HOST_PROD,
+      user: process.env.DB_USER_PROD,
+      password: process.env.DB_PASS_PROD,
+      database: process.env.DB_NAME_PROD,
+    },
+  };
 
-export { pool };
+  const selectedConfig = {
+    ...dbConfig[envChoice],
+    connectTimeout: 30000,
+    waitForConnections: true,
+    connectionLimit: 100,
+    queueLimit: 0,
+  };
+
+  const pool = mysql.createPool(selectedConfig);
+
+  pool.on("connection", (connection) => {
+    console.log(chalk.cyan("✅ Conexión establecida con la base de datos"));
+    connection.query("SET SESSION wait_timeout = 28800");
+  });
+
+  pool.on("error", (err) => {
+    console.error(
+      chalk.red("❌ Error en la conexión a la base de datos:"),
+      err,
+    );
+  });
+
+  return pool;
+}
