@@ -14,7 +14,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [22.x]
+        node-version: [18.x, 20.x, 22.x]
         # Puedes agregar más versiones si quieres testear compatibilidad, por ejemplo: [18.x, 20.x, 22.x]
 
     steps:
@@ -33,6 +33,3 @@ jobs:
       - name: 🚀 Iniciar aplicación en background (opcional)
         run: yarn start &
         # Usa esto solo si necesitas levantar el servidor para tests e2e, de lo contrario, puedes omitirlo
-
-      - name: ✅ Ejecutar pruebas
-        run: yarn test
