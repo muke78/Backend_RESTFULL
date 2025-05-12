@@ -9,10 +9,9 @@ export const ObtenerTodosLosUsuarios = async (req, res) => {
   try {
     const result = await listUsersService(req.params, req.query);
 
-    if (result.length === 0) return methodNotFound(req, res);
-
     methodOK(req, res, result);
   } catch (error) {
-    methodError(req, res, error);
+    if (error.status === 400) return methodNotFound(req, res);
+    return methodError(req, res, error);
   }
 };

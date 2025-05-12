@@ -1,6 +1,9 @@
+import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
 
 import { methodUnauthorized } from "../server/serverMethods.js";
+
+dotenv.config();
 
 const verificarToken = (req, res, next) => {
   const token = req.header("Authorization");

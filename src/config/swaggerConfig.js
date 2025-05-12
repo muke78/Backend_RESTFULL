@@ -1,10 +1,11 @@
+import dotenv from "dotenv";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import swaggerJsdoc from "swagger-jsdoc";
 import { SwaggerTheme, SwaggerThemeNameEnum } from "swagger-themes";
 import swaggerUi from "swagger-ui-express";
 
-process.loadEnvFile();
+dotenv.config();
 
 // Obtener __dirname equivalente en ESM
 const __filename = fileURLToPath(import.meta.url);
