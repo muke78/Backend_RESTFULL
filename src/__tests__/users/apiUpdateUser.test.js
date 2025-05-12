@@ -22,7 +22,7 @@ describe("✅ Prueba para actualizar un usuario", () => {
         password: "129sdnKLMF@asfd11",
         role: "user",
         accountStatus: "Inactivo",
-        id: "07462c61-2e3d-11f0-9a7d-d843ae0db894",
+        id: "1aa52951-2f05-11f0-9a7d-d843ae0db894",
       })
       .then((res) => {
         // console.log("🔎 STATUS:", res.status);
