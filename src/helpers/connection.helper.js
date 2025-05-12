@@ -2,7 +2,7 @@ import { selectDatabaseConnection } from "../config/config.js";
 
 const pool = await selectDatabaseConnection();
 
-const connectionQuery = (sql, params) => {
+export const connectionQuery = (sql, params) => {
   return new Promise((resolve, reject) => {
     pool.query(sql, params, (error, results) => {
       if (error) {
@@ -13,5 +13,3 @@ const connectionQuery = (sql, params) => {
     });
   });
 };
-
-export { connectionQuery };

@@ -35,18 +35,26 @@ app.use(router);
 // Middleware de manejo de errores
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).json("Error interno del servidor");
+  res.status(500).json("🔴 Error interno del servidor");
 });
 
 // Crear y arrancar el servidor
-const PORT = 3000;
+let currentPort = 3000;
 const server = createServer(app);
+
+const tryListen = (port) => {
+  server.listen(port);
+};
+
 server.on("error", (error) => {
   if (error.code === "EADDRINUSE") {
-    console.log(`Port ${PORT} is busy, trying ${PORT + 1}`);
-    server.listen(PORT + 1);
+    console.log(
+      `El puerto ${currentPort} está en uso. Intentando con el puerto ${currentPort + 1}...`,
+    );
+    currentPort++;
+    tryListen(currentPort);
   } else {
-    console.error("Serve error:", error);
+    console.error("Error del servidor:", error);
   }
 });
 
