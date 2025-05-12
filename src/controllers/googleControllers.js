@@ -1,3 +1,4 @@
+import dotenv from "dotenv";
 import crypto from "node:crypto";
 
 import { connectionQuery } from "../helpers/connection.helper.js";
@@ -12,7 +13,7 @@ import {
   methodOK,
 } from "../server/serverMethods.js";
 
-process.loadEnvFile();
+dotenv.config();
 
 const loginGoogle = async (req, res) => {
   const { credential } = req.body;

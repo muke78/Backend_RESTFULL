@@ -1,7 +1,8 @@
 import { addHour } from "@formkit/tempo";
+import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
 
-process.loadEnvFile();
+dotenv.config();
 
 const secret = process.env.JWT_SECRET;
 

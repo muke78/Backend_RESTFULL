@@ -1,6 +1,9 @@
+import dotenv from "dotenv";
 import mysql from "mysql2";
 
-process.loadEnvFile();
+dotenv.config();
+
+// process.loadEnvFile();
 
 // Configuracion de la conexion a la base de datos
 const dbConnection = {
