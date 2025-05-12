@@ -93,7 +93,7 @@ Backend_Node_REST/
 La base de datos cuenta con una versión espejo (entorno local) de la base de datos de producción.  
 Esta arquitectura garantiza la seguridad e integridad de los datos reales, permitiendo hacer pruebas sin afectar el entorno principal.
 
-Cada entorno (producción y local) utiliza su propio archivo `.env` con las configuraciones adecuadas, asegurando un manejo controlado y seguro de las credenciales y parámetros de conexión.
+Cada entorno (producción y local) utiliza un archivo `.env` con las configuraciones adecuadas, asegurando un manejo controlado y seguro de las credenciales y parámetros de conexión.
 
 ---
 
@@ -160,12 +160,12 @@ Puedes probar los endpoints directamente desde Swagger en tu navegador.
 
 ## 💡 Funcionalidades Clave
 
-✅ Autenticación local y con Google
-👨‍🏫 Gestión de maestros, padres y alumnos
-🏫 Administración de insumos, activos e inventario
-🧠 Documentación automática con Swagger
-🛡️ Seguridad con Helmet, Rate Limit y hashing de contraseñas
-🌐 Soporte para frontend moderno (React)
+- ✅ Autenticación local y con Google
+- 👨‍🏫 Gestión de maestros, padres y alumnos
+- 🏫 Administración de insumos, activos e inventario
+- 🧠 Documentación automática con Swagger
+- 🛡️ Seguridad con Helmet, Rate Limit y hashing de contraseñas
+- 🌐 Soporte para frontend moderno (React)
 
 ## 📈 Estado del Desarrollo
 
