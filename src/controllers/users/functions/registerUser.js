@@ -14,7 +14,9 @@ export const RegistrarUsuario = async (req, res) => {
     if (error.status === 400)
       return methodIncorrect(req, res, "Faltan campos requeridos");
     if (error.status === 409)
-      return methodConflicts(req, res, "El correo ya se encuentra registrado");
-    return methodError(req, res, error);
+      return methodConflicts(req, res, {
+        message: "El correo ya se encuentra registrado",
+      });
+    return methodError(req, res, { message: error });
   }
 };

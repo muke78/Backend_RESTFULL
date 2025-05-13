@@ -17,6 +17,6 @@ export const BusquedaDeUsuarios = async (req, res) => {
         res,
         `No se encontro el correo ${req.params.email}`,
       );
-    return methodError(req, res, error);
+    return methodError(req, res, { message: error });
   }
 };

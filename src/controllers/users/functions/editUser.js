@@ -21,17 +21,15 @@ export const EditarUsuario = async (req, res) => {
     }
   } catch (error) {
     if (error.status === 409)
-      return methodConflicts(
-        req,
-        res,
-        "El correo ya existe y no se puede actualziar",
-      );
+      return methodConflicts(req, res, {
+        message: "El correo ya existe y no se puede actualizar",
+      });
     if (error.status === 404)
       return methodNotFound(
         req,
         res,
         "No se proporcionó un ID válido o el usuario no existe",
       );
-    return methodError(req, res, error);
+    return methodError(req, res, { message: error });
   }
 };

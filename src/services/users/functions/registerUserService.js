@@ -4,13 +4,8 @@ import { findUserByEmail } from "../../../helpers/findUserByEmail.js";
 import { getUserByEmail } from "../../../helpers/getUserByEmail.js";
 import { registerUser } from "../../../models/users/functions/registerUserModel.js";
 
-export const registerUserService = async ({
-  nameUser,
-  email,
-  password,
-  role,
-}) => {
-  if (!nameUser || !email || !password || !role) {
+export const registerUserService = async ({ nameUser, email, password }) => {
+  if (!nameUser || !email || !password) {
     throw { status: 400 };
   }
 
@@ -21,12 +16,7 @@ export const registerUserService = async ({
   }
 
   const hashedPassword = await hashedArg.hash(password);
-  const insertResult = await registerUser(
-    nameUser,
-    email,
-    hashedPassword,
-    role,
-  );
+  const insertResult = await registerUser(nameUser, email, hashedPassword);
 
   if (insertResult.affectedRows > 0) {
     const newUser = await getUserByEmail(email);

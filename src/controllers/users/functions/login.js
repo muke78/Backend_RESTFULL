@@ -28,6 +28,6 @@ export const Login = async (req, res) => {
         "La contraseña es incorrecta o está mal escrita",
       );
 
-    methodError(req, res, error);
+    return methodError(req, res, { message: error });
   }
 };

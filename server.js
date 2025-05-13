@@ -58,7 +58,7 @@ server.on("error", (error) => {
   }
 });
 
-server.listen(PORT, () => {
+server.listen(currentPort, () => {
   console.log(
     `🟢 Server is listening on port localhost:${server.address().port}`,
   );

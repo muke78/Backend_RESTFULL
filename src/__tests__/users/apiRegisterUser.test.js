@@ -20,7 +20,6 @@ describe("✅ Prueba para registrar un usuario", () => {
         nameUser: "apiTESTRegister",
         email: uniqueEmail,
         password: "123456788u02kljfLK",
-        role: "user",
       })
       .then((res) => {
         // console.log("🔎 STATUS:", res.status);
