@@ -24,7 +24,7 @@ export const EliminarUsuario = async (req, res) => {
         res,
         "No se encontro el id del usuario que se quiere eliminar",
       );
-    return methodError(req, res, error);
+    return methodError(req, res, { message: error });
   }
 };
 
@@ -38,6 +38,6 @@ export const DeleteUserBulk = async (req, res) => {
   } catch (error) {
     if (error.status === 400)
       return methodIncorrect(req, res, "Faltan campos requeridos");
-    return methodError(req, res, error);
+    return methodError(req, res, { message: error });
   }
 };

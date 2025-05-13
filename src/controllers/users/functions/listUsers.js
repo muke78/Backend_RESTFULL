@@ -12,6 +12,6 @@ export const ObtenerTodosLosUsuarios = async (req, res) => {
     methodOK(req, res, result);
   } catch (error) {
     if (error.status === 400) return methodNotFound(req, res);
-    return methodError(req, res, error);
+    return methodError(req, res, { message: error });
   }
 };

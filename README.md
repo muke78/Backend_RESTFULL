@@ -16,6 +16,7 @@
 - **Google Auth Libary** 🔡 (Login con google)
 - **Argon2** 🔒 (Hash de contraseñas)
 - **JWT** 🔑 (Autenticación)
+- **Jest y Frisby** 🧪 (Pruebas de las API)
 - **Swagger & Swagger-UI** 📚 (Documentación de la API)
 - **Express Rate Limit** ⏱️ (Limitación de peticiones)
 - **Helmet** 🛡️ (Seguridad en headers HTTP)
