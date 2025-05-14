@@ -6,17 +6,20 @@ import {
 
 export const deleteUserService = async ({ id }) => {
   if (!id) {
-    throw { status: 400 };
+    throw { status: 400, message: "Faltan campos por completar" };
   }
 
   const foundUserToEliminated = await validateFoundUserToEliminated(id);
   if (foundUserToEliminated.length === 0) {
-    throw { status: 404 };
+    throw {
+      status: 404,
+      message: "No se encontro el id del usuario que se quiere eliminar",
+    };
   }
 
   const deleteUserFromID = await deleteUser(id);
   if (deleteUserFromID.affectedRows === 0) {
-    throw { status: 400 };
+    throw { status: 500 };
   }
 
   return foundUserToEliminated[0];
@@ -32,7 +35,7 @@ export const deleteUserBulkService = async ({ ids }) => {
 
   const MAX_IDS = 600;
   if (ids.length > MAX_IDS) {
-    throw { status: 400 };
+    throw { status: 400, message: "Faltan campos por completar" };
   }
 
   const batchSize = 100;

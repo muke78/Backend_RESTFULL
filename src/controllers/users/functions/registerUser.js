@@ -11,12 +11,9 @@ export const RegistrarUsuario = async (req, res) => {
     const newUser = await registerUserService(req.body);
     return methodCreated(req, res, newUser);
   } catch (error) {
-    if (error.status === 400)
-      return methodIncorrect(req, res, "Faltan campos requeridos");
+    if (error.status === 400) return methodIncorrect(req, res, error.message);
     if (error.status === 409)
-      return methodConflicts(req, res, {
-        message: "El correo ya se encuentra registrado",
-      });
+      return methodConflicts(req, res, { message: error.message });
     return methodError(req, res, { message: error });
   }
 };

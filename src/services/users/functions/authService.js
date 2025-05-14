@@ -8,7 +8,11 @@ export const loginService = async ({ email, password }) => {
   const user = await findUserByEmail(email);
 
   if (!user) {
-    throw { status: 404 };
+    throw { status: 404, message: "El usuario no ha podidio ser encontrado" };
+  }
+
+  if (user.AccountType === "google") {
+    throw { status: 400, message: "El correo ya esta registrado con google" };
   }
 
   const isPasswordValid = await hashedArg.verify(user.Password, password);
@@ -16,12 +20,15 @@ export const loginService = async ({ email, password }) => {
   if (!isPasswordValid) {
     throw {
       status: 400,
+      message: "La contraseña es incorrecta o está mal escrita",
     };
   }
 
   if (user.AccountStatus === "Inactivo") {
     throw {
       status: 403,
+      message:
+        "El usuario está inactivo, pida la reactivación a un administrador",
     };
   }
 

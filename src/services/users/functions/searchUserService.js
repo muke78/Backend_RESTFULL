@@ -8,7 +8,7 @@ export const searchUserService = async ({ email }) => {
     querySearchUsers += ` AND Email LIKE ?`;
     queryParamsSearch.push(`%${email}%`);
   } else {
-    throw { status: 400 };
+    throw { status: 400, message: "Debe proporcionar un correo para buscar" };
   }
 
   const resultSearch = await connectionQuery(
@@ -17,7 +17,7 @@ export const searchUserService = async ({ email }) => {
   );
 
   if (resultSearch.length === 0) {
-    throw { status: 400 };
+    throw { status: 400, message: `No se encontro el correo ${email}` };
   }
 
   return resultSearch;
