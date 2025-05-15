@@ -13,12 +13,12 @@ export const insertUserService = async ({
   role,
 }) => {
   if (!nameUser || !email || !password || !accountStatus || !role) {
-    throw { status: 400 };
+    throw { status: 400, message: "Faltan campos por completar" };
   }
 
   const existingUser = await findUserByEmail(email);
   if (existingUser) {
-    throw { status: 409 };
+    throw { status: 409, message: "El correo ya se encuentra registrado" };
   }
 
   const hashedPassword = await hashedArg.hash(password);
@@ -40,7 +40,7 @@ export const insertUserService = async ({
 
 export const insertUserMasiveService = async ({ countInsert }) => {
   if (!countInsert || isNaN(countInsert)) {
-    throw { status: 400 };
+    throw { status: 400, message: "Faltan campos por completar" };
   }
 
   const insertados = [];
@@ -54,7 +54,7 @@ export const insertUserMasiveService = async ({ countInsert }) => {
 
     const existingUser = await findUserByEmail(email);
     if (existingUser) {
-      throw { status: 409 };
+      throw { status: 409, message: "El correo ya se encuentra registrado" };
     }
 
     const hashedPassword = await hashedArg.hash(password);

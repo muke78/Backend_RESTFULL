@@ -18,7 +18,10 @@ export const updateUserService = async ({
   // Verificar si otro usuario ya usa ese correo
   const emailConflict = await findEmailInOtherUser(email, id);
   if (emailConflict) {
-    throw { status: 409 };
+    throw {
+      status: 409,
+      message: "El correo ya existe y no se puede actualizar",
+    };
   }
 
   // Verificar si el usuario existe
@@ -26,6 +29,7 @@ export const updateUserService = async ({
   if (!existingUser) {
     throw {
       status: 404,
+      message: "No se proporcionó un ID válido o el usuario no existe",
     };
   }
 

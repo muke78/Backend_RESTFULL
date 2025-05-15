@@ -6,13 +6,13 @@ import { registerUser } from "../../../models/users/functions/registerUserModel.
 
 export const registerUserService = async ({ nameUser, email, password }) => {
   if (!nameUser || !email || !password) {
-    throw { status: 400 };
+    throw { status: 400, message: "Faltan campos por completar" };
   }
 
   const existingUser = await findUserByEmail(email);
 
   if (existingUser) {
-    throw { status: 409 };
+    throw { status: 409, message: "El correo ya se encuentra registrado" };
   }
 
   const hashedPassword = await hashedArg.hash(password);

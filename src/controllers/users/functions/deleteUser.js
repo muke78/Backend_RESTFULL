@@ -16,14 +16,8 @@ export const EliminarUsuario = async (req, res) => {
       message: `El usuario ${deletedUser.NameUser} fue eliminado correctamente`,
     });
   } catch (error) {
-    if (error.status === 400)
-      return methodIncorrect(req, res, "Faltan campos requeridos");
-    if (error.status === 404)
-      return methodNotFound(
-        req,
-        res,
-        "No se encontro el id del usuario que se quiere eliminar",
-      );
+    if (error.status === 400) return methodIncorrect(req, res, error.message);
+    if (error.status === 404) return methodNotFound(req, res, error.message);
     return methodError(req, res, { message: error });
   }
 };
@@ -36,8 +30,7 @@ export const DeleteUserBulk = async (req, res) => {
       message: `Se eliminaron ${req.body.ids.length} usuarios correctamente`,
     });
   } catch (error) {
-    if (error.status === 400)
-      return methodIncorrect(req, res, "Faltan campos requeridos");
+    if (error.status === 400) return methodIncorrect(req, res, error.message);
     return methodError(req, res, { message: error });
   }
 };
