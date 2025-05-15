@@ -11,12 +11,8 @@ export const BusquedaDeUsuarios = async (req, res) => {
 
     methodOK(req, res, resultSearch);
   } catch (error) {
-    if (error.status === 400)
-      return methodIncorrect(
-        req,
-        res,
-        `No se encontro el correo ${req.params.email}`,
-      );
-    return methodError(req, res, error);
+    console.log(error);
+    if (error.status === 400) return methodIncorrect(req, res, error.message);
+    return methodError(req, res, { message: error });
   }
 };

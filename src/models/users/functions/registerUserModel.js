@@ -1,10 +1,10 @@
 import { connectionQuery } from "../../../helpers/connection.helper.js";
 
-export const registerUser = async (nameUser, email, hashedPassword, role) => {
+export const registerUser = async (nameUser, email, hashedPassword) => {
   const query = `
     INSERT INTO users (ID, NameUser, Email, Password, Role, AccountType, AccountStatus, LastLogin)
-    VALUES (UUID(), ?, ?, ?, ?, "normal", "Inactivo", NULL)
+    VALUES (UUID(), ?, ?, ?, "user", "normal", "Inactivo", NULL)
   `;
-  const params = [nameUser, email, hashedPassword, role];
+  const params = [nameUser, email, hashedPassword];
   return await connectionQuery(query, params);
 };
