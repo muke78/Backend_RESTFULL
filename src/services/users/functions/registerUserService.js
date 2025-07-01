@@ -1,3 +1,4 @@
+import { de } from "@faker-js/faker";
 import hashedArg from "argon2";
 
 import { findUserByEmail } from "../../../helpers/findUserByEmail.js";
@@ -6,13 +7,23 @@ import { registerUser } from "../../../models/users/functions/registerUserModel.
 
 export const registerUserService = async ({ nameUser, email, password }) => {
   if (!nameUser || !email || !password) {
-    throw { status: 400, message: "Faltan campos por completar" };
+    throw {
+      statusCode: 400,
+      message: "Debe de proporcionar todos los campos",
+      code: "FIELDS_REQUIRED",
+      details: "Todos los campos son obligatorios para crear un usuario",
+    };
   }
 
   const existingUser = await findUserByEmail(email);
 
   if (existingUser) {
-    throw { status: 409, message: "El correo ya se encuentra registrado" };
+    throw {
+      status: 409,
+      message: "El correo ya se encuentra registrado",
+      code: "EMAIL_CONFLICT",
+      details: "El correo proporcionado ya está en uso por otro usuario",
+    };
   }
 
   const hashedPassword = await hashedArg.hash(password);
@@ -22,6 +33,11 @@ export const registerUserService = async ({ nameUser, email, password }) => {
     const newUser = await getUserByEmail(email);
     return newUser;
   } else {
-    throw { status: 500 };
+    throw {
+      status: 500,
+      message: "Error al registrar el usuario",
+      code: "REGISTRATION_ERROR",
+      details: "No se pudo completar el registro del usuario",
+    };
   }
 };

@@ -1,6 +1,6 @@
 import { connectionQuery } from "../../../helpers/connection.helper.js";
 
-export const searchUserService = async ({ email }) => {
+export const searchUserService = async (email) => {
   let querySearchUsers = `SELECT * FROM users WHERE 1=1`;
   const queryParamsSearch = [];
 
@@ -8,7 +8,12 @@ export const searchUserService = async ({ email }) => {
     querySearchUsers += ` AND Email LIKE ?`;
     queryParamsSearch.push(`%${email}%`);
   } else {
-    throw { status: 400, message: "Debe proporcionar un correo para buscar" };
+    throw {
+      statusCode: 400,
+      message: "Debe proporcionar un correo para buscar",
+      code: "EMAIL_REQUIRED",
+      details: "El campo de correo es obligatorio para realizar busquedas",
+    };
   }
 
   const resultSearch = await connectionQuery(
@@ -17,7 +22,12 @@ export const searchUserService = async ({ email }) => {
   );
 
   if (resultSearch.length === 0) {
-    throw { status: 400, message: `No se encontro el correo ${email}` };
+    throw {
+      statusCode: 404,
+      message: `No se encontro el correo ${email}`,
+      code: "USER_NOT_FOUND",
+      details: `No se encontraron usuarios con el correo proporcionado: ${email}`,
+    };
   }
 
   return resultSearch;

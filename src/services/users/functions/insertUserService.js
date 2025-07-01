@@ -13,12 +13,22 @@ export const insertUserService = async ({
   role,
 }) => {
   if (!nameUser || !email || !password || !accountStatus || !role) {
-    throw { status: 400, message: "Faltan campos por completar" };
+    throw {
+      statusCode: 400,
+      message: "Debe de proporcionar todos los campos",
+      code: "FIELDS_REQUIRED",
+      details: "Todos los campos son obligatorios para crear un usuario",
+    };
   }
 
   const existingUser = await findUserByEmail(email);
   if (existingUser) {
-    throw { status: 409, message: "El correo ya se encuentra registrado" };
+    throw {
+      statusCode: 409,
+      message: "El correo ya se encuentra registrado",
+      code: "EMAIL_CONFLICTS",
+      details: "El correo proporcionado ya está en uso por otro usuario",
+    };
   }
 
   const hashedPassword = await hashedArg.hash(password);
@@ -34,13 +44,24 @@ export const insertUserService = async ({
     const newUser = await getUserByEmail(email);
     return newUser;
   } else {
-    throw { status: 500 };
+    throw {
+      statusCode: 500,
+      message: "No se pudo crear el usuario",
+      code: "USER_CREATION_FAILED",
+      dettails:
+        "Hubo un error al intentar insertar el usuario en la base de datos",
+    };
   }
 };
 
-export const insertUserMasiveService = async ({ countInsert }) => {
+export const insertUserMasiveService = async (countInsert) => {
   if (!countInsert || isNaN(countInsert)) {
-    throw { status: 400, message: "Faltan campos por completar" };
+    throw {
+      statusCode: 400,
+      message: "Debe de proporcionar todos los campos",
+      code: "FIELDS_REQUIRED",
+      details: "Todos los campos son obligatorios para crear un usuario",
+    };
   }
 
   const insertados = [];
@@ -54,7 +75,12 @@ export const insertUserMasiveService = async ({ countInsert }) => {
 
     const existingUser = await findUserByEmail(email);
     if (existingUser) {
-      throw { status: 409, message: "El correo ya se encuentra registrado" };
+      throw {
+        statusCode: 409,
+        message: "El correo ya se encuentra registrado",
+        code: "EMAIL_CONFLICTS",
+        details: "El correo proporcionado ya está en uso por otro usuario",
+      };
     }
 
     const hashedPassword = await hashedArg.hash(password);

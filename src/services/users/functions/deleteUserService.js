@@ -4,20 +4,27 @@ import {
   validateFoundUserToEliminated,
 } from "../../../models/users/index.js";
 
-export const deleteUserService = async ({ id }) => {
-  if (!id) {
-    throw { status: 400, message: "Faltan campos por completar" };
-  }
-
-  const foundUserToEliminated = await validateFoundUserToEliminated(id);
-  if (foundUserToEliminated.length === 0) {
+export const deleteUserService = async (userId) => {
+  if (!userId) {
     throw {
-      status: 404,
-      message: "No se encontro el id del usuario que se quiere eliminar",
+      statusCode: 400,
+      message: "Debe de proporcionar todos los campos",
+      code: "FIELDS_REQUIRED",
+      details: "Todos los campos son obligatorios para crear un usuario",
     };
   }
 
-  const deleteUserFromID = await deleteUser(id);
+  const foundUserToEliminated = await validateFoundUserToEliminated(userId);
+  if (foundUserToEliminated.length === 0) {
+    throw {
+      status: 404,
+      message: "No se proporcionó un ID válido o el usuario no existe",
+      code: "USER_NOT_FOUND",
+      details: "El usuario con el ID proporcionado no fue encontrado",
+    };
+  }
+
+  const deleteUserFromID = await deleteUser(userId);
   if (deleteUserFromID.affectedRows === 0) {
     throw { status: 500 };
   }
@@ -25,17 +32,26 @@ export const deleteUserService = async ({ id }) => {
   return foundUserToEliminated[0];
 };
 
-export const deleteUserBulkService = async ({ ids }) => {
+export const deleteUserBulkService = async (ids) => {
+  const MAX_IDS = 600;
+
   if (!Array.isArray(ids) || ids.length === 0) {
     throw {
-      status: 400,
+      status: 413,
       message: `No se pueden eliminar más de ${MAX_IDS} usuarios en una sola solicitud`,
+      code: "OVERLOAD_REQUEST",
+      details:
+        "Debe proporcionar un array de IDs de usuarios menor para que la solicitud sea válida",
     };
   }
 
-  const MAX_IDS = 600;
   if (ids.length > MAX_IDS) {
-    throw { status: 400, message: "Faltan campos por completar" };
+    throw {
+      statusCode: 400,
+      message: "Debe de proporcionar todos los campos",
+      code: "TOO_MANY_IDS",
+      details: "Todos los campos son obligatorios para crear un usuario",
+    };
   }
 
   const batchSize = 100;
