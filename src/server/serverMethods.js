@@ -1,12 +1,12 @@
 import crypto from "node:crypto";
 
-export const methodOK = (req, res, result) => {
+export const methodOK = (request, response, result) => {
   const timestamp = new Date().toISOString();
   const requestId = crypto.randomUUID();
   const totalDataCount = Array.isArray(result) ? result.length : result ? 1 : 0;
   const formattedDataCount = totalDataCount.toLocaleString("es-MX");
 
-  res.status(200).json({
+  response.status(200).json({
     success: true,
     data: result || {},
     message: "Consulta realizada correctamente",
@@ -18,11 +18,11 @@ export const methodOK = (req, res, result) => {
   });
 };
 
-export const methodCreated = (req, res, result) => {
+export const methodCreated = (request, response, result) => {
   const timestamp = new Date().toISOString();
   const requestId = crypto.randomUUID();
 
-  res.status(201).json({
+  response.status(201).json({
     success: true,
     data: result,
     message: "Recurso creado exitosamente",
@@ -34,11 +34,11 @@ export const methodCreated = (req, res, result) => {
   });
 };
 
-export const methodIncorrect = (req, res, message) => {
+export const methodIncorrect = (request, response, message) => {
   const timestamp = new Date().toISOString();
   const requestId = crypto.randomUUID();
 
-  res.status(400).json({
+  response.status(400).json({
     success: false,
     error: {
       message: message || "Solicitud incorrecta. Verifica los datos enviados.",
@@ -50,11 +50,12 @@ export const methodIncorrect = (req, res, message) => {
     },
   });
 };
-export const methodUnauthorized = (req, res, message) => {
+
+export const methodUnauthorized = (request, response, message) => {
   const timestamp = new Date().toISOString();
   const requestId = crypto.randomUUID();
 
-  res.status(401).json({
+  response.status(401).json({
     success: false,
     error: {
       message:
@@ -64,34 +65,34 @@ export const methodUnauthorized = (req, res, message) => {
       details: "La solicitud requiere un token de autenticación válido.",
       timestamp: timestamp,
       requestId: requestId,
-      path: req.originalUrl,
-      method: req.method,
+      path: request.originalUrl,
+      method: request.method,
     },
   });
 };
 
-export const methodForbidden = (req, res, message) => {
+export const methodForbidden = (request, response, message) => {
   const timestamp = new Date().toISOString();
   const requestId = crypto.randomUUID();
 
-  res.status(403).json({
+  response.status(403).json({
     success: false,
     error: {
       message: message,
       code: "FORBIDDEN",
       timestamp: timestamp,
       requestId: requestId,
-      path: req.originalUrl,
-      method: req.method,
+      path: request.originalUrl,
+      method: request.method,
     },
   });
 };
 
-export const methodNotFound = (req, res, message) => {
+export const methodNotFound = (request, response, message) => {
   const timestamp = new Date().toISOString();
   const requestId = crypto.randomUUID();
 
-  res.status(404).json({
+  response.status(404).json({
     success: false,
     error: {
       message: message || "Recurso no encontrado.",
@@ -103,11 +104,11 @@ export const methodNotFound = (req, res, message) => {
   });
 };
 
-export const methodConflicts = (req, res, error) => {
+export const methodConflicts = (request, response, error) => {
   const timestamp = new Date().toISOString();
   const requestId = crypto.randomUUID();
 
-  res.status(409).json({
+  response.status(409).json({
     success: false,
     error: {
       message:
@@ -118,17 +119,17 @@ export const methodConflicts = (req, res, error) => {
         "El recurso que intentas crear ya existe o la solicitud genera un conflicto con los datos actuales.",
       timestamp: timestamp,
       requestId: requestId,
-      path: req.originalUrl,
-      method: req.method,
+      path: request.originalUrl,
+      method: request.method,
     },
   });
 };
 
-export const methodTooManyRequests = (req, res, message) => {
+export const methodTooManyRequests = (request, response, message) => {
   const timestamp = new Date().toISOString();
   const requestId = crypto.randomUUID();
 
-  res.status(429).json({
+  response.status(429).json({
     success: false,
     error: {
       message:
@@ -138,17 +139,17 @@ export const methodTooManyRequests = (req, res, message) => {
         "Has superado el número permitido de solicitudes en un periodo de tiempo. Esto puede deberse a un abuso del servicio o a una configuración estricta de límite de peticiones.",
       timestamp: timestamp,
       requestId: requestId,
-      path: req.originalUrl,
-      method: req.method,
+      path: request.originalUrl,
+      method: request.method,
     },
   });
 };
 
-export const methodError = (req, res, error) => {
+export const methodError = (request, response, error) => {
   const timestamp = new Date().toISOString();
   const errorId = crypto.randomUUID();
 
-  res.status(500).json({
+  response.status(500).json({
     success: false,
     error: {
       message: error.message || "Se produjo un error inesperado.",
@@ -158,8 +159,8 @@ export const methodError = (req, res, error) => {
       timestamp: timestamp,
       errorId: errorId,
       stack: error.stack || "No se dispone de información adicional.",
-      path: req.originalUrl,
-      method: req.method,
+      path: request.originalUrl,
+      method: request.method,
     },
   });
 };

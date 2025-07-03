@@ -1,9 +1,6 @@
 import { listUsersModel } from "../../../models/users/index.js";
 
-export const listUsersService = async (params, query) => {
-  const { status } = params;
-  const { correo, rol } = query;
-
+export const listUsersService = async ({ status, correo, rol }) => {
   let where = "WHERE 1=1";
   const values = [];
 
@@ -28,5 +25,16 @@ export const listUsersService = async (params, query) => {
     ORDER BY NameUser ASC
   `;
 
-  return await listUsersModel(queryString, values);
+  const resultList = await listUsersModel(queryString, values);
+
+  if (resultList.length === 0) {
+    throw {
+      statusCode: 404,
+      message: "No se encontraron usuarios con los filtros proporcionados",
+      code: "USERS_NOT_FOUND",
+      details: `No se encontraron usuarios con los filtros proporcionados: ${JSON.stringify({ status, correo, rol })}`,
+    };
+  }
+
+  return resultList;
 };

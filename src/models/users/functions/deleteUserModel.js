@@ -1,14 +1,14 @@
 import { connectionQuery } from "../../../helpers/connection.helper.js";
 
-export const validateFoundUserToEliminated = async (id) => {
+export const validateFoundUserToEliminated = async (userId) => {
   const query = `SELECT NameUser FROM users WHERE id = ?`;
-  const params = [id];
+  const params = [userId];
   return await connectionQuery(query, params);
 };
 
-export const deleteUser = async (id) => {
+export const deleteUser = async (userId) => {
   const query = `DELETE FROM users WHERE id = ?`;
-  const params = [id];
+  const params = [userId];
   return await connectionQuery(query, params);
 };
 

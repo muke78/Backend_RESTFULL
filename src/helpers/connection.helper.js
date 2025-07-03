@@ -1,6 +1,4 @@
-import { selectDatabaseConnection } from "../config/config.js";
-
-const pool = await selectDatabaseConnection();
+import { pool } from "../config/config.js";
 
 export const connectionQuery = (sql, params) => {
   return new Promise((resolve, reject) => {

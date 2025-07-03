@@ -1,4 +1,3 @@
-import { Command } from "commander";
 import cors from "cors";
 import express from "express";
 import helmet from "helmet";
@@ -7,17 +6,17 @@ import { createServer } from "node:http";
 
 import { setupSwagger } from "./src/config/swaggerConfig.js";
 import { corsOptions } from "./src/middleware/cors.js";
+import { errorHandler } from "./src/middleware/errorHandler.js";
 import { router } from "./src/router/index.js";
 
-const program = new Command();
-// Configuración básica del programa
-program
-  .name("backend-kinder-garden")
-  .description("CRM para el control escolar")
-  .version("1.0.0");
-
-// Parsear los argumentos de la línea de comandos
-program.parse(process.argv);
+// Datos del proyecto
+const projectInfo = {
+  name: "CRM Kinder Garden",
+  description: "CRM para Gestión y Administración de una escuela",
+  version: "1.0.0",
+  authorName: "Erick Gonzalez",
+  githubName: "https://github.com/muke78",
+};
 
 const app = express();
 
@@ -30,13 +29,26 @@ app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.use(morgan("dev"));
 app.use(helmet());
+
+// ✅ Ruta raíz: información del proyecto
+app.get("/", (request, response) => {
+  response.status(200).json({
+    description: projectInfo.description,
+    name: projectInfo.name,
+    version: projectInfo.version,
+    author: {
+      name: projectInfo.authorName,
+      github: projectInfo.githubName,
+    },
+    api: "/api/v1",
+    status: "🟢 API funcionando correctamente",
+  });
+});
+
 app.use(router);
 
-// Middleware de manejo de errores
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json("🔴 Error interno del servidor");
-});
+// ✅ Middleware global de errores profesional
+app.use(errorHandler);
 
 // Crear y arrancar el servidor
 let currentPort = 3000;
@@ -49,7 +61,7 @@ const tryListen = (port) => {
 server.on("error", (error) => {
   if (error.code === "EADDRINUSE") {
     console.log(
-      `El puerto ${currentPort} está en uso. Intentando con el puerto ${currentPort + 1}...`,
+      `⚠️ El puerto ${currentPort} está en uso. Intentando con el puerto ${currentPort + 1}...`,
     );
     currentPort++;
     tryListen(currentPort);

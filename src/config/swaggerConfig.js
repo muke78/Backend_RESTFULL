@@ -12,7 +12,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const swaggerDefinition = {
-  openapi: "3.1.0",
+  openapi: "3.0.0",
   info: {
     title: "API Gestion y Administracion de una escuela",
     version: "1.0.0",
