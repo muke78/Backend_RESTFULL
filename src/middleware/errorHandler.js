@@ -1,11 +1,11 @@
 import crypto from "node:crypto";
 
-export const errorHandler = (err, req, res, next) => {
+export const errorHandler = (err, request, response, next) => {
   const status = err.statusCode || 500;
   const timestamp = new Date().toISOString();
   const errorId = crypto.randomUUID();
-
-  res.status(status).json({
+  console.log(request);
+  response.status(status).json({
     success: false,
     error: {
       message: err.message || "Se produjo un error inesperado.",
@@ -16,8 +16,9 @@ export const errorHandler = (err, req, res, next) => {
       timestamp,
       errorId,
       stack: process.env.NODE_ENV === "production" ? undefined : err.stack,
-      path: req.originalUrl,
-      method: req.method,
+      path: request.originalUrl,
+      method: request.method,
+      query: request.query,
     },
   });
 };
