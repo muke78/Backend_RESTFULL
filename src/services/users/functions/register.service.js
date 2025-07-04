@@ -3,7 +3,7 @@ import hashedArg from "argon2";
 
 import { findUserByEmail } from "../../../helpers/findUserByEmail.js";
 import { getUserByEmail } from "../../../helpers/getUserByEmail.js";
-import { registerUser } from "../../../models/users/functions/registerUserModel.js";
+import { registerUser } from "../../../models/users/functions/register.model.js";
 
 export const registerUserService = async ({ nameUser, email, password }) => {
   if (!nameUser || !email || !password) {

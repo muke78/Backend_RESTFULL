@@ -2,13 +2,6 @@
 
 echo "🔍 Verificando archivos antes del commit..."
 
-# Ejecutar pruebas con yarn
-# echo "🧪 Ejecutando tests..."
-# if ! yarn test; then
-#   echo "❌ Tests fallaron. Corrige los errores antes de hacer commit."
-#   exit 1
-# fi
-
 # Formatear código con Prettier
 echo "🚀 Ejecutando Prettier..."
 if ! yarn prettier . --write; then
