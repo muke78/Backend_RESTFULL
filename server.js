@@ -11,7 +11,7 @@ import { router } from "./src/router/index.js";
 
 // Datos del proyecto
 const projectInfo = {
-  name: "CRM Kinder Garden",
+  name: "CRM Kinder Garden Backend",
   description: "CRM para Gestión y Administración de una escuela",
   version: "1.0.0",
   authorName: "Erick Gonzalez",
@@ -72,6 +72,6 @@ server.on("error", (error) => {
 
 server.listen(currentPort, () => {
   console.log(
-    `🟢 Server is listening on port localhost:${server.address().port}`,
+    `🟢 API funcionando correctamente, servidor corriendo en el puerto localhost:${server.address().port}`,
   );
 });

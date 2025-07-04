@@ -1,40 +1,43 @@
 import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
 
-import { methodUnauthorized } from "../server/serverMethods.js";
-
 dotenv.config();
 
-export const verificarToken = (req, res, next) => {
-  const token = req.header("Authorization");
+export const verificarToken = (request, response, next) => {
+  const token = request.header("Authorization");
 
   if (!token) {
-    return methodUnauthorized(
-      req,
-      res,
-      "Acceso no autorizado. Token no proporcionado.",
-    );
+    throw {
+      statusCode: 401,
+      message: "Acceso no autorizado, token no proporcionado",
+      code: "TOKEN_NOT_FOUND",
+      details:
+        "El token no se mando o no esta autorizado para realizar esta peticion",
+    };
   }
 
   const bearerToken = token.split(" ")[1];
   if (!bearerToken) {
-    return methodUnauthorized(
-      req,
-      res,
-      "Acceso no autorizado. Token no proporcionado.",
-    );
+    throw {
+      statusCode: 401,
+      message: "Acceso no autorizado, token no proporcionado",
+      code: "TOKEN_NOT_FOUND",
+      details:
+        "El token no se mando o no esta autorizado para realizar esta peticion",
+    };
   }
 
   try {
     const secretKey = process.env.JWT_SECRET;
     const decoded = jwt.verify(bearerToken, secretKey);
-    req.usuario = decoded;
+    request.usuario = decoded;
     next();
   } catch (error) {
-    return methodUnauthorized(
-      req,
-      res,
-      `Acceso no autorizado. Token inválido ${error}`,
-    );
+    throw {
+      statusCode: 401,
+      message: "Acceso no autorizado: token inválido",
+      code: "TOKEN_INVALID",
+      details: error.message || "El token no pudo ser verificado",
+    };
   }
 };
