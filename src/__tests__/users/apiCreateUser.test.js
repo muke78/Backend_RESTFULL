@@ -1,6 +1,6 @@
 require("dotenv").config();
 const frisby = require("frisby");
-const { createTokenTesting } = require("../../helpers/apiCreateToken");
+const { createTokenTesting } = require("../../helpers/apiCreateToken.helpers");
 
 const BASE_URL = process.env.BASE_URL;
 
@@ -16,7 +16,7 @@ describe("✅ Prueba para crear a un nuevo usuario", () => {
           },
         },
       })
-      .post(`${BASE_URL}/crear-usuario`, {
+      .post(`${BASE_URL}/users`, {
         nameUser: "apiTESTCreate",
         email: uniqueEmail,
         password: "123456788u02kljfLK",
