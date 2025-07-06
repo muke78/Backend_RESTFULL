@@ -1,4 +1,4 @@
-import { connectionQuery } from "../../../helpers/connection.helper.js";
+import { connectionQuery } from "../../../helpers/connection.helpers.js";
 
 export const findUserById = async (userId) => {
   const query = `SELECT * FROM users WHERE ID = ?`;

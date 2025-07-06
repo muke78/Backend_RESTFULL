@@ -1,9 +1,9 @@
 import dotenv from "dotenv";
 import crypto from "node:crypto";
 
-import { createTokenGoogle } from "../../../helpers/jwtGoogle.js";
-import { lastLogin } from "../../../helpers/userLastLogin.js";
-import { googleClient } from "../../../lib/clientGoogle.js";
+import { createTokenGoogle } from "../../../helpers/jwtGoogle.helpers.js";
+import { lastLogin } from "../../../helpers/userLastLogin.helpers.js";
+import { googleClient } from "../../../lib/clientGoogle.lib.js";
 import {
   checkUser,
   createUser,

@@ -1,8 +1,8 @@
 import { faker } from "@faker-js/faker";
 import hashedArg from "argon2";
 
-import { findUserByEmail } from "../../../helpers/findUserByEmail.js";
-import { getUserByEmail } from "../../../helpers/getUserByEmail.js";
+import { findUserByEmail } from "../../../helpers/findUserByEmail.helpers.js";
+import { getUserByEmail } from "../../../helpers/getUserByEmail.helpers.js";
 import { insertUser } from "../../../models/users/index.js";
 
 export const insertUserService = async ({

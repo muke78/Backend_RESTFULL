@@ -5,9 +5,9 @@ import morgan from "morgan";
 import { createServer } from "node:http";
 
 import { setupSwagger } from "./src/config/swaggerConfig.js";
-import { corsOptions } from "./src/middleware/cors.js";
-import { errorHandler } from "./src/middleware/errorHandler.js";
-import { router } from "./src/router/index.js";
+import { corsOptions } from "./src/middleware/cors.middleware.js";
+import { errorHandler } from "./src/middleware/errorHandler.middleware.js";
+import { router } from "./src/routes/index.js";
 
 // Datos del proyecto
 const projectInfo = {

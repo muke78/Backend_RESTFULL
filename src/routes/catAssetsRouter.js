@@ -1,7 +1,7 @@
 import express from "express";
 
 import CatActivosControllers from "../controllers/catAssetsControllers.js";
-import { verificarToken } from "../middleware/verificarToken.js";
+import { verificarToken } from "../middleware/verificarToken.middleware.js";
 
 const apiCatActivos = express.Router();
 

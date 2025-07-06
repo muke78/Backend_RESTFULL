@@ -1,7 +1,7 @@
 import express from "express";
 
 import CatInventarioControllers from "../controllers/catInventarioControllers.js";
-import { verificarToken } from "../middleware/verificarToken.js";
+import { verificarToken } from "../middleware/verificarToken.middleware.js";
 
 const apiCatInventario = express.Router();
 

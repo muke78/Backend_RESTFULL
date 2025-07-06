@@ -1,4 +1,4 @@
-import { rateLimitRequest } from "../../middleware/rateLimitRequest.js";
+import { rateLimitRequest } from "../../middleware/rateLimitRequest.middleware.js";
 
 // Example
 // rateLimitRequest(time to try again, limit each IP request per windows, messageRequest response)

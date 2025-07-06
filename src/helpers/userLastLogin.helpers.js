@@ -1,4 +1,4 @@
-import { connectionQuery } from "./connection.helper.js";
+import { connectionQuery } from "./connection.helpers.js";
 
 export const lastLogin = (userId) => {
   const updateUserLastLogin = `UPDATE users SET LastLogin = CURRENT_TIMESTAMP WHERE id = ?`;

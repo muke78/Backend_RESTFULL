@@ -1,4 +1,4 @@
-import { connectionQuery } from "../../../helpers/connection.helper.js";
+import { connectionQuery } from "../../../helpers/connection.helpers.js";
 
 export const validateFoundUserToEliminated = async (userId) => {
   const query = `SELECT NameUser FROM users WHERE id = ?`;

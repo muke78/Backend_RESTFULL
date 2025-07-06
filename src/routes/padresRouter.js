@@ -1,7 +1,7 @@
 import express from "express";
 
 import PadresControllers from "../controllers/padresControllers.js";
-import { verificarToken } from "../middleware/verificarToken.js";
+import { verificarToken } from "../middleware/verificarToken.middleware.js";
 
 const apiPadres = express.Router();
 

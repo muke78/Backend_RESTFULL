@@ -1,9 +1,9 @@
 import { de } from "@faker-js/faker";
 import hashedArg from "argon2";
 
-import { findUserByEmail } from "../../../helpers/findUserByEmail.js";
-import { getUserByEmail } from "../../../helpers/getUserByEmail.js";
-import { registerUser } from "../../../models/users/functions/register.model.js";
+import { findUserByEmail } from "../../../helpers/findUserByEmail.helpers.js";
+import { getUserByEmail } from "../../../helpers/getUserByEmail.helpers.js";
+import { registerUser } from "../../../models/users/functions/register.models.js";
 
 export const registerUserService = async ({ nameUser, email, password }) => {
   if (!nameUser || !email || !password) {

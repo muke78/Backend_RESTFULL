@@ -42,7 +42,7 @@ const swaggerDefinition = {
 
 const options = {
   swaggerDefinition,
-  apis: [resolve(__dirname, "../router/*.js")],
+  apis: [resolve(__dirname, "../routes/*.js")],
 };
 
 export const swaggerDocument = swaggerJsdoc(options);

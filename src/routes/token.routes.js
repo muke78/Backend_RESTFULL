@@ -1,7 +1,7 @@
 import express from "express";
 
 import { RefreshToken } from "../controllers/token/index.js";
-import { verificarToken } from "../middleware/verificarToken.js";
+import { verificarToken } from "../middleware/verificarToken.middleware.js";
 import { methodOK } from "../server/serverMethods.js";
 
 const apiToken = express.Router();

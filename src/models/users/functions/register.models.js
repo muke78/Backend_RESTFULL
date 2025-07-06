@@ -1,4 +1,4 @@
-import { connectionQuery } from "../../../helpers/connection.helper.js";
+import { connectionQuery } from "../../../helpers/connection.helpers.js";
 
 export const registerUser = async (nameUser, email, hashedPassword) => {
   const query = `
