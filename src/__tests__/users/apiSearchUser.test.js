@@ -1,6 +1,6 @@
 require("dotenv").config();
 const frisby = require("frisby");
-const { createTokenTesting } = require("../../helpers/apiCreateToken");
+const { createTokenTesting } = require("../../helpers/apiCreateToken.helpers");
 const Joi = frisby.Joi;
 
 const BASE_URL = process.env.BASE_URL;

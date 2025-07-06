@@ -1,8 +1,8 @@
 import hashedArg from "argon2";
 
-import { findUserByEmail } from "../../../helpers/findUserByEmail.js";
-import { createToken } from "../../../helpers/jwt.js";
-import { lastLogin } from "../../../helpers/userLastLogin.js";
+import { findUserByEmail } from "../../../helpers/findUserByEmail.helpers.js";
+import { createToken } from "../../../helpers/jwt.helpers.js";
+import { lastLogin } from "../../../helpers/userLastLogin.helpers.js";
 
 export const loginService = async ({ email, password }) => {
   const user = await findUserByEmail(email);

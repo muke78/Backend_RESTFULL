@@ -1,7 +1,7 @@
 import express from "express";
 
 import MaestrosControllers from "../controllers/maestrosControllers.js";
-import { verificarToken } from "../middleware/verificarToken.js";
+import { verificarToken } from "../middleware/verificarToken.middleware.js";
 
 const apiMaestros = express.Router();
 

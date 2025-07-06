@@ -21,7 +21,7 @@ import {
   searchUsersRateLimiter,
   updateUserRateLimiter,
 } from "../helpers/usersHelpers/rateLimitRequestUsers.js";
-import { verificarToken } from "../middleware/verificarToken.js";
+import { verificarToken } from "../middleware/verificarToken.middleware.js";
 import { methodCreated, methodOK } from "../server/serverMethods.js";
 
 const apiUsuarios = express.Router();

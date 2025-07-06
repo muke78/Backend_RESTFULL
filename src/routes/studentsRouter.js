@@ -1,7 +1,7 @@
 import express from "express";
 
 import EstudiantesControllers from "../controllers/studentsController.js";
-import { verificarToken } from "../middleware/verificarToken.js";
+import { verificarToken } from "../middleware/verificarToken.middleware.js";
 
 const apiEstudiantes = express.Router();
 

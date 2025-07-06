@@ -1,1 +1,1 @@
-export * from "./functions/token.controller.js";
+export * from "./functions/token.controllers.js";

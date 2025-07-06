@@ -1,6 +1,6 @@
 import hashedArg from "argon2";
 
-import { findEmailInOtherUser } from "../../../helpers/getUserByEmailAndId.js";
+import { findEmailInOtherUser } from "../../../helpers/getUserByEmailAndId.helpers.js";
 import {
   findUserById,
   updateUserWithPassword,
