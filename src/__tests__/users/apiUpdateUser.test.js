@@ -16,13 +16,12 @@ describe("✅ Prueba para actualizar un usuario", () => {
           },
         },
       })
-      .put(`${BASE_URL}/actualizar-usuario`, {
+      .put(`${BASE_URL}/users/4901398e-2672-11f0-b8d7-d843ae0db894`, {
         nameUser: "Roberta_Rath-Hoppe-Furth",
         email: uniqueEmail,
         password: "129sdnKLMF@asfd11",
         role: "user",
         accountStatus: "Inactivo",
-        id: "1aa52951-2f05-11f0-9a7d-d843ae0db894",
       })
       .then((res) => {
         // console.log("🔎 STATUS:", res.status);

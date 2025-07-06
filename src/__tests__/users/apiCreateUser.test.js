@@ -16,7 +16,7 @@ describe("✅ Prueba para crear a un nuevo usuario", () => {
           },
         },
       })
-      .post(`${BASE_URL}/crear-usuario`, {
+      .post(`${BASE_URL}/users`, {
         nameUser: "apiTESTCreate",
         email: uniqueEmail,
         password: "123456788u02kljfLK",

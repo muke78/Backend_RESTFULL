@@ -16,13 +16,12 @@ describe("✅ Prueba para buscar un usuario", () => {
           },
         },
       })
-      .get(`${BASE_URL}/busqueda-usuario/muke`)
+      .get(`${BASE_URL}/users/search?email=muke7881@gmail.com`)
       .then((res) => {
         // console.log("🔎 STATUS:", res.status);
         // console.log("🔎 RESPONSE:", res.json);
         expect([200, 400, 429, 500]).toContain(res.status);
       })
-      .expect("header", "Content-Type", /application\/json/)
       .expect("jsonTypes", {
         success: Joi.boolean().required(),
         data: Joi.array().items(

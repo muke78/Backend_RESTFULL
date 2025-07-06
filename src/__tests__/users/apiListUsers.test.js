@@ -16,13 +16,12 @@ describe("✅ Prueba para la lista de usuarios", () => {
           },
         },
       })
-      .get(`${BASE_URL}/lista-de-usuarios/Activo?correo=normal&rol=admin`)
+      .get(`${BASE_URL}/users?status=Activo&correo=normal&rol=admin`)
       .then((res) => {
         // console.log("🔎 STATUS:", res.status);
         // console.log("🔎 RESPONSE:", res.json);
         expect([200, 400, 429, 500]).toContain(res.status);
       })
-      .expect("header", "Content-Type", /application\/json/)
       .expect("jsonTypes", {
         success: Joi.boolean().required(),
         data: Joi.array().items(

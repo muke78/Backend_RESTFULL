@@ -16,7 +16,7 @@ describe("✅ Prueba para registrar un usuario", () => {
           },
         },
       })
-      .post(`${BASE_URL}/registrar-usuario`, {
+      .post(`${BASE_URL}/users/auth/register`, {
         nameUser: "apiTESTRegister",
         email: uniqueEmail,
         password: "123456788u02kljfLK",
