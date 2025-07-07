@@ -59,5 +59,10 @@
     "jest": "^29.7.0",
     "nodemon": "^3.1.10",
     "prettier": "^3.5.3"
+  },
+  "pnpm": {
+    "overrides": {
+      "hoek": "^6.1.3"
+    }
   }
 }
