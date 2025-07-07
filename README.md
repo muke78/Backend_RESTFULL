@@ -8,23 +8,52 @@
 
 ## 🔧 Tecnologías Utilizadas
 
-### 🔙 Backend
+### 🔙 Backend - Stack y Librerías
 
-- **Node.js** 🟢
-- **Express.js** 🔵
-- **MySQL2** 🐬
-- **Google Auth Libary** 🔡 (Login con google)
-- **Argon2** 🔒 (Hash de contraseñas)
-- **JWT** 🔑 (Autenticación)
-- **Jest y Frisby** 🧪 (Pruebas de las API)
-- **Swagger & Swagger-UI** 📚 (Documentación de la API)
-- **Express Rate Limit** ⏱️ (Limitación de peticiones)
-- **Helmet** 🛡️ (Seguridad en headers HTTP)
-- **CORS** 🌐 (Permite el acceso entre dominios)
-- **Morgan** 🪵 (Middleware de logging)
-- **Commander & Inquirer** ⚙️ (Comandos CLI)
-- **Formkit Tempo** 🕒 (Fechas en formato entendible y legible)
-- **Husky** 🐶 (Hooks de Git)
+Tecnologías y herramientas utilizadas en el backend de este proyecto:
+
+#### 🧠 Core & Framework
+- **Node.js** 🟢 – Entorno de ejecución de JavaScript para backend.
+- **Express.js** ⚡ – Framework web minimalista para crear APIs y servidores HTTP.
+
+#### 🛡️ Seguridad y Autenticación
+- **Argon2** 🔒 – Algoritmo de hashing seguro para contraseñas.
+- **jsonwebtoken (JWT)** 🔑 – Autenticación basada en tokens.
+- **Google Auth Library** 🔐 – Autenticación con cuentas de Google.
+- **helmet** 🛡️ – Configura cabeceras HTTP seguras.
+- **express-rate-limit** ⏱️ – Protección contra ataques de fuerza bruta y abuso.
+- **cors** 🌐 – Permite solicitudes entre dominios.
+
+#### 🐬 Base de Datos
+- **MySQL2** 🐬 – Cliente MySQL para Node.js compatible con promesas.
+
+#### 🪵 Logging y Utilidades
+- **morgan** 🪵 – Middleware para registrar peticiones HTTP.
+- **commander** ⚙️ – Gestión de comandos CLI (si aplica).
+
+#### 📦 Formateo, Linting y Calidad de Código
+- **prettier** ✨ – Formateador de código automático.
+- **@trivago/prettier-plugin-sort-imports** 🔀 – Ordenamiento automático de imports.
+- **eslint** 🧹 – Linter para mantener un estilo de código consistente.
+- **@eslint/js** ⚙️ – Configuración moderna para `eslint`.
+- **standard** 📏 – Estilo de código estándar para JavaScript.
+
+#### 🧪 Testing
+- **jest** ✅ – Framework de testing.
+- **frisby** 🧪 – Librería para pruebas HTTP y APIs REST.
+- **@faker-js/faker** 👻 – Generador de datos falsos para pruebas.
+
+#### ⚙️ Automatización y Entorno de Desarrollo
+- **nodemon** 🔄 – Reinicio automático del servidor al detectar cambios.
+- **concurrently** 🧵 – Ejecuta múltiples comandos en paralelo.
+- **dotenv** 🧬 – Carga variables de entorno desde archivos `.env`.
+- **husky** 🐶 – Automatiza scripts en Git como pre-commit o pre-push.
+- **@formkit/tempo** 🕒 – Formatea fechas en un formato legible y localizado.
+
+#### 📚 Documentación
+- **swagger-jsdoc** 📝 – Generador de especificaciones OpenAPI desde JSDoc.
+- **swagger-ui-express** 🌐 – Interfaz de usuario Swagger para probar la API.
+- **swagger-themes** 🎨 – Temas visuales personalizados para Swagger UI.
 
 ---
 
@@ -110,7 +139,7 @@ cd Backend_RESTFULL
 2. Instalar las dependencias
 
 ```
-yarn install
+pnpm install
 ```
 
 3. Crear un archivo .env con las siguientes variables:
@@ -128,15 +157,20 @@ JWT_SECRET=your_jwt_secret
 
 ---
 
-## 🚀 Comandos
+## 📦 Scripts disponibles
 
-| Comando           | Descripción                                         |
-| ----------------- | --------------------------------------------------- |
-| `yarn dev`        | Inicia el servidor en modo desarrollo 🔄            |
-| `yarn start`      | Inicia en modo producción 🚀                        |
-| `yarn format`     | Formatea el código con Prettier 💅                  |
-| `yarn test`       | Ejecuta pruebas unitarias con Jest ✅               |
-| `yarn test:watch` | Ejecuta pruebas automáticamente al hacer cambios 👀 |
+Estos son los scripts definidos en el archivo `package.json`, los cuales automatizan tareas comunes de desarrollo y pruebas.
+
+| Script                 | Comando                                                                                     | Descripción                                                                 |
+|------------------------|---------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------|
+| `start`                | `nodemon server.js`                                                                         | Inicia el servidor en modo desarrollo usando `nodemon`.                                                         |
+| `dev`                  | `nodemon server.js`                                                                         | Alias de `start`. Ideal para entornos de desarrollo.                                                             |
+| `format`               | `prettier 'src/**/*.{js,ts,jsx,tsx,json}' server.js package.json --write`                   | Formatea el código en la carpeta `src`, `server.js` y `package.json` usando Prettier.                           |
+| `prepare`              | `husky`                                                                                     | Configura los hooks de Git mediante Husky (se ejecuta automáticamente al instalar dependencias).                |
+| `test`                 | `jest`                                                                                      | Ejecuta los tests unitarios utilizando Jest.                                                                     |
+| `test:watch`           | `jest --watchAll`                                                                           | Ejecuta los tests y observa cambios en tiempo real para repetir automáticamente las pruebas.                    |
+| `test:with-server`     | `concurrently --kill-others --success first "pnpm dev" "pnpm test"`                         | Ejecuta el servidor de desarrollo y las pruebas en paralelo. Se detiene si uno de ellos finaliza o falla.       |
+
 
 ---
 
