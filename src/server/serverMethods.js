@@ -1,6 +1,6 @@
 import crypto from "node:crypto";
 
-export const methodOK = (request, response, result) => {
+export const methodOK = (request, response, result, message) => {
   const timestamp = new Date().toISOString();
   const requestId = crypto.randomUUID();
   const totalDataCount = Array.isArray(result) ? result.length : result ? 1 : 0;
@@ -9,7 +9,7 @@ export const methodOK = (request, response, result) => {
   response.status(200).json({
     success: true,
     data: result || {},
-    message: "Consulta realizada correctamente",
+    message: message || "Consulta realizada correctamente",
     metadata: {
       timestamp: timestamp,
       requestId: requestId,
@@ -18,14 +18,14 @@ export const methodOK = (request, response, result) => {
   });
 };
 
-export const methodCreated = (request, response, result) => {
+export const methodCreated = (request, response, result, message) => {
   const timestamp = new Date().toISOString();
   const requestId = crypto.randomUUID();
 
   response.status(201).json({
     success: true,
     data: result,
-    message: "Recurso creado exitosamente",
+    message: message || "Recurso creado exitosamente",
     metadata: {
       timestamp: timestamp,
       requestId: requestId,
@@ -33,6 +33,8 @@ export const methodCreated = (request, response, result) => {
     },
   });
 };
+
+// De aqui para abajo se puede eliminar todos estos metodos
 
 export const methodIncorrect = (request, response, message) => {
   const timestamp = new Date().toISOString();

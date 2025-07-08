@@ -8,7 +8,7 @@ export const rateLimitRequest = (time, limit, messageRequest) => {
     handler: (request, response, next) => {
       next({
         statusCode: 429,
-        message: `${messageRequest}. Inténtelo nuevamente después de ${time} minuto(s).`,
+        message: `${messageRequest} Inténtelo nuevamente después de ${time} minuto(s).`,
         code: "TOO_MANY_REQUESTS",
         details: "Has excedido el número máximo de solicitudes permitidas.",
       });

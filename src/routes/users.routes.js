@@ -20,7 +20,7 @@ import {
   registerUserRateLimiter,
   searchUsersRateLimiter,
   updateUserRateLimiter,
-} from "../helpers/usersHelpers/rateLimitRequestUsers.js";
+} from "../helpers/rateLimit/users.rateLimit.js";
 import { verificarToken } from "../middleware/verificarToken.middleware.js";
 import { methodCreated, methodOK } from "../server/serverMethods.js";
 
