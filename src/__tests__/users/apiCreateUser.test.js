@@ -1,8 +1,6 @@
-require("dotenv").config();
 const frisby = require("frisby");
 const { createTokenTesting } = require("../../helpers/apiCreateToken.helpers");
-
-const BASE_URL = process.env.BASE_URL;
+const { config } = require("../../config/config");
 
 describe("✅ Prueba para crear a un nuevo usuario", () => {
   it("📦 Debe de retornar una respuesta exitosa con los datos del usuario creado con un status 201", async () => {
@@ -16,7 +14,7 @@ describe("✅ Prueba para crear a un nuevo usuario", () => {
           },
         },
       })
-      .post(`${BASE_URL}/users`, {
+      .post(`${config.docs.baseUrl}/users`, {
         nameUser: "apiTESTCreate",
         email: uniqueEmail,
         password: "123456788u02kljfLK",

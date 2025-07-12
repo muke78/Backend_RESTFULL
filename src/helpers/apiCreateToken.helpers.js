@@ -1,7 +1,5 @@
-require("dotenv").config();
 const jwt = require("jsonwebtoken");
-
-const secret = process.env.JWT_SECRET;
+const { config } = require("../config/config");
 
 const payload = {
   id: "4383b114-2672-11f0-b8d7-d843ae0db894",
@@ -17,7 +15,7 @@ const payload = {
 
 // Token válido por solo 1 minutos
 const createTokenTesting = () => {
-  return jwt.sign(payload, secret, { expiresIn: "1h" });
+  return jwt.sign(payload, config.jwt.secret, { expiresIn: "1h" });
 };
 
 module.exports = { createTokenTesting };

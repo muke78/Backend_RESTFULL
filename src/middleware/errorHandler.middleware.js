@@ -1,5 +1,7 @@
 import crypto from "node:crypto";
 
+import { config } from "../config/config.js";
+
 export const errorHandler = (err, request, response, next) => {
   const status = err.statusCode || 500;
   const timestamp = new Date().toISOString();
@@ -14,7 +16,7 @@ export const errorHandler = (err, request, response, next) => {
         "Ocurrió un problema en el servidor. Por favor, intenta más tarde.",
       timestamp,
       errorId,
-      stack: process.env.NODE_ENV === "production" ? undefined : err.stack,
+      stack: config.nodeEnv === "production" ? undefined : err.stack,
       path: request.originalUrl,
       method: request.method,
       query: request.query,

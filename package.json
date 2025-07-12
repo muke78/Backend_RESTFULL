@@ -31,7 +31,6 @@
     "node": ">=v22.11.0"
   },
   "dependencies": {
-    "@formkit/tempo": "^0.1.2",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "argon2": "^0.41.1",
     "cors": "^2.8.5",

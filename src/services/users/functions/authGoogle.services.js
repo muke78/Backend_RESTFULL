@@ -1,6 +1,6 @@
-import dotenv from "dotenv";
 import crypto from "node:crypto";
 
+import { config } from "../../../config/config.js";
 import { createTokenGoogle } from "../../../helpers/jwtGoogle.helpers.js";
 import { lastLogin } from "../../../helpers/userLastLogin.helpers.js";
 import { googleClient } from "../../../lib/clientGoogle.lib.js";
@@ -9,8 +9,6 @@ import {
   createUser,
   getRecoveryUserById,
 } from "../../../models/users/index.js";
-
-dotenv.config();
 
 export const loginGoogleService = async (credential) => {
   if (!credential) {
@@ -24,7 +22,7 @@ export const loginGoogleService = async (credential) => {
 
   const ticket = await googleClient.verifyIdToken({
     idToken: credential,
-    audience: process.env.CLIENT_ID_GOOGLE,
+    audience: config.authGoogle.client_google,
   });
 
   const payload = ticket.getPayload();
