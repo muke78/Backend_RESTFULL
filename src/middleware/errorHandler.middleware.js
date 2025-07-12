@@ -4,7 +4,6 @@ export const errorHandler = (err, request, response, next) => {
   const status = err.statusCode || 500;
   const timestamp = new Date().toISOString();
   const errorId = crypto.randomUUID();
-  console.log(request);
   response.status(status).json({
     success: false,
     error: {

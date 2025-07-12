@@ -1,6 +1,6 @@
 import express from "express";
 
-import { apiCatActivos } from "./catAssetsRouter.js";
+import { apiCatAssets } from "./catAssets.routes.js";
 import { apiCatInventario } from "./catInventarioRouter.js";
 import { apiCatInsumos } from "./catSuppliesRouter.js";
 import { apiGoogle } from "./google.route.js";
@@ -25,5 +25,6 @@ const router = express.Router();
 
 router.use("/api/v1/users", apiUsuarios, apiGoogle);
 router.use("/api/v1/token", apiToken);
+router.use("/api/v1/assets", apiCatAssets);
 
 export { router };

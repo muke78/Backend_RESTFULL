@@ -1,0 +1,1900 @@
+openapi: 3.0.0
+info:
+  title: API Gestion y Administracion de una escuela
+  description: >-
+    **AKT** es una plataforma CRM construida para administrar eficientemente la
+    información de un jardín de niños, incluyendo usuarios, maestros, padres,
+    alumnos, insumos y más. Esta solución cuenta con una robusta **API RESTful**
+    desarrollada en **Node.js**, conectada a una base de datos **MySQL**, y un
+    **frontend moderno en React** que facilita la gestión desde cualquier
+    navegador.EndFragment
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000/api/v1
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+  - BearerAuth: []
+tags:
+  - name: API Maestros
+  - name: API Usuarios
+  - name: API Padres
+  - name: Catálogo Inventario
+  - name: Catálogo Insumos
+  - name: Catálogo Activos
+  - name: API Estudiantes
+paths:
+  /api/v1/lista-de-maestros:
+    get:
+      tags:
+        - API Maestros
+      summary: Traer lista de maestros
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/lista-de-maestros-eliminados:
+    get:
+      tags:
+        - API Maestros
+      summary: Traer maestros eliminados
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/buscar-maestro:
+    post:
+      tags:
+        - API Maestros
+      summary: Buscar maestro
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                email: muke7881@gmail.com
+                firstName: ''
+                lastName: ''
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/agregar-maestro:
+    post:
+      tags:
+        - API Maestros
+      summary: Agregar maestro
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                teacherID: bcd3df3c-8157-11ef-a62a-00e04c360195
+                firstName: Erick Miguel
+                lastName: Gonzalez Rivera
+                dateOfBirth: '2000-12-29'
+                nameSchool: Jardin de niños Estrellitas
+                levelStudies: Licenciatura en Educación Preescolar
+                studentsInCharge: 30
+                grade: Primero
+                group: B
+                cct: 15EJN0089P
+                schoolZone: E30
+                workShift: Matutino
+                curp: GORE001229HMCNVRB3
+                email: mukes@gmail.com
+                phone: '5511909105'
+                age: 100
+                address: Calle Estrella, 123, Colonia Centro, CDMX
+                emergencyContact: Carmen Rivera Cornejo
+                emergencyPhone: '5512345678'
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjAyNGIwZjQ2LTgwOTItMTFlZi1iZjRkLWQ4NDNhZTBkYjg5NCIsIm5hbWVVc2VyIjoibGF1cmVuIiwiZW1haWwiOiJwZXRpdGUubWFyeTA1QGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImxhc3RMb2dpbiI6IjIwMjQtMTAtMDNUMDc6MTg6MDguMDAwWiIsImFjY291bnRTdGF0dXMiOiJBY3Rpdm8iLCJpYXQiOjE3Mjc5NDAwMTMsImV4cCI6MTcyODAyNjQxM30.p5IAIlD3Rimt8uVMqAtO3jnMEYA0ojTg1i2ef2bmnRs
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/actualizar-maestro:
+    put:
+      tags:
+        - API Maestros
+      summary: Actualizar maestro
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                firstName: Erick Miguel
+                lastName: ''
+                dateOfBirth: '2000-12-29'
+                nameSchool: ''
+                levelStudies: ''
+                studentsInCharge: 0
+                grade: ''
+                group: ''
+                cct: ''
+                schoolZone: ''
+                workShift: ''
+                curp: ''
+                email: ''
+                phone: ''
+                age: 0
+                address: ''
+                emergencyContact: ''
+                emergencyPhone: ''
+                status: Activo
+                id: d176c3b6-86c5-11ef-8a8b-00e04c360195
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/borrar-maestro-boveda/f0bf974d-8167-11ef-a62a-00e04c36019:
+    put:
+      tags:
+        - API Maestros
+      summary: Mover a la boveda de Eliminados
+      requestBody:
+        content: {}
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjAyNGIwZjQ2LTgwOTItMTFlZi1iZjRkLWQ4NDNhZTBkYjg5NCIsIm5hbWVVc2VyIjoibGF1cmVuIiwiZW1haWwiOiJwZXRpdGUubWFyeTA1QGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImxhc3RMb2dpbiI6IjIwMjQtMTAtMDNUMDc6MjA6MTMuMDAwWiIsImFjY291bnRTdGF0dXMiOiJBY3Rpdm8iLCJpYXQiOjE3Mjc5NDIyMjAsImV4cCI6MTcyODAyODYyMH0.OfgO7x9plre5ZcnQu47b9MmzzqEbe7gpURoTQURR07g
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/borrar-maestro-def/c953aa29-976d-11ef-a763-00e04c360195:
+    delete:
+      tags:
+        - API Maestros
+      summary: Borrar definitivamente maestro
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjAyNGIwZjQ2LTgwOTItMTFlZi1iZjRkLWQ4NDNhZTBkYjg5NCIsIm5hbWVVc2VyIjoibGF1cmVuIiwiZW1haWwiOiJwZXRpdGUubWFyeTA1QGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImxhc3RMb2dpbiI6IjIwMjQtMTAtMDNUMDc6MjA6MTMuMDAwWiIsImFjY291bnRTdGF0dXMiOiJBY3Rpdm8iLCJpYXQiOjE3Mjc5NDIyMjAsImV4cCI6MTcyODAyODYyMH0.OfgO7x9plre5ZcnQu47b9MmzzqEbe7gpURoTQURR07g
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /users:
+    get:
+      tags:
+        - API Usuarios
+      summary: Lista usuarios
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIyYWVkNmVkLTI2NzItMTFmMC1iOGQ3LWQ4NDNhZTBkYjg5NCIsIm5hbWVVc2VyIjoiTWFyaWEgSm9zZSIsImVtYWlsIjoicGV0aXRlLm1hcnkwNUBnbWFpbC5jb20iLCJwcm9maWxlUGljdHVyZSI6Imh0dHBzOi8vaS5waW5pbWcuY29tLzczNngvZGEvZjMvZmIvZGFmM2ZiOTgxZTIyODIyMGU5MDE2ODJjNTVjYzQyNzkuanBnIiwicm9sZSI6ImFkbWluIiwiYWNjb3VudFR5cGUiOiJub3JtYWwiLCJsYXN0TG9naW4iOiIyMDI1LTA3LTA4VDAyOjMzOjE4LjAwMFoiLCJhY2NvdW50U3RhdHVzIjoiQWN0aXZvIiwiaWF0IjoxNzUxOTUxODUwLCJleHAiOjE3NTE5OTUwNTB9.H9UDvt4GRmZZIztWhdrAZJofAsQNsQP8M9oAFCkO338
+        - name: status
+          in: query
+          schema:
+            type: string
+          example: Activo
+        - name: correo
+          in: query
+          schema:
+            type: string
+          example: normal
+        - name: rol
+          in: query
+          schema:
+            type: string
+          example: admin
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    post:
+      tags:
+        - API Usuarios
+      summary: Crear un usuario
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                nameUser: '{{$randomUserName}}'
+                email: '{{$randomEmail}}'
+                password: '{{$randomPassword}}'
+                accountStatus: Inactivo
+                role: user
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIyYWVkNmVkLTI2NzItMTFmMC1iOGQ3LWQ4NDNhZTBkYjg5NCIsIm5hbWVVc2VyIjoiTWFyaWEgSm9zZSIsImVtYWlsIjoicGV0aXRlLm1hcnkwNUBnbWFpbC5jb20iLCJwcm9maWxlUGljdHVyZSI6Imh0dHBzOi8vaS5waW5pbWcuY29tLzczNngvZGEvZjMvZmIvZGFmM2ZiOTgxZTIyODIyMGU5MDE2ODJjNTVjYzQyNzkuanBnIiwicm9sZSI6ImFkbWluIiwiYWNjb3VudFR5cGUiOiJub3JtYWwiLCJsYXN0TG9naW4iOiIyMDI1LTA2LTI5VDA2OjI1OjE1LjAwMFoiLCJhY2NvdW50U3RhdHVzIjoiQWN0aXZvIiwiaWF0IjoxNzUxMzQxNjc3LCJleHAiOjE3NTEzODQ4Nzd9.ifGLfMW-S4eTx8u_wPoGq-XmaPATOgXo7EWH40Vbe8Q
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /users/search:
+    get:
+      tags:
+        - API Usuarios
+      summary: Busqueda de usuario
+      security:
+        - noauthAuth: []
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIyYWVkNmVkLTI2NzItMTFmMC1iOGQ3LWQ4NDNhZTBkYjg5NCIsIm5hbWVVc2VyIjoiTWFyaWEgSm9zZSIsImVtYWlsIjoicGV0aXRlLm1hcnkwNUBnbWFpbC5jb20iLCJwcm9maWxlUGljdHVyZSI6Imh0dHBzOi8vaS5waW5pbWcuY29tLzczNngvZGEvZjMvZmIvZGFmM2ZiOTgxZTIyODIyMGU5MDE2ODJjNTVjYzQyNzkuanBnIiwicm9sZSI6ImFkbWluIiwiYWNjb3VudFR5cGUiOiJub3JtYWwiLCJsYXN0TG9naW4iOiIyMDI1LTA2LTI5VDA2OjI1OjE1LjAwMFoiLCJhY2NvdW50U3RhdHVzIjoiQWN0aXZvIiwiaWF0IjoxNzUxMzQxNjc3LCJleHAiOjE3NTEzODQ4Nzd9.ifGLfMW-S4eTx8u_wPoGq-XmaPATOgXo7EWH40Vbe8Q
+        - name: email
+          in: query
+          schema:
+            type: string
+          example: muke7881@gmail.com
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /users/auth/login:
+    post:
+      tags:
+        - API Usuarios
+      summary: Login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                email: petite.mary05@gmail.com
+                password: '123456'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /users/auth/google:
+    post:
+      tags:
+        - API Usuarios
+      summary: Login Google
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                credential: >-
+                  eyJhbGciOiJSUzI1NiIsImtpZCI6Ijg4MjUwM2E1ZmQ1NmU5ZjczNGRmYmE1YzUwZDdiZjQ4ZGIyODRhZTkiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiIxNjg2MDI3NTY1MC1qODFkcm9scmwxNG41N2M3a3FmZDdqNWdyMnNrZnJzdi5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsImF1ZCI6IjE2ODYwMjc1NjUwLWo4MWRyb2xybDE0bjU3YzdrcWZkN2o1Z3Iyc2tmcnN2LmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwic3ViIjoiMTA3NTUyNTE4NTQ4OTM3Mzg5NjkyIiwiZW1haWwiOiJtdWtlNzg4MUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwibmJmIjoxNzUxNTMyNzUyLCJuYW1lIjoiRXJpY2sgR29uemFsZXoiLCJwaWN0dXJlIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EvQUNnOG9jSmZmd3BJMVNIemxvZUtyRnlJQ0QzTVQ5R1o1bEtHTkFvbEVKLXd1R3A5am1Fbkt6czNmZz1zOTYtYyIsImdpdmVuX25hbWUiOiJFcmljayIsImZhbWlseV9uYW1lIjoiR29uemFsZXoiLCJpYXQiOjE3NTE1MzMwNTIsImV4cCI6MTc1MTUzNjY1MiwianRpIjoiMzZlOTZkMWFjNjM5NTFmMDBlNWVjZDAzZDAwMzEyNzc0ZmVkMDk0OCJ9.lFhmKkkv1hxGsec5m-iJ_JrhtycnG7zAw1BJfHpG8phEYkuIX4_srkb8vHcDCa2OeJj8jf_pvluORgXfwiRY-QLVw5XJcO_hyQ5qi-N_WFrXUR939y8o0SW3UppP7muU9VqDIzCYlSf--Re5uj2Vg3pJ5hs8QAEhPv5eubPyDHEblTQHI4MdNUaulNazuQbSHE5zVojkWGVWaYaTOli9URetkJ4nLKW-ii_GnaDKUVOSFe3xPXXgTZA3ZNEJu76GlzgpO9SpJNKs12lT4kNx2wbCcve82SI6S765KYSY8WM2oLScDx0KAa_rufOKp-xtLhPv3b8u-EMGrZPee6VlvA
+      security:
+        - noauthAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /token/refresh:
+    post:
+      tags:
+        - API Usuarios
+      summary: Refresco de token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                token: >-
+                  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIyYWVkNmVkLTI2NzItMTFmMC1iOGQ3LWQ4NDNhZTBkYjg5NCIsIm5hbWVVc2VyIjoiTWFyaWEgSm9zZSIsImVtYWlsIjoicGV0aXRlLm1hcnkwNUBnbWFpbC5jb20iLCJwcm9maWxlUGljdHVyZSI6Imh0dHBzOi8vaS5waW5pbWcuY29tLzczNngvZGEvZjMvZmIvZGFmM2ZiOTgxZTIyODIyMGU5MDE2ODJjNTVjYzQyNzkuanBnIiwicm9sZSI6ImFkbWluIiwiYWNjb3VudFR5cGUiOiJub3JtYWwiLCJsYXN0TG9naW4iOiIyMDI1LTA3LTA0VDA4OjUyOjI2LjAwMFoiLCJhY2NvdW50U3RhdHVzIjoiQWN0aXZvIiwiaWF0IjoxNzUxNjE5MzEyLCJleHAiOjE3NTE2NjI1MTJ9.YKjjyZkbkFkPe0YQG2yOOigu-7nL3Vs5phRZXmoiDD4
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIyYWVkNmVkLTI2NzItMTFmMC1iOGQ3LWQ4NDNhZTBkYjg5NCIsIm5hbWVVc2VyIjoiTWFyaWEgSm9zZSIsImVtYWlsIjoicGV0aXRlLm1hcnkwNUBnbWFpbC5jb20iLCJwcm9maWxlUGljdHVyZSI6Imh0dHBzOi8vaS5waW5pbWcuY29tLzczNngvZGEvZjMvZmIvZGFmM2ZiOTgxZTIyODIyMGU5MDE2ODJjNTVjYzQyNzkuanBnIiwicm9sZSI6ImFkbWluIiwiYWNjb3VudFR5cGUiOiJub3JtYWwiLCJsYXN0TG9naW4iOiIyMDI1LTA3LTA0VDA4OjUyOjI2LjAwMFoiLCJhY2NvdW50U3RhdHVzIjoiQWN0aXZvIiwiaWF0IjoxNzUxNjE5MzEyLCJleHAiOjE3NTE2NjI1MTJ9.YKjjyZkbkFkPe0YQG2yOOigu-7nL3Vs5phRZXmoiDD4
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /users/auth/register:
+    post:
+      tags:
+        - API Usuarios
+      summary: Registrar un usuario
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                nameUser: '{{$randomUserName}}'
+                email: '{{$randomEmail}}'
+                password: '{{$randomPassword}}'
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIyYWVkNmVkLTI2NzItMTFmMC1iOGQ3LWQ4NDNhZTBkYjg5NCIsIm5hbWVVc2VyIjoiTWFyaWEgSm9zZSIsImVtYWlsIjoicGV0aXRlLm1hcnkwNUBnbWFpbC5jb20iLCJwcm9maWxlUGljdHVyZSI6Imh0dHBzOi8vaS5waW5pbWcuY29tLzczNngvZGEvZjMvZmIvZGFmM2ZiOTgxZTIyODIyMGU5MDE2ODJjNTVjYzQyNzkuanBnIiwicm9sZSI6ImFkbWluIiwiYWNjb3VudFR5cGUiOiJub3JtYWwiLCJsYXN0TG9naW4iOiIyMDI1LTA1LTEyVDAxOjQ4OjI2LjAwMFoiLCJhY2NvdW50U3RhdHVzIjoiQWN0aXZvIiwiaWF0IjoxNzQ3MDE0NTA4LCJleHAiOjE3NDcwNTc3MDh9.jd-mjnPFN3_dXWW1to2BxCbcHrvqIu3YBPfzTwXWZtY
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /users/bulk:
+    post:
+      tags:
+        - API Usuarios
+      summary: Crear usuarios masivo
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                countInsert: 10
+      security:
+        - noauthAuth: []
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIyYWVkNmVkLTI2NzItMTFmMC1iOGQ3LWQ4NDNhZTBkYjg5NCIsIm5hbWVVc2VyIjoiTWFyaWEgSm9zZSIsImVtYWlsIjoicGV0aXRlLm1hcnkwNUBnbWFpbC5jb20iLCJwcm9maWxlUGljdHVyZSI6Imh0dHBzOi8vaS5waW5pbWcuY29tLzczNngvZGEvZjMvZmIvZGFmM2ZiOTgxZTIyODIyMGU5MDE2ODJjNTVjYzQyNzkuanBnIiwicm9sZSI6ImFkbWluIiwiYWNjb3VudFR5cGUiOiJub3JtYWwiLCJsYXN0TG9naW4iOiIyMDI1LTA2LTI5VDA2OjI1OjE1LjAwMFoiLCJhY2NvdW50U3RhdHVzIjoiQWN0aXZvIiwiaWF0IjoxNzUxMzQxNjc3LCJleHAiOjE3NTEzODQ4Nzd9.ifGLfMW-S4eTx8u_wPoGq-XmaPATOgXo7EWH40Vbe8Q
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      tags:
+        - API Usuarios
+      summary: Eliminacion masiva
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIyYWVkNmVkLTI2NzItMTFmMC1iOGQ3LWQ4NDNhZTBkYjg5NCIsIm5hbWVVc2VyIjoiTWFyaWEgSm9zZSIsImVtYWlsIjoicGV0aXRlLm1hcnkwNUBnbWFpbC5jb20iLCJwcm9maWxlUGljdHVyZSI6Imh0dHBzOi8vaS5waW5pbWcuY29tLzczNngvZGEvZjMvZmIvZGFmM2ZiOTgxZTIyODIyMGU5MDE2ODJjNTVjYzQyNzkuanBnIiwicm9sZSI6ImFkbWluIiwiYWNjb3VudFR5cGUiOiJub3JtYWwiLCJsYXN0TG9naW4iOiIyMDI1LTA2LTI5VDA2OjI1OjE1LjAwMFoiLCJhY2NvdW50U3RhdHVzIjoiQWN0aXZvIiwiaWF0IjoxNzUxMzQxNjc3LCJleHAiOjE3NTEzODQ4Nzd9.ifGLfMW-S4eTx8u_wPoGq-XmaPATOgXo7EWH40Vbe8Q
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /users/4901398e-2672-11f0-b8d7-d843ae0db894:
+    put:
+      tags:
+        - API Usuarios
+      summary: Editar usuario
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                nameUser: La pecas
+                email: daires2509@gmail.com
+                password: '123456'
+                role: admin
+                accountStatus: Activo
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIyYWVkNmVkLTI2NzItMTFmMC1iOGQ3LWQ4NDNhZTBkYjg5NCIsIm5hbWVVc2VyIjoiTWFyaWEgSm9zZSIsImVtYWlsIjoicGV0aXRlLm1hcnkwNUBnbWFpbC5jb20iLCJwcm9maWxlUGljdHVyZSI6Imh0dHBzOi8vaS5waW5pbWcuY29tLzczNngvZGEvZjMvZmIvZGFmM2ZiOTgxZTIyODIyMGU5MDE2ODJjNTVjYzQyNzkuanBnIiwicm9sZSI6ImFkbWluIiwiYWNjb3VudFR5cGUiOiJub3JtYWwiLCJsYXN0TG9naW4iOiIyMDI1LTA2LTI5VDA2OjI1OjE1LjAwMFoiLCJhY2NvdW50U3RhdHVzIjoiQWN0aXZvIiwiaWF0IjoxNzUxMzQxNjc3LCJleHAiOjE3NTEzODQ4Nzd9.ifGLfMW-S4eTx8u_wPoGq-XmaPATOgXo7EWH40Vbe8Q
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /users/1b48a265-2f05-11f0-9a7d-d843ae0db894:
+    delete:
+      tags:
+        - API Usuarios
+      summary: Eliminar usuario
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIyYWVkNmVkLTI2NzItMTFmMC1iOGQ3LWQ4NDNhZTBkYjg5NCIsIm5hbWVVc2VyIjoiTWFyaWEgSm9zZSIsImVtYWlsIjoicGV0aXRlLm1hcnkwNUBnbWFpbC5jb20iLCJwcm9maWxlUGljdHVyZSI6Imh0dHBzOi8vaS5waW5pbWcuY29tLzczNngvZGEvZjMvZmIvZGFmM2ZiOTgxZTIyODIyMGU5MDE2ODJjNTVjYzQyNzkuanBnIiwicm9sZSI6ImFkbWluIiwiYWNjb3VudFR5cGUiOiJub3JtYWwiLCJsYXN0TG9naW4iOiIyMDI1LTA2LTI5VDA2OjI1OjE1LjAwMFoiLCJhY2NvdW50U3RhdHVzIjoiQWN0aXZvIiwiaWF0IjoxNzUxMzQxNjc3LCJleHAiOjE3NTEzODQ4Nzd9.ifGLfMW-S4eTx8u_wPoGq-XmaPATOgXo7EWH40Vbe8Q
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/lista-de-padres:
+    get:
+      tags:
+        - API Padres
+      summary: Lista de padres
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/lista-de-padres-eliminados:
+    get:
+      tags:
+        - API Padres
+      summary: Traer padres eliminados
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/lista-padres-maestro/d17851a7-86b3-11ef-8a8b-00e04c360195:
+    post:
+      tags:
+        - API Padres
+      summary: Lista de padres por maestro
+      requestBody:
+        content: {}
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/busqueda-padres:
+    post:
+      tags:
+        - API Padres
+      summary: Buscar papas
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                email: ''
+                firstName: Juan
+                lastName: ''
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/insertar-padres:
+    post:
+      tags:
+        - API Padres
+      summary: Insertar padres
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                teacherID: d17851a7-86b3-11ef-8a8b-00e04c360195
+                firstName: Jose
+                lastName: Antonio Salazar
+                dateOfBirth: '1950-02-10'
+                ocupation: Obrero
+                gender: Masculino
+                curp: asdasdnaklsd0
+                email: jose20@gmail.com
+                phone: '5511909105'
+                age: 50
+                address: Ecatepec
+                emergencyContact: Miguel Gonzalez
+                emergencyPhone: '5511909105'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/actualizar-padres:
+    put:
+      tags:
+        - API Padres
+      summary: Actualizar padres
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                teacherID: d17851a7-86b3-11ef-8a8b-00e04c360195
+                firstName: ''
+                lastName: ''
+                dateOfBirth: '1975-04-15'
+                ocupation: ''
+                gender: Masculino
+                curp: JMLA750415HDFRZR01
+                email: juan.martinez75@gmail.com
+                phone: 5540981234
+                age: 49
+                address: Avenida Central 123, Ciudad de México
+                emergencyContact: María López
+                emergencyPhone: '5543998765'
+                status: Activo
+                id: 67baa960-9766-11ef-a763-00e04c360195
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/borrar-padres-boveda/67baa960-9766-11ef-a763-00e04c360195:
+    put:
+      tags:
+        - API Padres
+      summary: Mover a la boveda de eliminados
+      requestBody:
+        content: {}
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/borrar-padres-def/57ab2953-9048-11ef-a763-00e04c360195:
+    delete:
+      tags:
+        - API Padres
+      summary: Borrar def
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/lista-inventario:
+    get:
+      tags:
+        - Catálogo Inventario
+      summary: Lista de inventario
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/lista-inventario-desuso:
+    get:
+      tags:
+        - Catálogo Inventario
+      summary: Lista inventario desuso
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/agregar-inventario:
+    post:
+      tags:
+        - Catálogo Inventario
+      summary: Insertar inventario
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                itemCode: ESCUADRA10980
+                name: Silla
+                description: Silla de color verde
+                quantity: 200
+                weight: 2.3
+                width: 50
+                height: 40
+                location: Salon 2
+                condition: Nuevo
+                purchaseDate: '2024-11-22'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/actualizar-inventario:
+    put:
+      tags:
+        - Catálogo Inventario
+      summary: Actualizar inventario
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                itemCode: asdasdasd
+                name: asd
+                description: asdasdasd
+                quantity: 200
+                weight: 2.3
+                width: 50
+                height: 40
+                location: asdasdasd
+                condition: asdasdasdasd
+                purchaseDate: '2024-11-22'
+                status: Activo
+                id: 758f76f0-975b-11ef-a763-00e04c360195
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/borrar-inventario-boveda/758f76f0-975b-11ef-a763-00e04c360195:
+    put:
+      tags:
+        - Catálogo Inventario
+      summary: Mover a la boveda de eliminados
+      requestBody:
+        content: {}
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/eliminar-inventario/758f76f0-975b-11ef-a763-00e04c360195:
+    delete:
+      tags:
+        - Catálogo Inventario
+      summary: Borrar inventario
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/lista-insumos:
+    get:
+      tags:
+        - Catálogo Insumos
+      summary: Lista insumos
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/lista-insumos-desuso:
+    get:
+      tags:
+        - Catálogo Insumos
+      summary: Lista insumos desuso
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/agregar-insumo:
+    post:
+      tags:
+        - Catálogo Insumos
+      summary: Insertar insumo
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: Plumas
+                description: Caja con 7 plumas
+                quantity: 50
+                unit: Cajas
+                supplier: SNTE
+                purchaseDate: '2024-08-15'
+                expiryDate: null
+                cost: 15.5
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/actualizar-insumo:
+    put:
+      tags:
+        - Catálogo Insumos
+      summary: Actualizar insumo
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: Pizarones
+                description: Pizarrones de color verde
+                quantity: 40
+                unit: Paquetes
+                supplier: Donacion
+                purchaseDate: '2024-08-15'
+                expiryDate: '2040-07-15'
+                cost: 10006324.5
+                status: Activo
+                id: 2f7ee65d-973c-11ef-a763-00e04c360195
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/mover-insumo-boveda/2f7ee65d-973c-11ef-a763-00e04c360195:
+    put:
+      tags:
+        - Catálogo Insumos
+      summary: Mover a la boveda de eliminados
+      requestBody:
+        content: {}
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/eliminar-insumo/2f7ee65d-973c-11ef-a763-00e04c360195:
+    delete:
+      tags:
+        - Catálogo Insumos
+      summary: Borrar insumo
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /assets:
+    get:
+      tags:
+        - Catálogo Activos
+      summary: Lista activos
+      parameters:
+        - name: cost
+          in: query
+          schema:
+            type: number
+          example: '950.00'
+        - name: limitCost
+          in: query
+          schema:
+            type: integer
+          example: '6000'
+        - name: location
+          in: query
+          schema:
+            type: string
+          example: Aula 4
+        - name: condition
+          in: query
+          schema:
+            type: string
+          example: Regular
+        - name: status
+          in: query
+          schema:
+            type: string
+          example: Inactivo
+      responses:
+        '200':
+          description: OK
+          headers:
+            Vary:
+              schema:
+                type: string
+                example: Origin
+            Access-Control-Allow-Credentials:
+              schema:
+                type: boolean
+                example: 'true'
+            Content-Security-Policy:
+              schema:
+                type: string
+                example: >-
+                  default-src 'self';base-uri 'self';font-src 'self' https:
+                  data:;form-action 'self';frame-ancestors 'self';img-src 'self'
+                  data:;object-src 'none';script-src 'self';script-src-attr
+                  'none';style-src 'self' https:
+                  'unsafe-inline';upgrade-insecure-requests
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Cross-Origin-Resource-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Origin-Agent-Cluster:
+              schema:
+                type: string
+                example: '?1'
+            Referrer-Policy:
+              schema:
+                type: string
+                example: no-referrer
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=31536000; includeSubDomains
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            X-DNS-Prefetch-Control:
+              schema:
+                type: string
+                example: 'off'
+            X-Download-Options:
+              schema:
+                type: string
+                example: noopen
+            X-Frame-Options:
+              schema:
+                type: string
+                example: SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies:
+              schema:
+                type: string
+                example: none
+            X-XSS-Protection:
+              schema:
+                type: integer
+                example: '0'
+            RateLimit-Policy:
+              schema:
+                type: string
+                example: 1000;w=3600
+            RateLimit-Limit:
+              schema:
+                type: integer
+                example: '1000'
+            RateLimit-Remaining:
+              schema:
+                type: integer
+                example: '998'
+            RateLimit-Reset:
+              schema:
+                type: integer
+                example: '3445'
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '627'
+            ETag:
+              schema:
+                type: string
+                example: W/"273-NC+DVv0TJmIsrbR51HxU4qSafdI"
+            Date:
+              schema:
+                type: string
+                example: Fri, 11 Jul 2025 11:51:00 GMT
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Keep-Alive:
+              schema:
+                type: string
+                example: timeout=5
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                success: true
+                data:
+                  - ID: 6c178066-5bbb-11f0-ac03-d843ae0db894
+                    Name: Pizarrón Blanco Magnético
+                    Description: Pizarrón blanco de 2x1.5m con superficie magnética
+                    PurchaseDate: '2021-06-30T05:00:00.000Z'
+                    Cost: '950.00'
+                    Location: Aula 4
+                    Condition: Regular
+                    Status: Activo
+                    LastMaintenanceDate: '2024-05-12T06:00:00.000Z'
+                    WarrantyEndDate: '2023-06-30T06:00:00.000Z'
+                    Created: '2025-07-08T05:21:37.000Z'
+                    Updated: '2025-07-08T05:21:37.000Z'
+                message: Consulta realizada correctamente
+                metadata:
+                  timestamp: '2025-07-11T11:51:00.483Z'
+                  requestId: 3fe395a8-768a-4c16-a2f4-6e18dfa7f468
+                  dataCount: '1'
+        '404':
+          description: Not Found
+          headers:
+            Vary:
+              schema:
+                type: string
+                example: Origin
+            Access-Control-Allow-Credentials:
+              schema:
+                type: boolean
+                example: 'true'
+            Content-Security-Policy:
+              schema:
+                type: string
+                example: >-
+                  default-src 'self';base-uri 'self';font-src 'self' https:
+                  data:;form-action 'self';frame-ancestors 'self';img-src 'self'
+                  data:;object-src 'none';script-src 'self';script-src-attr
+                  'none';style-src 'self' https:
+                  'unsafe-inline';upgrade-insecure-requests
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Cross-Origin-Resource-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Origin-Agent-Cluster:
+              schema:
+                type: string
+                example: '?1'
+            Referrer-Policy:
+              schema:
+                type: string
+                example: no-referrer
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=31536000; includeSubDomains
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            X-DNS-Prefetch-Control:
+              schema:
+                type: string
+                example: 'off'
+            X-Download-Options:
+              schema:
+                type: string
+                example: noopen
+            X-Frame-Options:
+              schema:
+                type: string
+                example: SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies:
+              schema:
+                type: string
+                example: none
+            X-XSS-Protection:
+              schema:
+                type: integer
+                example: '0'
+            RateLimit-Policy:
+              schema:
+                type: string
+                example: 1000;w=3600
+            RateLimit-Limit:
+              schema:
+                type: integer
+                example: '1000'
+            RateLimit-Remaining:
+              schema:
+                type: integer
+                example: '997'
+            RateLimit-Reset:
+              schema:
+                type: integer
+                example: '3420'
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '624'
+            ETag:
+              schema:
+                type: string
+                example: W/"270-ARw8quF1j9o1Bhft0e19+y7QmbM"
+            Date:
+              schema:
+                type: string
+                example: Fri, 11 Jul 2025 11:51:25 GMT
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Keep-Alive:
+              schema:
+                type: string
+                example: timeout=5
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                success: false
+                error:
+                  message: No se encontraron activos con los filtros proporcionados
+                  code: ASSETS_NOT_FOUND
+                  details: >-
+                    No se encontraron activos con los filtros proporcionados:
+                    {"cost":"950.00","limitCost":"6000","location":"Aula
+                    4","condition":"Regular","status":"Inactivo"}
+                  timestamp: '2025-07-11T11:51:25.610Z'
+                  errorId: b3f3adee-e68b-49d5-8c41-dcebb8b8b0bb
+                  path: >-
+                    /api/v1/assets?cost=950.00&limitCost=6000&location=Aula%204&condition=Regular&status=Inactivo
+                  method: GET
+                  query:
+                    cost: '950.00'
+                    limitCost: '6000'
+                    location: Aula 4
+                    condition: Regular
+                    status: Inactivo
+    post:
+      tags:
+        - Catálogo Activos
+      summary: Insertar activo
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: Ventilador de Piso
+                description: Ventilador con control remoto para aulas grandes
+                purchaseDate: '2022-05-05'
+                cost: 1000
+                location: Aula 5
+                condition: Regular
+                lastMaintenanceDate: '2024-07-02'
+                warrantyEndDate: '2023-05-05'
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIyYWVkNmVkLTI2NzItMTFmMC1iOGQ3LWQ4NDNhZTBkYjg5NCIsIm5hbWVVc2VyIjoiTWFyaWEgSm9zZSIsImVtYWlsIjoicGV0aXRlLm1hcnkwNUBnbWFpbC5jb20iLCJwcm9maWxlUGljdHVyZSI6Imh0dHBzOi8vaS5waW5pbWcuY29tLzczNngvZGEvZjMvZmIvZGFmM2ZiOTgxZTIyODIyMGU5MDE2ODJjNTVjYzQyNzkuanBnIiwicm9sZSI6ImFkbWluIiwiYWNjb3VudFR5cGUiOiJub3JtYWwiLCJsYXN0TG9naW4iOiIyMDI1LTA3LTA4VDA5OjU1OjI4LjAwMFoiLCJhY2NvdW50U3RhdHVzIjoiQWN0aXZvIiwiaWF0IjoxNzUyMjI2OTg1LCJleHAiOjE3NTIyNzAxODV9.OMGKI9JJ6KTTS5zEOwP8ZzamUVryRBLdOT9uAXNxJDU
+      responses:
+        '201':
+          description: Created
+          headers:
+            Vary:
+              schema:
+                type: string
+                example: Origin
+            Access-Control-Allow-Credentials:
+              schema:
+                type: boolean
+                example: 'true'
+            Content-Security-Policy:
+              schema:
+                type: string
+                example: >-
+                  default-src 'self';base-uri 'self';font-src 'self' https:
+                  data:;form-action 'self';frame-ancestors 'self';img-src 'self'
+                  data:;object-src 'none';script-src 'self';script-src-attr
+                  'none';style-src 'self' https:
+                  'unsafe-inline';upgrade-insecure-requests
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Cross-Origin-Resource-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Origin-Agent-Cluster:
+              schema:
+                type: string
+                example: '?1'
+            Referrer-Policy:
+              schema:
+                type: string
+                example: no-referrer
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=31536000; includeSubDomains
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            X-DNS-Prefetch-Control:
+              schema:
+                type: string
+                example: 'off'
+            X-Download-Options:
+              schema:
+                type: string
+                example: noopen
+            X-Frame-Options:
+              schema:
+                type: string
+                example: SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies:
+              schema:
+                type: string
+                example: none
+            X-XSS-Protection:
+              schema:
+                type: integer
+                example: '0'
+            RateLimit-Policy:
+              schema:
+                type: string
+                example: 50;w=3600
+            RateLimit-Limit:
+              schema:
+                type: integer
+                example: '50'
+            RateLimit-Remaining:
+              schema:
+                type: integer
+                example: '49'
+            RateLimit-Reset:
+              schema:
+                type: integer
+                example: '3600'
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '180'
+            ETag:
+              schema:
+                type: string
+                example: W/"b4-YPimIJZ3A+k2ZJTqHm3Wte0vCEE"
+            Date:
+              schema:
+                type: string
+                example: Fri, 11 Jul 2025 10:19:00 GMT
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Keep-Alive:
+              schema:
+                type: string
+                example: timeout=5
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                success: true
+                message: Se inserto correctamente el activo
+                metadata:
+                  timestamp: '2025-07-11T10:19:00.662Z'
+                  requestId: 383f8fb2-b672-4623-a0c9-676ca7ac4c12
+                  dataCount: 0
+  /assets/search:
+    get:
+      tags:
+        - Catálogo Activos
+      summary: Busqueda de activos
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIyYWVkNmVkLTI2NzItMTFmMC1iOGQ3LWQ4NDNhZTBkYjg5NCIsIm5hbWVVc2VyIjoiTWFyaWEgSm9zZSIsImVtYWlsIjoicGV0aXRlLm1hcnkwNUBnbWFpbC5jb20iLCJwcm9maWxlUGljdHVyZSI6Imh0dHBzOi8vaS5waW5pbWcuY29tLzczNngvZGEvZjMvZmIvZGFmM2ZiOTgxZTIyODIyMGU5MDE2ODJjNTVjYzQyNzkuanBnIiwicm9sZSI6ImFkbWluIiwiYWNjb3VudFR5cGUiOiJub3JtYWwiLCJsYXN0TG9naW4iOiIyMDI1LTA3LTA4VDA5OjU1OjI4LjAwMFoiLCJhY2NvdW50U3RhdHVzIjoiQWN0aXZvIiwiaWF0IjoxNzUyMjI2OTg1LCJleHAiOjE3NTIyNzAxODV9.OMGKI9JJ6KTTS5zEOwP8ZzamUVryRBLdOT9uAXNxJDU
+        - name: name
+          in: query
+          schema:
+            type: string
+          example: Comoda
+      responses:
+        '200':
+          description: OK
+          headers:
+            Vary:
+              schema:
+                type: string
+                example: Origin
+            Access-Control-Allow-Credentials:
+              schema:
+                type: boolean
+                example: 'true'
+            Content-Security-Policy:
+              schema:
+                type: string
+                example: >-
+                  default-src 'self';base-uri 'self';font-src 'self' https:
+                  data:;form-action 'self';frame-ancestors 'self';img-src 'self'
+                  data:;object-src 'none';script-src 'self';script-src-attr
+                  'none';style-src 'self' https:
+                  'unsafe-inline';upgrade-insecure-requests
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Cross-Origin-Resource-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Origin-Agent-Cluster:
+              schema:
+                type: string
+                example: '?1'
+            Referrer-Policy:
+              schema:
+                type: string
+                example: no-referrer
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=31536000; includeSubDomains
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            X-DNS-Prefetch-Control:
+              schema:
+                type: string
+                example: 'off'
+            X-Download-Options:
+              schema:
+                type: string
+                example: noopen
+            X-Frame-Options:
+              schema:
+                type: string
+                example: SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies:
+              schema:
+                type: string
+                example: none
+            X-XSS-Protection:
+              schema:
+                type: integer
+                example: '0'
+            RateLimit-Policy:
+              schema:
+                type: string
+                example: 300;w=900
+            RateLimit-Limit:
+              schema:
+                type: integer
+                example: '300'
+            RateLimit-Remaining:
+              schema:
+                type: integer
+                example: '299'
+            RateLimit-Reset:
+              schema:
+                type: integer
+                example: '900'
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '559'
+            ETag:
+              schema:
+                type: string
+                example: W/"22f-99FNnZmynp0f3J6QWv3QM0C5KQU"
+            Date:
+              schema:
+                type: string
+                example: Fri, 11 Jul 2025 10:18:48 GMT
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Keep-Alive:
+              schema:
+                type: string
+                example: timeout=5
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                success: true
+                data:
+                  - ID: 11d1b03c-5bbb-11f0-ac03-d843ae0db894
+                    Name: Comoda
+                    Description: Comoda
+                    PurchaseDate: '2024-05-10T06:00:00.000Z'
+                    Cost: '50.00'
+                    Location: Aula 1
+                    Condition: Bueno
+                    Status: Inactivo
+                    LastMaintenanceDate: '2024-07-10T06:00:00.000Z'
+                    WarrantyEndDate: '2026-05-10T06:00:00.000Z'
+                    Created: '2025-07-08T05:19:06.000Z'
+                    Updated: '2025-07-08T08:47:13.000Z'
+                message: Busqueda realizada correctamente
+                metadata:
+                  timestamp: '2025-07-11T10:18:48.855Z'
+                  requestId: 0147823c-e700-493d-b127-10116bf33172
+                  dataCount: '1'
+  /assets/11d1b03c-5bbb-11f0-ac03-d843ae0db894:
+    put:
+      tags:
+        - Catálogo Activos
+      summary: Actualizar activo
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: Comoda
+                description: Comoda
+                purchaseDate: '2024-05-10'
+                cost: 50
+                location: Aula 1
+                condition: Bueno
+                status: Inactivo
+                lastMaintenanceDate: '2024-07-10'
+                warrantyEndDate: '2026-05-10'
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIyYWVkNmVkLTI2NzItMTFmMC1iOGQ3LWQ4NDNhZTBkYjg5NCIsIm5hbWVVc2VyIjoiTWFyaWEgSm9zZSIsImVtYWlsIjoicGV0aXRlLm1hcnkwNUBnbWFpbC5jb20iLCJwcm9maWxlUGljdHVyZSI6Imh0dHBzOi8vaS5waW5pbWcuY29tLzczNngvZGEvZjMvZmIvZGFmM2ZiOTgxZTIyODIyMGU5MDE2ODJjNTVjYzQyNzkuanBnIiwicm9sZSI6ImFkbWluIiwiYWNjb3VudFR5cGUiOiJub3JtYWwiLCJsYXN0TG9naW4iOiIyMDI1LTA3LTA4VDA5OjU1OjI4LjAwMFoiLCJhY2NvdW50U3RhdHVzIjoiQWN0aXZvIiwiaWF0IjoxNzUyMjI2OTg1LCJleHAiOjE3NTIyNzAxODV9.OMGKI9JJ6KTTS5zEOwP8ZzamUVryRBLdOT9uAXNxJDU
+      responses:
+        '200':
+          description: OK
+          headers:
+            Vary:
+              schema:
+                type: string
+                example: Origin
+            Access-Control-Allow-Credentials:
+              schema:
+                type: boolean
+                example: 'true'
+            Content-Security-Policy:
+              schema:
+                type: string
+                example: >-
+                  default-src 'self';base-uri 'self';font-src 'self' https:
+                  data:;form-action 'self';frame-ancestors 'self';img-src 'self'
+                  data:;object-src 'none';script-src 'self';script-src-attr
+                  'none';style-src 'self' https:
+                  'unsafe-inline';upgrade-insecure-requests
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Cross-Origin-Resource-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Origin-Agent-Cluster:
+              schema:
+                type: string
+                example: '?1'
+            Referrer-Policy:
+              schema:
+                type: string
+                example: no-referrer
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=31536000; includeSubDomains
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            X-DNS-Prefetch-Control:
+              schema:
+                type: string
+                example: 'off'
+            X-Download-Options:
+              schema:
+                type: string
+                example: noopen
+            X-Frame-Options:
+              schema:
+                type: string
+                example: SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies:
+              schema:
+                type: string
+                example: none
+            X-XSS-Protection:
+              schema:
+                type: integer
+                example: '0'
+            RateLimit-Policy:
+              schema:
+                type: string
+                example: 100;w=3600
+            RateLimit-Limit:
+              schema:
+                type: integer
+                example: '100'
+            RateLimit-Remaining:
+              schema:
+                type: integer
+                example: '99'
+            RateLimit-Reset:
+              schema:
+                type: integer
+                example: '3600'
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '194'
+            ETag:
+              schema:
+                type: string
+                example: W/"c2-zC1/gez5D02MueL+6ytFOCmDIUU"
+            Date:
+              schema:
+                type: string
+                example: Fri, 11 Jul 2025 10:19:08 GMT
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Keep-Alive:
+              schema:
+                type: string
+                example: timeout=5
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                success: true
+                data: {}
+                message: El activo se actualizo correctamente
+                metadata:
+                  timestamp: '2025-07-11T10:19:08.714Z'
+                  requestId: 5852001c-d80e-4e83-a917-17e66a887a6d
+                  dataCount: '0'
+  /assets/vault/e41c74b4-5bba-11f0-ac03-d843ae0db894:
+    put:
+      tags:
+        - Catálogo Activos
+      summary: Mover a la boveda de eliminados
+      requestBody:
+        content: {}
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIyYWVkNmVkLTI2NzItMTFmMC1iOGQ3LWQ4NDNhZTBkYjg5NCIsIm5hbWVVc2VyIjoiTWFyaWEgSm9zZSIsImVtYWlsIjoicGV0aXRlLm1hcnkwNUBnbWFpbC5jb20iLCJwcm9maWxlUGljdHVyZSI6Imh0dHBzOi8vaS5waW5pbWcuY29tLzczNngvZGEvZjMvZmIvZGFmM2ZiOTgxZTIyODIyMGU5MDE2ODJjNTVjYzQyNzkuanBnIiwicm9sZSI6ImFkbWluIiwiYWNjb3VudFR5cGUiOiJub3JtYWwiLCJsYXN0TG9naW4iOiIyMDI1LTA3LTA4VDA5OjU1OjI4LjAwMFoiLCJhY2NvdW50U3RhdHVzIjoiQWN0aXZvIiwiaWF0IjoxNzUyMjI2OTg1LCJleHAiOjE3NTIyNzAxODV9.OMGKI9JJ6KTTS5zEOwP8ZzamUVryRBLdOT9uAXNxJDU
+      responses:
+        '200':
+          description: OK
+          headers:
+            Vary:
+              schema:
+                type: string
+                example: Origin
+            Access-Control-Allow-Credentials:
+              schema:
+                type: boolean
+                example: 'true'
+            Content-Security-Policy:
+              schema:
+                type: string
+                example: >-
+                  default-src 'self';base-uri 'self';font-src 'self' https:
+                  data:;form-action 'self';frame-ancestors 'self';img-src 'self'
+                  data:;object-src 'none';script-src 'self';script-src-attr
+                  'none';style-src 'self' https:
+                  'unsafe-inline';upgrade-insecure-requests
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Cross-Origin-Resource-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Origin-Agent-Cluster:
+              schema:
+                type: string
+                example: '?1'
+            Referrer-Policy:
+              schema:
+                type: string
+                example: no-referrer
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=31536000; includeSubDomains
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            X-DNS-Prefetch-Control:
+              schema:
+                type: string
+                example: 'off'
+            X-Download-Options:
+              schema:
+                type: string
+                example: noopen
+            X-Frame-Options:
+              schema:
+                type: string
+                example: SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies:
+              schema:
+                type: string
+                example: none
+            X-XSS-Protection:
+              schema:
+                type: integer
+                example: '0'
+            RateLimit-Policy:
+              schema:
+                type: string
+                example: 100;w=3600
+            RateLimit-Limit:
+              schema:
+                type: integer
+                example: '100'
+            RateLimit-Remaining:
+              schema:
+                type: integer
+                example: '99'
+            RateLimit-Reset:
+              schema:
+                type: integer
+                example: '3600'
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '202'
+            ETag:
+              schema:
+                type: string
+                example: W/"ca-jqGgkvLYUGab3YyJtBKHQVMwp90"
+            Date:
+              schema:
+                type: string
+                example: Fri, 11 Jul 2025 10:19:15 GMT
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Keep-Alive:
+              schema:
+                type: string
+                example: timeout=5
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                success: true
+                data: {}
+                message: El activo se mando a la boveda de eliminados
+                metadata:
+                  timestamp: '2025-07-11T10:19:15.560Z'
+                  requestId: 45405cdf-75b8-4d33-8534-ecc9ecafcc53
+                  dataCount: '0'
+  /assets/59bfc5a7-5bbb-11f0-ac03-d843ae0db894:
+    delete:
+      tags:
+        - Catálogo Activos
+      summary: Borrar activo
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIyYWVkNmVkLTI2NzItMTFmMC1iOGQ3LWQ4NDNhZTBkYjg5NCIsIm5hbWVVc2VyIjoiTWFyaWEgSm9zZSIsImVtYWlsIjoicGV0aXRlLm1hcnkwNUBnbWFpbC5jb20iLCJwcm9maWxlUGljdHVyZSI6Imh0dHBzOi8vaS5waW5pbWcuY29tLzczNngvZGEvZjMvZmIvZGFmM2ZiOTgxZTIyODIyMGU5MDE2ODJjNTVjYzQyNzkuanBnIiwicm9sZSI6ImFkbWluIiwiYWNjb3VudFR5cGUiOiJub3JtYWwiLCJsYXN0TG9naW4iOiIyMDI1LTA3LTA4VDA5OjU1OjI4LjAwMFoiLCJhY2NvdW50U3RhdHVzIjoiQWN0aXZvIiwiaWF0IjoxNzUyMjI2OTg1LCJleHAiOjE3NTIyNzAxODV9.OMGKI9JJ6KTTS5zEOwP8ZzamUVryRBLdOT9uAXNxJDU
+      responses:
+        '200':
+          description: OK
+          headers:
+            Vary:
+              schema:
+                type: string
+                example: Origin
+            Access-Control-Allow-Credentials:
+              schema:
+                type: boolean
+                example: 'true'
+            Content-Security-Policy:
+              schema:
+                type: string
+                example: >-
+                  default-src 'self';base-uri 'self';font-src 'self' https:
+                  data:;form-action 'self';frame-ancestors 'self';img-src 'self'
+                  data:;object-src 'none';script-src 'self';script-src-attr
+                  'none';style-src 'self' https:
+                  'unsafe-inline';upgrade-insecure-requests
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Cross-Origin-Resource-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Origin-Agent-Cluster:
+              schema:
+                type: string
+                example: '?1'
+            Referrer-Policy:
+              schema:
+                type: string
+                example: no-referrer
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=31536000; includeSubDomains
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            X-DNS-Prefetch-Control:
+              schema:
+                type: string
+                example: 'off'
+            X-Download-Options:
+              schema:
+                type: string
+                example: noopen
+            X-Frame-Options:
+              schema:
+                type: string
+                example: SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies:
+              schema:
+                type: string
+                example: none
+            X-XSS-Protection:
+              schema:
+                type: integer
+                example: '0'
+            RateLimit-Policy:
+              schema:
+                type: string
+                example: 50;w=3600
+            RateLimit-Limit:
+              schema:
+                type: integer
+                example: '50'
+            RateLimit-Remaining:
+              schema:
+                type: integer
+                example: '49'
+            RateLimit-Reset:
+              schema:
+                type: integer
+                example: '3600'
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '195'
+            ETag:
+              schema:
+                type: string
+                example: W/"c3-Y2KOHAMgbNojJsCVnthhkeOb1AQ"
+            Date:
+              schema:
+                type: string
+                example: Fri, 11 Jul 2025 10:19:40 GMT
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Keep-Alive:
+              schema:
+                type: string
+                example: timeout=5
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                success: true
+                data: {}
+                message: El activo fue eliminado correctamente
+                metadata:
+                  timestamp: '2025-07-11T10:19:40.288Z'
+                  requestId: 3bde13c2-b995-4c03-aaaa-1b1d78e119c8
+                  dataCount: '0'
+  /assets/bulk:
+    delete:
+      tags:
+        - Catálogo Activos
+      summary: Eliminacion masiva
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIyYWVkNmVkLTI2NzItMTFmMC1iOGQ3LWQ4NDNhZTBkYjg5NCIsIm5hbWVVc2VyIjoiTWFyaWEgSm9zZSIsImVtYWlsIjoicGV0aXRlLm1hcnkwNUBnbWFpbC5jb20iLCJwcm9maWxlUGljdHVyZSI6Imh0dHBzOi8vaS5waW5pbWcuY29tLzczNngvZGEvZjMvZmIvZGFmM2ZiOTgxZTIyODIyMGU5MDE2ODJjNTVjYzQyNzkuanBnIiwicm9sZSI6ImFkbWluIiwiYWNjb3VudFR5cGUiOiJub3JtYWwiLCJsYXN0TG9naW4iOiIyMDI1LTA3LTA4VDA5OjU1OjI4LjAwMFoiLCJhY2NvdW50U3RhdHVzIjoiQWN0aXZvIiwiaWF0IjoxNzUyMjI2OTg1LCJleHAiOjE3NTIyNzAxODV9.OMGKI9JJ6KTTS5zEOwP8ZzamUVryRBLdOT9uAXNxJDU
+      responses:
+        '200':
+          description: OK
+          headers:
+            Vary:
+              schema:
+                type: string
+                example: Origin
+            Access-Control-Allow-Credentials:
+              schema:
+                type: boolean
+                example: 'true'
+            Content-Security-Policy:
+              schema:
+                type: string
+                example: >-
+                  default-src 'self';base-uri 'self';font-src 'self' https:
+                  data:;form-action 'self';frame-ancestors 'self';img-src 'self'
+                  data:;object-src 'none';script-src 'self';script-src-attr
+                  'none';style-src 'self' https:
+                  'unsafe-inline';upgrade-insecure-requests
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Cross-Origin-Resource-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Origin-Agent-Cluster:
+              schema:
+                type: string
+                example: '?1'
+            Referrer-Policy:
+              schema:
+                type: string
+                example: no-referrer
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=31536000; includeSubDomains
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            X-DNS-Prefetch-Control:
+              schema:
+                type: string
+                example: 'off'
+            X-Download-Options:
+              schema:
+                type: string
+                example: noopen
+            X-Frame-Options:
+              schema:
+                type: string
+                example: SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies:
+              schema:
+                type: string
+                example: none
+            X-XSS-Protection:
+              schema:
+                type: integer
+                example: '0'
+            RateLimit-Policy:
+              schema:
+                type: string
+                example: 10;w=3600
+            RateLimit-Limit:
+              schema:
+                type: integer
+                example: '10'
+            RateLimit-Remaining:
+              schema:
+                type: integer
+                example: '9'
+            RateLimit-Reset:
+              schema:
+                type: integer
+                example: '3600'
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '239'
+            ETag:
+              schema:
+                type: string
+                example: W/"ef-aAeoL8qD0DZeJbnLBISf5cN7jjE"
+            Date:
+              schema:
+                type: string
+                example: Fri, 11 Jul 2025 10:21:27 GMT
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Keep-Alive:
+              schema:
+                type: string
+                example: timeout=5
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                success: true
+                data:
+                  message: Se eliminaron 2 activos correctamente
+                message: Consulta realizada correctamente
+                metadata:
+                  timestamp: '2025-07-11T10:21:27.063Z'
+                  requestId: acdd7136-b5d6-4c0f-97ae-5590c4853f2e
+                  dataCount: '1'
+  /api/v1/lista-estudiantes:
+    get:
+      tags:
+        - API Estudiantes
+      summary: Lista estudiantes
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
