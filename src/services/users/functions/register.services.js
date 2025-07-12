@@ -19,7 +19,7 @@ export const registerUserService = async ({ nameUser, email, password }) => {
 
   if (existingUser) {
     throw {
-      status: 409,
+      statusCode: 409,
       message: "El correo ya se encuentra registrado",
       code: "EMAIL_CONFLICT",
       details: "El correo proporcionado ya está en uso por otro usuario",
@@ -34,7 +34,7 @@ export const registerUserService = async ({ nameUser, email, password }) => {
     return newUser;
   } else {
     throw {
-      status: 500,
+      statusCode: 500,
       message: "Error al registrar el usuario",
       code: "REGISTRATION_ERROR",
       details: "No se pudo completar el registro del usuario",

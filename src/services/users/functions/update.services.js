@@ -15,7 +15,7 @@ export const updateUserService = async (
   const emailConflict = await findEmailInOtherUser(email, userId);
   if (emailConflict) {
     throw {
-      status: 409,
+      statusCode: 409,
       message: "El correo ya se encuentra registrado",
       code: "EMAIL_CONFLICT",
       details: "El correo proporcionado ya está en uso por otro usuario",
@@ -26,7 +26,7 @@ export const updateUserService = async (
   const existingUser = await findUserById(userId);
   if (!existingUser) {
     throw {
-      status: 404,
+      statusCode: 404,
       message: "No se proporcionó un ID válido o el usuario no existe",
       code: "USER_NOT_FOUND",
       details: "El usuario con el ID proporcionado no fue encontrado",

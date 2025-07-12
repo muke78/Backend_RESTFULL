@@ -8,7 +8,7 @@ import { apiMaestros } from "./maestrosRouter.js";
 import { apiPadres } from "./padresRouter.js";
 import { apiEstudiantes } from "./studentsRouter.js";
 import { apiToken } from "./token.routes.js";
-import { apiUsuarios } from "./users.routes.js";
+import { apiUsers } from "./users.routes.js";
 
 const router = express.Router();
 
@@ -23,7 +23,7 @@ const router = express.Router();
 //   apiEstudiantes,
 // );
 
-router.use("/api/v1/users", apiUsuarios, apiGoogle);
+router.use("/api/v1/users", apiUsers, apiGoogle);
 router.use("/api/v1/token", apiToken);
 router.use("/api/v1/assets", apiCatAssets);
 
