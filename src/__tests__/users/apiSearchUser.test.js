@@ -1,9 +1,7 @@
-require("dotenv").config();
 const frisby = require("frisby");
 const { createTokenTesting } = require("../../helpers/apiCreateToken.helpers");
 const Joi = frisby.Joi;
-
-const BASE_URL = process.env.BASE_URL;
+const { config } = require("../../config/config");
 
 describe("✅ Prueba para buscar un usuario", () => {
   it("🔡 Debe de retornar el o los objetos encontrados de la busqueda, con un status 200", async () => {
@@ -16,7 +14,7 @@ describe("✅ Prueba para buscar un usuario", () => {
           },
         },
       })
-      .get(`${BASE_URL}/users/search?email=muke7881@gmail.com`)
+      .get(`${config.docs.baseUrl}/users/search?email=muke7881@gmail.com`)
       .then((res) => {
         // console.log("🔎 STATUS:", res.status);
         // console.log("🔎 RESPONSE:", res.json);

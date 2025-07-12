@@ -1,4 +1,4 @@
-import { pool } from "../config/config.js";
+import { pool } from "../lib/db.js";
 
 export const connectionQuery = (sql, params) => {
   return new Promise((resolve, reject) => {
