@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 import swaggerJsdoc from "swagger-jsdoc";
 import { SwaggerTheme, SwaggerThemeNameEnum } from "swagger-themes";
 import swaggerUi from "swagger-ui-express";
+import YAML from "yamljs";
 
 dotenv.config();
 
@@ -40,12 +41,7 @@ const swaggerDefinition = {
   ],
 };
 
-const options = {
-  swaggerDefinition,
-  apis: [resolve(__dirname, "../routes/*.js")],
-};
-
-export const swaggerDocument = swaggerJsdoc(options);
+const swaggerDocument = YAML.load(resolve(__dirname, "../docs/index.yaml"));
 
 export const setupSwagger = (app) => {
   const theme = new SwaggerTheme();

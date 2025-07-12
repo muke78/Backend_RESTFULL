@@ -46,7 +46,8 @@
     "standard": "^17.1.2",
     "swagger-jsdoc": "^6.2.8",
     "swagger-themes": "^1.4.3",
-    "swagger-ui-express": "^5.0.1"
+    "swagger-ui-express": "^5.0.1",
+    "yamljs": "^0.3.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.26.0",
