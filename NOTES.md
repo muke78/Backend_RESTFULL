@@ -2,8 +2,9 @@
 
 ## Cambios importantes
 
-- Hacer el cambio para el catalgo de inventarios por medio de la modularizacionm de funciones
 - Hacer el cambio para el catalogo de insumos por medio de la modularizacionm de funciones
+- Hacer un catalogo de Aulas
+- Hacer un catalogo de condicion (Bueno, Regular, Excelente, Nuevo para reutilizar registros en vez de crear neuevos o con id referenciarlos)
 - Verificar las funciones de la carpeta helpers para poder reutilizar unas funciones 
 (sobre todo la de cuando se elimina un registro como el de usuarios en su modelo, esto aplica para todas las tablas)
 - Verificar testeos del catalogo de activos y de usuarios juntos y hacerlos
