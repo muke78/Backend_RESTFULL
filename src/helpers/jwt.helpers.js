@@ -14,7 +14,7 @@ export const createToken = (user) => {
     accountStatus: user.accountStatus,
   };
   return jwt.sign(payload, config.jwt.secret, {
-    expiresIn: config.jwt.expiresIn,
+    expiresIn: `${config.jwt.expiresIn}h`,
   });
 };
 
@@ -42,6 +42,6 @@ export const refreshToken = (token) => {
     accountStatus: decoded.accountStatus,
   };
   return jwt.sign(payload, config.jwt.secret, {
-    expiresIn: config.jwt.expiresIn,
+    expiresIn: `${config.jwt.expiresIn}h`,
   });
 };
