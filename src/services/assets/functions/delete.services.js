@@ -31,7 +31,7 @@ export const deleteAssetsBulkService = async (ids) => {
 
   if (!Array.isArray(ids) || ids.length === 0) {
     throw {
-      status: 413,
+      statusCode: 413,
       message: `No se pueden eliminar más de ${MAX_IDS} activos en una sola solicitud`,
       code: "OVERLOAD_REQUEST",
       details:

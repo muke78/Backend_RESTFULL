@@ -3,7 +3,7 @@ import {
   deleteInventoryService,
   insertInventoryService,
   listInventoryService,
-  moveVaulInventoryService,
+  moveVaultInventoryService,
   searchInventoryService,
   updateInventoryService,
 } from "../../../services/inventory/index.js";
@@ -32,7 +32,7 @@ export const UpdateInventories = async (inventoryId, inventoryData) => {
 };
 
 export const MoveToVaultInventoryDeleted = async (inventoryId) => {
-  const moveToVaultInventory = await moveVaulInventoryService(inventoryId);
+  const moveToVaultInventory = await moveVaultInventoryService(inventoryId);
   return moveToVaultInventory;
 };
 

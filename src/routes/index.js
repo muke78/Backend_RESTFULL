@@ -2,7 +2,7 @@ import express from "express";
 
 import { apiCatAssets } from "./catAssets.routes.js";
 import { apiCatInventory } from "./catInventory.routes.js";
-import { apiCatInsumos } from "./catSuppliesRouter.js";
+import { apiCatSupply } from "./catSupplies.routes.js";
 import { apiGoogle } from "./google.route.js";
 import { apiMaestros } from "./maestrosRouter.js";
 import { apiPadres } from "./padresRouter.js";
@@ -16,5 +16,6 @@ router.use("/api/v1/users", apiUsers, apiGoogle);
 router.use("/api/v1/token", apiToken);
 router.use("/api/v1/assets", apiCatAssets);
 router.use("/api/v1/inventory", apiCatInventory);
+router.use("/api/v1/supply", apiCatSupply);
 
 export { router };
