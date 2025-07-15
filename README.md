@@ -78,7 +78,7 @@ Tecnologías y herramientas utilizadas en el backend de este proyecto:
 
 ## Modelo relacional de la Base de Datos 🗄️
 
-![Administracion de jardin de niños](/assets/Administracion%20de%20jardin%20de%20niños.png)
+![Administracion de jardin de niños](/assets/Administracion%20de%20jardin%20de%20niños.svg)
 
 ---
 

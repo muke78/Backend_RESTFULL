@@ -1,342 +1,375 @@
--- MySQL dump 10.13  Distrib 8.0.38, for Win64 (x86_64)
---
--- Host: 127.0.0.1    Database: backend
--- ------------------------------------------------------
--- Server version	8.0.39
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-
---
--- Table structure for table `actions`
---
-
-DROP TABLE IF EXISTS `actions`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `actions` (
-  `ID` char(36) NOT NULL,
-  `ActionName` varchar(50) NOT NULL,
-  `Created` datetime DEFAULT CURRENT_TIMESTAMP,
-  `Updated` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `catassets`
---
-
-DROP TABLE IF EXISTS `catassets`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `catassets` (
-  `ID` char(36) NOT NULL,
-  `Name` varchar(100) NOT NULL,
-  `Description` varchar(255) DEFAULT NULL,
-  `PurchaseDate` date DEFAULT NULL,
-  `Cost` decimal(10,2) DEFAULT '0.00',
-  `Location` varchar(100) DEFAULT NULL,
-  `Condition` varchar(20) DEFAULT NULL,
-  `Status` varchar(20) DEFAULT 'Activo',
-  `LastMaintenanceDate` date DEFAULT NULL,
-  `WarrantyEndDate` date DEFAULT NULL,
-  `Created` datetime DEFAULT CURRENT_TIMESTAMP,
-  `Updated` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `catinventory`
---
-
-DROP TABLE IF EXISTS `catinventory`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `catinventory` (
-  `ID` char(36) NOT NULL,
-  `ItemCode` varchar(50) NOT NULL,
-  `Name` varchar(100) NOT NULL,
-  `Description` varchar(255) DEFAULT NULL,
-  `Quantity` int DEFAULT '0',
-  `Weight` decimal(10,2) NOT NULL,
-  `Height` decimal(10,2) NOT NULL,
-  `Width` decimal(10,2) DEFAULT NULL,
-  `Location` varchar(100) DEFAULT NULL,
-  `Condition` varchar(20) DEFAULT NULL,
-  `PurchaseDate` date DEFAULT NULL,
-  `Status` varchar(20) DEFAULT 'Activo',
-  `Created` datetime DEFAULT CURRENT_TIMESTAMP,
-  `Updated` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `catsupplies`
---
-
-DROP TABLE IF EXISTS `catsupplies`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `catsupplies` (
-  `ID` char(36) NOT NULL,
-  `Name` varchar(100) NOT NULL,
-  `Description` varchar(255) DEFAULT NULL,
-  `Quantity` int DEFAULT '0',
-  `Unit` varchar(50) DEFAULT NULL,
-  `Supplier` varchar(100) DEFAULT NULL,
-  `PurchaseDate` date DEFAULT NULL,
-  `ExpiryDate` date DEFAULT NULL,
-  `Cost` decimal(10,2) DEFAULT '0.00',
-  `Status` varchar(20) DEFAULT 'Activo',
-  `Created` datetime DEFAULT CURRENT_TIMESTAMP,
-  `Updated` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `diagnostic`
---
-
-DROP TABLE IF EXISTS `diagnostic`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `diagnostic` (
-  `ID` char(36) NOT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `modules`
---
-
-DROP TABLE IF EXISTS `modules`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `modules` (
-  `ID` char(36) NOT NULL,
-  `ModuleName` varchar(100) NOT NULL,
-  `Created` datetime DEFAULT CURRENT_TIMESTAMP,
-  `Updated` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `parents`
---
-
-DROP TABLE IF EXISTS `parents`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `parents` (
-  `ID` char(36) NOT NULL,
-  `TeacherID` char(36) NOT NULL,
-  `FirstName` varchar(100) NOT NULL,
-  `LastName` varchar(100) NOT NULL,
-  `DateOfBirth` date NOT NULL,
-  `Ocupation` varchar(60) NOT NULL,
-  `Gender` varchar(10) NOT NULL,
-  `Curp` varchar(20) NOT NULL,
-  `Email` varchar(100) NOT NULL,
-  `Phone` bigint NOT NULL,
-  `Age` int NOT NULL,
-  `Address` varchar(200) NOT NULL,
-  `EmergencyContact` varchar(100) NOT NULL,
-  `EmergencyPhone` varchar(15) NOT NULL,
-  `Created` datetime DEFAULT (now()),
-  `Updated` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `Status` varchar(20) DEFAULT 'Activo',
-  PRIMARY KEY (`ID`,`TeacherID`),
-  KEY `fk_teacher` (`TeacherID`),
-  CONSTRAINT `fk_teacher` FOREIGN KEY (`TeacherID`) REFERENCES `teachers` (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `permissions`
---
-
-DROP TABLE IF EXISTS `permissions`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `permissions` (
-  `ID` char(36) NOT NULL,
-  `ModuleID` char(36) NOT NULL,
-  `ActionID` char(36) NOT NULL,
-  `Created` datetime DEFAULT CURRENT_TIMESTAMP,
-  `Updated` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`ID`),
-  KEY `ModuleID` (`ModuleID`),
-  KEY `ActionID` (`ActionID`),
-  CONSTRAINT `permissions_ibfk_1` FOREIGN KEY (`ModuleID`) REFERENCES `modules` (`ID`),
-  CONSTRAINT `permissions_ibfk_2` FOREIGN KEY (`ActionID`) REFERENCES `actions` (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `student_teacher_history`
---
-
-DROP TABLE IF EXISTS `student_teacher_history`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `student_teacher_history` (
-  `ID` char(36) NOT NULL,
-  `StudentID` char(36) NOT NULL,
-  `TeacherID` char(36) NOT NULL,
-  `Grade` varchar(50) NOT NULL,
-  `Group` varchar(10) NOT NULL,
-  `StartDate` date NOT NULL,
-  `EndDate` date DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `StudentID` (`StudentID`),
-  KEY `TeacherID` (`TeacherID`),
-  CONSTRAINT `student_teacher_history_ibfk_1` FOREIGN KEY (`StudentID`) REFERENCES `students` (`ID`),
-  CONSTRAINT `student_teacher_history_ibfk_2` FOREIGN KEY (`TeacherID`) REFERENCES `teachers` (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `students`
---
-
-DROP TABLE IF EXISTS `students`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `students` (
-  `ID` char(36) NOT NULL,
-  `IDTeacher` char(36) NOT NULL,
-  `IDMom` char(36) NOT NULL,
-  `IDDad` char(36) NOT NULL,
-  `FirstName` varchar(100) NOT NULL,
-  `LastName` varchar(100) DEFAULT NULL,
-  `Grade` varchar(50) NOT NULL,
-  `Group` varchar(10) NOT NULL,
-  `AgeStudent` int NOT NULL,
-  `Curp` varchar(20) NOT NULL,
-  `DateOfBirth` date NOT NULL,
-  `Gender` varchar(10) NOT NULL,
-  `Address` varchar(200) NOT NULL,
-  `EmergencyContact` varchar(100) NOT NULL,
-  `EmergencyPhone` varchar(15) NOT NULL,
-  `Allergies` varchar(255) NOT NULL,
-  `MedicalConditions` varchar(255) NOT NULL,
-  `EnrollmentDate` date NOT NULL,
-  `Status` varchar(20) DEFAULT 'Activo' /*!80023 INVISIBLE */,
-  `Created` datetime DEFAULT CURRENT_TIMESTAMP,
-  `Updated` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`ID`),
-  KEY `IDMom` (`IDMom`),
-  KEY `IDDad` (`IDDad`),
-  KEY `IDTeacher` (`IDTeacher`),
-  CONSTRAINT `students_ibfk_1` FOREIGN KEY (`IDMom`) REFERENCES `parents` (`ID`),
-  CONSTRAINT `students_ibfk_2` FOREIGN KEY (`IDMom`) REFERENCES `parents` (`ID`),
-  CONSTRAINT `students_ibfk_3` FOREIGN KEY (`IDDad`) REFERENCES `parents` (`ID`),
-  CONSTRAINT `students_ibfk_4` FOREIGN KEY (`IDTeacher`) REFERENCES `parents` (`TeacherID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `teachers`
---
-
-DROP TABLE IF EXISTS `teachers`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `teachers` (
-  `ID` char(36) NOT NULL,
-  `TeacherID` char(36) NOT NULL,
-  `FirstName` varchar(100) NOT NULL,
-  `LastName` varchar(100) NOT NULL,
-  `DateOfBirth` date DEFAULT NULL,
-  `NameSchool` varchar(150) NOT NULL,
-  `LevelStudies` varchar(45) NOT NULL,
-  `StudentsInCharge` int NOT NULL,
-  `Grade` varchar(50) NOT NULL,
-  `Group` varchar(10) NOT NULL,
-  `CCT` varchar(45) NOT NULL,
-  `SchoolZone` varchar(15) NOT NULL,
-  `WorkShift` varchar(45) NOT NULL,
-  `Curp` varchar(20) NOT NULL,
-  `Email` varchar(100) NOT NULL,
-  `Phone` varchar(15) NOT NULL,
-  `Age` int NOT NULL,
-  `Address` varchar(255) NOT NULL,
-  `EmergencyContact` varchar(100) NOT NULL,
-  `EmergencyPhone` varchar(15) NOT NULL,
-  `Created` datetime DEFAULT (now()),
-  `Updated` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `Status` varchar(20) DEFAULT 'Activo',
-  PRIMARY KEY (`ID`,`TeacherID`),
-  KEY `teachers_ibfk_1` (`TeacherID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `user_permissions`
---
-
-DROP TABLE IF EXISTS `user_permissions`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `user_permissions` (
-  `ID` char(36) NOT NULL,
-  `UserID` char(36) NOT NULL,
-  `PermitID` char(36) NOT NULL,
-  `Created` datetime DEFAULT CURRENT_TIMESTAMP,
-  `Updated` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`ID`),
-  KEY `PermitID` (`PermitID`),
-  KEY `user_permissions_ibfk_1` (`UserID`),
-  CONSTRAINT `user_permissions_ibfk_1` FOREIGN KEY (`UserID`) REFERENCES `users` (`ID`) ON DELETE CASCADE,
-  CONSTRAINT `user_permissions_ibfk_2` FOREIGN KEY (`PermitID`) REFERENCES `permissions` (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `users`
---
-
-DROP TABLE IF EXISTS `users`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `users` (
-  `ID` char(36) NOT NULL,
-  `NameUser` varchar(100) NOT NULL,
-  `Email` varchar(100) NOT NULL,
-  `Password` char(150) DEFAULT NULL,
-  `ProfilePicture` varchar(500) DEFAULT NULL,
-  `Role` varchar(50) DEFAULT 'user',
-  `AccountType` varchar(20) DEFAULT NULL,
-  `LastLogin` datetime DEFAULT NULL,
-  `AccountStatus` varchar(20) DEFAULT NULL,
-  `Created` datetime DEFAULT CURRENT_TIMESTAMP,
-  `Updated` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `Email` (`Email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+  `user_id` uuid PRIMARY KEY NOT NULL,
+  `role_id` varchar(50) DEFAULT null,
+  `name_user` varchar(100) NOT NULL,
+  `email` varchar(100) UNIQUE NOT NULL,
+  `password` varchar(100) NOT NULL,
+  `last_login` datetime DEFAULT null,
+  `created` datetime DEFAULT (CURRENT_TIMESTAMP),
+  `updated` datetime DEFAULT (CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP),
+  `status_id` uuid NOT NULL
+);
 
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+CREATE TABLE `teachers` (
+  `teacher_id` uuid PRIMARY KEY NOT NULL,
+  `user_id` uuid NOT NULL,
+  `location_id` uuid NOT NULL,
+  `gender_id` uuid NOT NULL,
+  `level_studies_id` uuid NOT NULL,
+  `grade_group_id` uuid NOT NULL,
+  `work_shift_id` uuid NOT NULL,
+  `first_name` varchar(100) NOT NULL,
+  `paternal_surname` varchar(100) NOT NULL,
+  `maternal_surname` varchar(100) NOT NULL,
+  `date_of_birth` date NOT NULL,
+  `name_school` varchar(150) NOT NULL,
+  `students_in_charge` int NOT NULL,
+  `cct` varchar(45) NOT NULL,
+  `school_zone` varchar(15) NOT NULL,
+  `curp` varchar(18) NOT NULL,
+  `email` varchar(100) UNIQUE NOT NULL,
+  `phone` varchar(15) NOT NULL,
+  `state` varchar(100) NOT NULL,
+  `suburb` varchar(100) NOT NULL,
+  `street` varchar(150) NOT NULL,
+  `emergency_contact` varchar(100) NOT NULL,
+  `emergency_phone` varchar(15) DEFAULT null,
+  `created` datetime DEFAULT (CURRENT_TIMESTAMP),
+  `updated` datetime DEFAULT (CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP),
+  `status_id` uuid NOT NULL
+);
 
--- Dump completed on 2025-05-11  0:59:29
+CREATE TABLE `parents` (
+  `parents_id` uuid PRIMARY KEY NOT NULL,
+  `gender_id` uuid NOT NULL,
+  `level_studies_id` uuid NOT NULL,
+  `grade_group_id` uuid NOT NULL,
+  `work_shift_id` uuid NOT NULL,
+  `first_name` varchar(100) NOT NULL,
+  `paternal_surname` varchar(100) NOT NULL,
+  `maternal_surname` varchar(100) NOT NULL,
+  `date_of_birth` date NOT NULL,
+  `ocupation` varchar(60) NOT NULL,
+  `curp` varchar(18) NOT NULL,
+  `email` varchar(100) UNIQUE NOT NULL,
+  `phone` varchar(15) NOT NULL,
+  `state` varchar(100) NOT NULL,
+  `suburb` varchar(100) NOT NULL,
+  `street` varchar(150) NOT NULL,
+  `emergency_contact` varchar(100) NOT NULL,
+  `emergency_phone` varchar(15) DEFAULT null,
+  `created` datetime DEFAULT (CURRENT_TIMESTAMP),
+  `updated` datetime DEFAULT (CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP),
+  `status_id` uuid NOT NULL
+);
+
+CREATE TABLE `students` (
+  `student_id` uuid PRIMARY KEY NOT NULL,
+  `teacher_id` uuid NOT NULL,
+  `gender_id` uuid NOT NULL,
+  `grade_group_id` uuid NOT NULL,
+  `work_shift_id` uuid NOT NULL,
+  `first_name` varchar(100) NOT NULL,
+  `paternal_surname` varchar(100) NOT NULL,
+  `maternal_surname` varchar(100) NOT NULL,
+  `date_of_birth` date NOT NULL,
+  `curp` varchar(18) NOT NULL,
+  `allergies` varchar(255) NOT NULL,
+  `medical_conditions` varchar(255) NOT NULL,
+  `state` varchar(100) NOT NULL,
+  `suburb` varchar(100) NOT NULL,
+  `street` varchar(150) NOT NULL,
+  `emergency_contact` varchar(100) NOT NULL,
+  `emergency_phone` varchar(15) DEFAULT null,
+  `enrollment_date` date NOT NULL,
+  `created` datetime DEFAULT (CURRENT_TIMESTAMP),
+  `updated` datetime DEFAULT (CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP),
+  `status_id` uuid NOT NULL
+);
+
+CREATE TABLE `student_parents` (
+  `student_parent_id` uuid PRIMARY KEY NOT NULL,
+  `student_id` uuid NOT NULL,
+  `parents_id` uuid NOT NULL,
+  `relationship` varchar(30) NOT NULL,
+  `is_primary` boolean DEFAULT false,
+  `created` datetime DEFAULT (CURRENT_TIMESTAMP),
+  `updated` datetime DEFAULT (CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP)
+);
+
+CREATE TABLE `student_teacher_history` (
+  `history_id` uuid PRIMARY KEY NOT NULL,
+  `student_id` uuid NOT NULL,
+  `teacher_id` uuid NOT NULL,
+  `grade_group_id` uuid NOT NULL,
+  `start_date` date NOT NULL,
+  `end_date` date DEFAULT null,
+  `created` datetime DEFAULT (CURRENT_TIMESTAMP),
+  `updated` datetime DEFAULT (CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP)
+);
+
+CREATE TABLE `cat_supplies` (
+  `supplies_id` uuid PRIMARY KEY NOT NULL,
+  `supplier_id` uniqueidentifier NOT NULL,
+  `unit_id` uuid NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `description` varchar(255) DEFAULT null,
+  `quantity` int DEFAULT 0,
+  `purchase_date` date DEFAULT null,
+  `expiry_date` date DEFAULT null,
+  `cost` decimal(10,2) DEFAULT 0,
+  `created` datetime DEFAULT (CURRENT_TIMESTAMP),
+  `updated` datetime DEFAULT (CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP),
+  `status_id` uuid NOT NULL
+);
+
+CREATE TABLE `cat_assets` (
+  `assets_id` uuid PRIMARY KEY NOT NULL,
+  `condition_id` uuid NOT NULL,
+  `location_id` uuid NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `description` varchar(255) DEFAULT null,
+  `purchase_date` date DEFAULT null,
+  `cost` decimal(10,2) DEFAULT 0,
+  `last_maintenance_date` date DEFAULT null,
+  `warranty_end_date` date DEFAULT null,
+  `created` datetime DEFAULT (CURRENT_TIMESTAMP),
+  `updated` datetime DEFAULT (CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP),
+  `status_id` uuid NOT NULL
+);
+
+CREATE TABLE `cat_inventory` (
+  `inventory_id` uuid PRIMARY KEY NOT NULL,
+  `condition_id` uuid NOT NULL,
+  `location_id` uuid NOT NULL,
+  `item_code` varchar(50) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `description` varchar(255) DEFAULT null,
+  `quantity` int DEFAULT 0,
+  `weight` decimal(10,2) DEFAULT null,
+  `width` decimal(10,2) DEFAULT null,
+  `height` decimal(10,2) DEFAULT null,
+  `serial_number` varchar(100),
+  `purchase_date` date DEFAULT null,
+  `created` datetime DEFAULT (CURRENT_TIMESTAMP),
+  `updated` datetime DEFAULT (CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP),
+  `status_id` uuid NOT NULL
+);
+
+CREATE TABLE `cat_supplier` (
+  `supplier_id` uuid PRIMARY KEY NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `email` varchar(100),
+  `phone` varchar(15),
+  `address` varchar(255)
+);
+
+CREATE TABLE `cat_classrooms` (
+  `location_id` uuid PRIMARY KEY NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `room_type` varchar(50),
+  `capacity` int
+);
+
+CREATE TABLE `cat_gender` (
+  `gender_id` uuid PRIMARY KEY NOT NULL,
+  `name` varchar(30) NOT NULL
+);
+
+CREATE TABLE `cat_status` (
+  `status_id` uuid PRIMARY KEY NOT NULL,
+  `name` varchar(30) NOT NULL,
+  `description` varchar(100)
+);
+
+CREATE TABLE `role` (
+  `role_id` uuid PRIMARY KEY NOT NULL,
+  `name` varchar(20) NOT NULL,
+  `description` varchar(100)
+);
+
+CREATE TABLE `grade_groups` (
+  `grade_group_id` uuid PRIMARY KEY NOT NULL,
+  `grade_name` varchar(50) NOT NULL,
+  `group_name` varchar(10) NOT NULL,
+  `label` varchar(20) UNIQUE NOT NULL,
+  `level_education_id` uuid
+);
+
+CREATE TABLE `cat_educational_level` (
+  `level_education_id` uuid PRIMARY KEY NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `short_name` varchar(10)
+);
+
+CREATE TABLE `cat_work_shifts` (
+  `shifts_works_id` uuid PRIMARY KEY NOT NULL,
+  `name` varchar(50) NOT NULL
+);
+
+CREATE TABLE `asset_conditions` (
+  `condition_id` uuid PRIMARY KEY NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `description` varchar(255)
+);
+
+CREATE TABLE `supply_units` (
+  `unit_id` uuid PRIMARY KEY NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `symbol` varchar(20)
+);
+
+CREATE TABLE `diagnostic` (
+  `diagnostic_id` uuid PRIMARY KEY NOT NULL,
+  `student_id` uuid NOT NULL,
+  `teacher_id` uuid NOT NULL,
+  `grade_group_id` uuid NOT NULL,
+  `level_education_id` uuid NOT NULL,
+  `gender_id` uuid NOT NULL,
+  `family_income` decimal(12,2) NOT NULL COMMENT 'Ingreso familiar mensual en moneda local',
+  `number_of_family_members` int NOT NULL COMMENT 'Número total de integrantes en la familia',
+  `number_of_siblings` int NOT NULL,
+  `parents_marital_status` varchar(50) NOT NULL COMMENT 'Estado civil de los padres',
+  `housing_type` varchar(100) NOT NULL COMMENT 'Tipo de vivienda: propia, rentada, prestada, etc.',
+  `housing_condition` varchar(100) NOT NULL COMMENT 'Condición de la vivienda: buena, regular, mala',
+  `number_of_rooms` int NOT NULL COMMENT 'Número de habitaciones en la vivienda',
+  `father_education_level` varchar(100) NOT NULL,
+  `mother_education_level` varchar(100) NOT NULL,
+  `father_employment_status` varchar(100) NOT NULL,
+  `mother_employment_status` varchar(100) NOT NULL,
+  `father_occupation` varchar(150) NOT NULL,
+  `mother_occupation` varchar(150) NOT NULL,
+  `has_running_water` boolean NOT NULL DEFAULT false,
+  `has_electricity` boolean NOT NULL DEFAULT false,
+  `has_internet_access` boolean NOT NULL DEFAULT false,
+  `internet_type` varchar(100) DEFAULT null COMMENT 'Fibra óptica, móvil, etc.',
+  `has_study_space` boolean NOT NULL DEFAULT false,
+  `study_space_description` varchar(255) DEFAULT null,
+  `health_issues` text DEFAULT null COMMENT 'Enfermedades o condiciones de salud del estudiante o familia',
+  `has_health_insurance` boolean NOT NULL DEFAULT false,
+  `type_of_health_insurance` varchar(100) DEFAULT null,
+  `transport_to_school` varchar(100) NOT NULL COMMENT 'Cómo llega el estudiante a la escuela',
+  `transport_time_minutes` int DEFAULT null COMMENT 'Tiempo aproximado de traslado en minutos',
+  `devices_available` varchar(255) DEFAULT null COMMENT 'Dispositivos tecnológicos en casa (PC, tablet, celular)',
+  `extracurricular_activities` varchar(255) DEFAULT null,
+  `family_support_for_studies` varchar(255) DEFAULT null COMMENT 'Nivel de apoyo que la familia brinda para estudios',
+  `additional_notes` text DEFAULT null,
+  `created` datetime DEFAULT (CURRENT_TIMESTAMP),
+  `updated` datetime DEFAULT (CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP)
+);
+
+CREATE TABLE `permissions` (
+  `permissions_id` uuid PRIMARY KEY NOT NULL,
+  `module_id` uuid NOT NULL,
+  `action_id` uuid NOT NULL,
+  `created` datetime DEFAULT (CURRENT_TIMESTAMP),
+  `updated` datetime DEFAULT (CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP)
+);
+
+CREATE TABLE `actions` (
+  `actions_id` uuid PRIMARY KEY NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `created` datetime DEFAULT (CURRENT_TIMESTAMP),
+  `updated` datetime DEFAULT (CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP)
+);
+
+CREATE TABLE `user_permissions` (
+  `user_permissions_id` uuid PRIMARY KEY NOT NULL,
+  `user_id` uuid NOT NULL,
+  `permission_id` uuid NOT NULL,
+  `created` datetime DEFAULT (CURRENT_TIMESTAMP),
+  `updated` datetime DEFAULT (CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP)
+);
+
+CREATE TABLE `modules` (
+  `module_id` uuid PRIMARY KEY NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `created` datetime DEFAULT (CURRENT_TIMESTAMP),
+  `updated` datetime DEFAULT (CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP)
+);
+
+ALTER TABLE `grade_groups` ADD FOREIGN KEY (`level_education_id`) REFERENCES `cat_educational_level` (`level_education_id`);
+
+ALTER TABLE `diagnostic` ADD FOREIGN KEY (`student_id`) REFERENCES `students` (`student_id`);
+
+ALTER TABLE `diagnostic` ADD FOREIGN KEY (`teacher_id`) REFERENCES `teachers` (`teacher_id`);
+
+ALTER TABLE `diagnostic` ADD FOREIGN KEY (`grade_group_id`) REFERENCES `grade_groups` (`grade_group_id`);
+
+ALTER TABLE `diagnostic` ADD FOREIGN KEY (`level_education_id`) REFERENCES `cat_educational_level` (`level_education_id`);
+
+ALTER TABLE `diagnostic` ADD FOREIGN KEY (`gender_id`) REFERENCES `cat_gender` (`gender_id`);
+
+ALTER TABLE `teachers` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+
+ALTER TABLE `student_teacher_history` ADD FOREIGN KEY (`student_id`) REFERENCES `students` (`student_id`);
+
+ALTER TABLE `student_teacher_history` ADD FOREIGN KEY (`teacher_id`) REFERENCES `teachers` (`teacher_id`);
+
+ALTER TABLE `user_permissions` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+
+ALTER TABLE `modules` ADD FOREIGN KEY (`module_id`) REFERENCES `permissions` (`module_id`);
+
+ALTER TABLE `permissions` ADD FOREIGN KEY (`permissions_id`) REFERENCES `user_permissions` (`permission_id`);
+
+ALTER TABLE `actions` ADD FOREIGN KEY (`actions_id`) REFERENCES `permissions` (`action_id`);
+
+ALTER TABLE `asset_conditions` ADD FOREIGN KEY (`condition_id`) REFERENCES `cat_assets` (`condition_id`);
+
+ALTER TABLE `supply_units` ADD FOREIGN KEY (`unit_id`) REFERENCES `cat_supplies` (`unit_id`);
+
+ALTER TABLE `asset_conditions` ADD FOREIGN KEY (`condition_id`) REFERENCES `cat_inventory` (`condition_id`);
+
+ALTER TABLE `cat_supplier` ADD FOREIGN KEY (`supplier_id`) REFERENCES `cat_supplies` (`supplier_id`);
+
+ALTER TABLE `cat_classrooms` ADD FOREIGN KEY (`location_id`) REFERENCES `cat_inventory` (`location_id`);
+
+ALTER TABLE `cat_classrooms` ADD FOREIGN KEY (`location_id`) REFERENCES `cat_assets` (`location_id`);
+
+ALTER TABLE `cat_classrooms` ADD FOREIGN KEY (`location_id`) REFERENCES `teachers` (`location_id`);
+
+ALTER TABLE `cat_gender` ADD FOREIGN KEY (`gender_id`) REFERENCES `teachers` (`gender_id`);
+
+ALTER TABLE `cat_gender` ADD FOREIGN KEY (`gender_id`) REFERENCES `parents` (`gender_id`);
+
+ALTER TABLE `cat_gender` ADD FOREIGN KEY (`gender_id`) REFERENCES `students` (`gender_id`);
+
+ALTER TABLE `student_parents` ADD FOREIGN KEY (`student_id`) REFERENCES `students` (`student_id`);
+
+ALTER TABLE `student_parents` ADD FOREIGN KEY (`parents_id`) REFERENCES `parents` (`parents_id`);
+
+ALTER TABLE `role` ADD FOREIGN KEY (`role_id`) REFERENCES `users` (`role_id`);
+
+ALTER TABLE `cat_work_shifts` ADD FOREIGN KEY (`shifts_works_id`) REFERENCES `teachers` (`work_shift_id`);
+
+ALTER TABLE `cat_status` ADD FOREIGN KEY (`status_id`) REFERENCES `cat_supplies` (`status_id`);
+
+ALTER TABLE `cat_status` ADD FOREIGN KEY (`status_id`) REFERENCES `cat_assets` (`status_id`);
+
+ALTER TABLE `cat_status` ADD FOREIGN KEY (`status_id`) REFERENCES `teachers` (`status_id`);
+
+ALTER TABLE `cat_status` ADD FOREIGN KEY (`status_id`) REFERENCES `users` (`status_id`);
+
+ALTER TABLE `cat_status` ADD FOREIGN KEY (`status_id`) REFERENCES `cat_inventory` (`status_id`);
+
+ALTER TABLE `cat_status` ADD FOREIGN KEY (`status_id`) REFERENCES `parents` (`status_id`);
+
+ALTER TABLE `cat_status` ADD FOREIGN KEY (`status_id`) REFERENCES `students` (`status_id`);
+
+ALTER TABLE `students` ADD FOREIGN KEY (`work_shift_id`) REFERENCES `cat_work_shifts` (`shifts_works_id`);
+
+ALTER TABLE `parents` ADD FOREIGN KEY (`work_shift_id`) REFERENCES `cat_work_shifts` (`shifts_works_id`);
+
+ALTER TABLE `parents` ADD FOREIGN KEY (`grade_group_id`) REFERENCES `grade_groups` (`grade_group_id`);
+
+ALTER TABLE `grade_groups` ADD FOREIGN KEY (`grade_group_id`) REFERENCES `students` (`grade_group_id`);
+
+ALTER TABLE `grade_groups` ADD FOREIGN KEY (`grade_group_id`) REFERENCES `teachers` (`grade_group_id`);
+
+ALTER TABLE `grade_groups` ADD FOREIGN KEY (`grade_group_id`) REFERENCES `student_teacher_history` (`grade_group_id`);
+
+ALTER TABLE `cat_educational_level` ADD FOREIGN KEY (`level_education_id`) REFERENCES `teachers` (`level_studies_id`);
+
+ALTER TABLE `cat_educational_level` ADD FOREIGN KEY (`level_education_id`) REFERENCES `parents` (`level_studies_id`);
+
+ALTER TABLE `teachers` ADD FOREIGN KEY (`teacher_id`) REFERENCES `students` (`teacher_id`);
