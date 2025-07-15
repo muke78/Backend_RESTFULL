@@ -4,6 +4,8 @@ CREATE TABLE `users` (
   `name_user` varchar(100) NOT NULL,
   `email` varchar(100) UNIQUE NOT NULL,
   `password` varchar(100) NOT NULL,
+  `profile_picture` varchar(500) DEFAULT null,
+  `account_type` varchar(20) NOT NULL,
   `last_login` datetime DEFAULT null,
   `created` datetime DEFAULT (CURRENT_TIMESTAMP),
   `updated` datetime DEFAULT (CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP),
@@ -23,7 +25,7 @@ CREATE TABLE `teachers` (
   `maternal_surname` varchar(100) NOT NULL,
   `date_of_birth` date NOT NULL,
   `name_school` varchar(150) NOT NULL,
-  `students_in_charge` int NOT NULL,
+  `students_in_charge` int DEFAULT 0,
   `cct` varchar(45) NOT NULL,
   `school_zone` varchar(15) NOT NULL,
   `curp` varchar(18) NOT NULL,
@@ -74,8 +76,8 @@ CREATE TABLE `students` (
   `maternal_surname` varchar(100) NOT NULL,
   `date_of_birth` date NOT NULL,
   `curp` varchar(18) NOT NULL,
-  `allergies` varchar(255) NOT NULL,
-  `medical_conditions` varchar(255) NOT NULL,
+  `allergies` varchar(255) DEFAULT null,
+  `medical_conditions` varchar(255) DEFAULT null,
   `state` varchar(100) NOT NULL,
   `suburb` varchar(100) NOT NULL,
   `street` varchar(150) NOT NULL,
@@ -143,13 +145,13 @@ CREATE TABLE `cat_inventory` (
   `condition_id` uuid NOT NULL,
   `location_id` uuid NOT NULL,
   `item_code` varchar(50) NOT NULL,
+  `serial_number` varchar(100) NOT NULL,
   `name` varchar(100) NOT NULL,
   `description` varchar(255) DEFAULT null,
   `quantity` int DEFAULT 0,
   `weight` decimal(10,2) DEFAULT null,
   `width` decimal(10,2) DEFAULT null,
   `height` decimal(10,2) DEFAULT null,
-  `serial_number` varchar(100),
   `purchase_date` date DEFAULT null,
   `created` datetime DEFAULT (CURRENT_TIMESTAMP),
   `updated` datetime DEFAULT (CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP),
@@ -159,16 +161,16 @@ CREATE TABLE `cat_inventory` (
 CREATE TABLE `cat_supplier` (
   `supplier_id` uuid PRIMARY KEY NOT NULL,
   `name` varchar(100) NOT NULL,
-  `email` varchar(100),
-  `phone` varchar(15),
-  `address` varchar(255)
+  `email` varchar(100) UNIQUE DEFAULT null,
+  `phone` varchar(15) DEFAULT null,
+  `address` varchar(255) DEFAULT null
 );
 
 CREATE TABLE `cat_classrooms` (
   `location_id` uuid PRIMARY KEY NOT NULL,
   `name` varchar(100) NOT NULL,
-  `room_type` varchar(50),
-  `capacity` int
+  `room_type` varchar(50) NOT NULL,
+  `capacity` int DEFAULT null
 );
 
 CREATE TABLE `cat_gender` (
@@ -179,21 +181,21 @@ CREATE TABLE `cat_gender` (
 CREATE TABLE `cat_status` (
   `status_id` uuid PRIMARY KEY NOT NULL,
   `name` varchar(30) NOT NULL,
-  `description` varchar(100)
+  `description` varchar(100) DEFAULT null
 );
 
 CREATE TABLE `role` (
   `role_id` uuid PRIMARY KEY NOT NULL,
   `name` varchar(20) NOT NULL,
-  `description` varchar(100)
+  `description` varchar(100) DEFAULT null
 );
 
 CREATE TABLE `grade_groups` (
   `grade_group_id` uuid PRIMARY KEY NOT NULL,
+  `level_education_id` uuid NOT NULL,
   `grade_name` varchar(50) NOT NULL,
   `group_name` varchar(10) NOT NULL,
-  `label` varchar(20) UNIQUE NOT NULL,
-  `level_education_id` uuid
+  `label` varchar(20) UNIQUE NOT NULL
 );
 
 CREATE TABLE `cat_educational_level` (
@@ -210,13 +212,13 @@ CREATE TABLE `cat_work_shifts` (
 CREATE TABLE `asset_conditions` (
   `condition_id` uuid PRIMARY KEY NOT NULL,
   `name` varchar(100) NOT NULL,
-  `description` varchar(255)
+  `description` varchar(255) DEFAULT null
 );
 
 CREATE TABLE `supply_units` (
   `unit_id` uuid PRIMARY KEY NOT NULL,
   `name` varchar(100) NOT NULL,
-  `symbol` varchar(20)
+  `symbol` varchar(20) DEFAULT null
 );
 
 CREATE TABLE `diagnostic` (
