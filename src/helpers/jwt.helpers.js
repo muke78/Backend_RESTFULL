@@ -4,14 +4,8 @@ import { config } from "../config/config.js";
 
 export const createToken = (user) => {
   const payload = {
-    id: user.id,
-    nameUser: user.nameUser,
-    email: user.email,
-    profilePicture: user.profilePicture,
-    role: user.role,
-    accountType: user.accountType,
-    lastLogin: user.lastLogin,
-    accountStatus: user.accountStatus,
+    user_id: user.user_id,
+    role_id: user.role_id,
   };
   return jwt.sign(payload, config.jwt.secret, {
     expiresIn: `${config.jwt.expiresIn}h`,
@@ -32,14 +26,8 @@ export const refreshToken = (token) => {
   }
 
   const payload = {
-    id: decoded.id,
-    nameUser: decoded.nameUser,
-    email: decoded.email,
-    profilePicture: decoded.profilePicture,
-    role: decoded.role,
-    accountType: decoded.accountType,
-    lastLogin: decoded.lastLogin,
-    accountStatus: decoded.accountStatus,
+    user_id: decoded.user_id,
+    role_id: decoded.role_id,
   };
   return jwt.sign(payload, config.jwt.secret, {
     expiresIn: `${config.jwt.expiresIn}h`,

@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 8.0.38, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.39, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: akt_backend_mirror
 -- ------------------------------------------------------
@@ -7,7 +7,7 @@
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8 */;
+/*!50503 SET NAMES utf8mb4 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -35,10 +35,8 @@ CREATE TABLE `actions` (
 -- Dumping data for table `actions`
 --
 
-LOCK TABLES `actions` WRITE;
 /*!40000 ALTER TABLE `actions` DISABLE KEYS */;
 /*!40000 ALTER TABLE `actions` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `asset_conditions`
@@ -59,10 +57,9 @@ CREATE TABLE `asset_conditions` (
 -- Dumping data for table `asset_conditions`
 --
 
-LOCK TABLES `asset_conditions` WRITE;
 /*!40000 ALTER TABLE `asset_conditions` DISABLE KEYS */;
+INSERT INTO `asset_conditions` VALUES ('ca5af1d5-61fb-11f0-a977-d843ae0db894','Nuevo','Activo sin uso previo, en condiciones óptimas de fábrica'),('ca5b271a-61fb-11f0-a977-d843ae0db894','Usado','Activo con uso previo, pero en buen estado funcional'),('ca5b2dc5-61fb-11f0-a977-d843ae0db894','Reacondicionado','Activo restaurado o reparado para volver a usarse'),('ca5b3001-61fb-11f0-a977-d843ae0db894','Dañado','Activo con fallas que afectan parcial o totalmente su funcionamiento'),('ca5b31ef-61fb-11f0-a977-d843ae0db894','Obsoleto','Activo funcional pero fuera de uso por antigüedad o falta de soporte'),('ca5b33c2-61fb-11f0-a977-d843ae0db894','Extraviado','Activo perdido y no disponible físicamente'),('ca5b357f-61fb-11f0-a977-d843ae0db894','Robado','Activo no recuperado por hurto'),('ca5b3fa8-61fb-11f0-a977-d843ae0db894','En reparación','Activo fuera de servicio por mantenimiento o reparación'),('ca5b4372-61fb-11f0-a977-d843ae0db894','Descompuesto','Activo que no funciona y está pendiente de revisión'),('ca5b4524-61fb-11f0-a977-d843ae0db894','De baja','Activo oficialmente dado de baja del inventario');
 /*!40000 ALTER TABLE `asset_conditions` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `cat_assets`
@@ -98,10 +95,8 @@ CREATE TABLE `cat_assets` (
 -- Dumping data for table `cat_assets`
 --
 
-LOCK TABLES `cat_assets` WRITE;
 /*!40000 ALTER TABLE `cat_assets` DISABLE KEYS */;
 /*!40000 ALTER TABLE `cat_assets` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `cat_classrooms`
@@ -123,10 +118,9 @@ CREATE TABLE `cat_classrooms` (
 -- Dumping data for table `cat_classrooms`
 --
 
-LOCK TABLES `cat_classrooms` WRITE;
 /*!40000 ALTER TABLE `cat_classrooms` DISABLE KEYS */;
+INSERT INTO `cat_classrooms` VALUES ('8b89c363-61f6-11f0-a977-d843ae0db894','Aula 1','Aula',31),('8b89f0d3-61f6-11f0-a977-d843ae0db894','Aula 2','Aula',31),('8b89f6ce-61f6-11f0-a977-d843ae0db894','Aula 3','Aula',31),('8b89f878-61f6-11f0-a977-d843ae0db894','Aula 4','Aula',31),('8b89f9f3-61f6-11f0-a977-d843ae0db894','Aula 5','Aula',31),('8b89fb52-61f6-11f0-a977-d843ae0db894','Aula 6','Aula',31),('8b89fcc2-61f6-11f0-a977-d843ae0db894','Aula 7','Aula',31),('8b89fe39-61f6-11f0-a977-d843ae0db894','Dirección','Oficina',7),('8b8a0011-61f6-11f0-a977-d843ae0db894','Comedor','Área común',45),('8b8a016d-61f6-11f0-a977-d843ae0db894','Bodega 1','Almacén',3),('8b8a02c3-61f6-11f0-a977-d843ae0db894','Bodega 2','Almacén',3);
 /*!40000 ALTER TABLE `cat_classrooms` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `cat_educational_level`
@@ -138,7 +132,7 @@ DROP TABLE IF EXISTS `cat_educational_level`;
 CREATE TABLE `cat_educational_level` (
   `level_education_id` char(36) NOT NULL,
   `name` varchar(50) NOT NULL,
-  `short_name` varchar(10) DEFAULT NULL,
+  `short_name` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`level_education_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -147,10 +141,9 @@ CREATE TABLE `cat_educational_level` (
 -- Dumping data for table `cat_educational_level`
 --
 
-LOCK TABLES `cat_educational_level` WRITE;
 /*!40000 ALTER TABLE `cat_educational_level` DISABLE KEYS */;
+INSERT INTO `cat_educational_level` VALUES ('db6c40cd-61f6-11f0-a977-d843ae0db894','Primaria trunca','Prim. trunca'),('db6c51d7-61f6-11f0-a977-d843ae0db894','Primaria terminada','Primaria'),('db6c553a-61f6-11f0-a977-d843ae0db894','Secundaria trunca','Sec. trunca'),('db6c5662-61f6-11f0-a977-d843ae0db894','Secundaria terminada','Secundaria'),('db6c5766-61f6-11f0-a977-d843ae0db894','Preparatoria o bachillerato trunco','Prepa trunca'),('db6c587c-61f6-11f0-a977-d843ae0db894','Preparatoria o bachillerato terminado','Preparatoria'),('db6c5973-61f6-11f0-a977-d843ae0db894','Carrera técnica','Técnica'),('db6c5a59-61f6-11f0-a977-d843ae0db894','Carrera técnica con preparatoria','Técnica + Prepa'),('db6c5bb7-61f6-11f0-a977-d843ae0db894','Licenciatura trunca','Lic. trunca'),('db6c5ca7-61f6-11f0-a977-d843ae0db894','Licenciatura terminada','Licenciatura'),('db6c5d8f-61f6-11f0-a977-d843ae0db894','Ingeniería trunca','Ing. trunca'),('db6c5e89-61f6-11f0-a977-d843ae0db894','Ingeniería terminada','Ingeniería'),('db6c5f81-61f6-11f0-a977-d843ae0db894','Especialidad','Especialidad'),('db6c65e2-61f6-11f0-a977-d843ae0db894','Maestría trunca','Mtra. trunca'),('db6c6ba6-61f6-11f0-a977-d843ae0db894','Maestría terminada','Maestría'),('db6c6d12-61f6-11f0-a977-d843ae0db894','Doctorado trunco','Dr. trunco'),('db6c6e1d-61f6-11f0-a977-d843ae0db894','Doctorado terminado','Doctorado'),('db6c6f26-61f6-11f0-a977-d843ae0db894','Sin estudios','Ninguno');
 /*!40000 ALTER TABLE `cat_educational_level` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `cat_gender`
@@ -170,10 +163,9 @@ CREATE TABLE `cat_gender` (
 -- Dumping data for table `cat_gender`
 --
 
-LOCK TABLES `cat_gender` WRITE;
 /*!40000 ALTER TABLE `cat_gender` DISABLE KEYS */;
+INSERT INTO `cat_gender` VALUES ('1ec5aff0-61fc-11f0-a977-d843ae0db894','Femenino'),('1ec5cc92-61fc-11f0-a977-d843ae0db894','Masculino'),('1ec5d235-61fc-11f0-a977-d843ae0db894','No binario'),('1ec5d430-61fc-11f0-a977-d843ae0db894','Prefiere no decirlo'),('1ec5d5f3-61fc-11f0-a977-d843ae0db894','Otro');
 /*!40000 ALTER TABLE `cat_gender` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `cat_inventory`
@@ -212,10 +204,8 @@ CREATE TABLE `cat_inventory` (
 -- Dumping data for table `cat_inventory`
 --
 
-LOCK TABLES `cat_inventory` WRITE;
 /*!40000 ALTER TABLE `cat_inventory` DISABLE KEYS */;
 /*!40000 ALTER TABLE `cat_inventory` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `cat_status`
@@ -236,10 +226,9 @@ CREATE TABLE `cat_status` (
 -- Dumping data for table `cat_status`
 --
 
-LOCK TABLES `cat_status` WRITE;
 /*!40000 ALTER TABLE `cat_status` DISABLE KEYS */;
+INSERT INTO `cat_status` VALUES ('cefd84f3-61f5-11f0-a977-d843ae0db894','Activo','Elemento disponible y en funcionamiento'),('cefdafcc-61f5-11f0-a977-d843ae0db894','Inactivo','Elemento deshabilitado temporalmente, no disponible para operaciones'),('cefdb1eb-61f5-11f0-a977-d843ae0db894','Pendiente','Elemento registrado pero en espera de aprobación o validación'),('cefdb257-61f5-11f0-a977-d843ae0db894','Suspendido','Elemento pausado por razones administrativas o de cumplimiento'),('cefdb296-61f5-11f0-a977-d843ae0db894','Eliminado','Elemento marcado como eliminado de forma lógica, no visible en operaciones comunes'),('cefdb2d4-61f5-11f0-a977-d843ae0db894','Archivado','Elemento guardado para referencia, no activo en operaciones actuales'),('cefdb314-61f5-11f0-a977-d843ae0db894','En revisión','Elemento en proceso de análisis o evaluación'),('cefdb376-61f5-11f0-a977-d843ae0db894','Aprobado','Elemento validado y aprobado para su uso'),('cefdb3fa-61f5-11f0-a977-d843ae0db894','Rechazado','Elemento revisado y no aprobado, requiere modificación o eliminación'),('cefdb461-61f5-11f0-a977-d843ae0db894','Bloqueado','Elemento restringido por razones de seguridad o políticas internas'),('cefdb4f2-61f5-11f0-a977-d843ae0db894','Caducado','Elemento ha superado su tiempo de validez o vigencia'),('cefdb547-61f5-11f0-a977-d843ae0db894','Completo','Elemento con todos sus procesos o tareas finalizados correctamente'),('cfcb73fd-61f5-11f0-a977-d843ae0db894','Activo','Elemento disponible y en funcionamiento'),('cfcb813a-61f5-11f0-a977-d843ae0db894','Inactivo','Elemento deshabilitado temporalmente, no disponible para operaciones'),('cfcb833b-61f5-11f0-a977-d843ae0db894','Pendiente','Elemento registrado pero en espera de aprobación o validación'),('cfcb84c8-61f5-11f0-a977-d843ae0db894','Suspendido','Elemento pausado por razones administrativas o de cumplimiento'),('cfcb863f-61f5-11f0-a977-d843ae0db894','Eliminado','Elemento marcado como eliminado de forma lógica, no visible en operaciones comunes'),('cfcb87c6-61f5-11f0-a977-d843ae0db894','Archivado','Elemento guardado para referencia, no activo en operaciones actuales'),('cfcb8915-61f5-11f0-a977-d843ae0db894','En revisión','Elemento en proceso de análisis o evaluación'),('cfcb8a95-61f5-11f0-a977-d843ae0db894','Aprobado','Elemento validado y aprobado para su uso'),('cfcb8be8-61f5-11f0-a977-d843ae0db894','Rechazado','Elemento revisado y no aprobado, requiere modificación o eliminación'),('cfcb8d35-61f5-11f0-a977-d843ae0db894','Bloqueado','Elemento restringido por razones de seguridad o políticas internas'),('cfcb8ec3-61f5-11f0-a977-d843ae0db894','Caducado','Elemento ha superado su tiempo de validez o vigencia'),('cfcb9010-61f5-11f0-a977-d843ae0db894','Completo','Elemento con todos sus procesos o tareas finalizados correctamente');
 /*!40000 ALTER TABLE `cat_status` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `cat_supplier`
@@ -263,10 +252,8 @@ CREATE TABLE `cat_supplier` (
 -- Dumping data for table `cat_supplier`
 --
 
-LOCK TABLES `cat_supplier` WRITE;
 /*!40000 ALTER TABLE `cat_supplier` DISABLE KEYS */;
 /*!40000 ALTER TABLE `cat_supplier` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `cat_supplies`
@@ -302,10 +289,8 @@ CREATE TABLE `cat_supplies` (
 -- Dumping data for table `cat_supplies`
 --
 
-LOCK TABLES `cat_supplies` WRITE;
 /*!40000 ALTER TABLE `cat_supplies` DISABLE KEYS */;
 /*!40000 ALTER TABLE `cat_supplies` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `cat_work_shifts`
@@ -325,10 +310,9 @@ CREATE TABLE `cat_work_shifts` (
 -- Dumping data for table `cat_work_shifts`
 --
 
-LOCK TABLES `cat_work_shifts` WRITE;
 /*!40000 ALTER TABLE `cat_work_shifts` DISABLE KEYS */;
+INSERT INTO `cat_work_shifts` VALUES ('6fdcd8a4-61fc-11f0-a977-d843ae0db894','Matutino'),('6fdce875-61fc-11f0-a977-d843ae0db894','Vespertino');
 /*!40000 ALTER TABLE `cat_work_shifts` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `diagnostic`
@@ -392,10 +376,8 @@ CREATE TABLE `diagnostic` (
 -- Dumping data for table `diagnostic`
 --
 
-LOCK TABLES `diagnostic` WRITE;
 /*!40000 ALTER TABLE `diagnostic` DISABLE KEYS */;
 /*!40000 ALTER TABLE `diagnostic` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `grade_groups`
@@ -406,14 +388,11 @@ DROP TABLE IF EXISTS `grade_groups`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `grade_groups` (
   `grade_group_id` char(36) NOT NULL,
-  `level_education_id` char(36) NOT NULL,
   `grade_name` varchar(50) NOT NULL,
   `group_name` varchar(10) NOT NULL,
   `label` varchar(20) NOT NULL,
   PRIMARY KEY (`grade_group_id`),
-  UNIQUE KEY `label` (`label`),
-  KEY `level_education_id` (`level_education_id`),
-  CONSTRAINT `grade_groups_ibfk_1` FOREIGN KEY (`level_education_id`) REFERENCES `cat_educational_level` (`level_education_id`)
+  UNIQUE KEY `label` (`label`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -421,10 +400,9 @@ CREATE TABLE `grade_groups` (
 -- Dumping data for table `grade_groups`
 --
 
-LOCK TABLES `grade_groups` WRITE;
 /*!40000 ALTER TABLE `grade_groups` DISABLE KEYS */;
+INSERT INTO `grade_groups` VALUES ('2da64d8e-61fd-11f0-a977-d843ae0db894','Primero','A','Primero A'),('2da66b50-61fd-11f0-a977-d843ae0db894','Segundo','A','Segundo A'),('2da66f9e-61fd-11f0-a977-d843ae0db894','Segundo','B','Segundo B'),('2da67173-61fd-11f0-a977-d843ae0db894','Tercero','A','Tercero A'),('2da672d4-61fd-11f0-a977-d843ae0db894','Tercero','B','Tercero B'),('2da6745b-61fd-11f0-a977-d843ae0db894','Tercero','C','Tercero C');
 /*!40000 ALTER TABLE `grade_groups` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `modules`
@@ -446,10 +424,8 @@ CREATE TABLE `modules` (
 -- Dumping data for table `modules`
 --
 
-LOCK TABLES `modules` WRITE;
 /*!40000 ALTER TABLE `modules` DISABLE KEYS */;
 /*!40000 ALTER TABLE `modules` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `parents`
@@ -499,10 +475,8 @@ CREATE TABLE `parents` (
 -- Dumping data for table `parents`
 --
 
-LOCK TABLES `parents` WRITE;
 /*!40000 ALTER TABLE `parents` DISABLE KEYS */;
 /*!40000 ALTER TABLE `parents` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `permissions`
@@ -529,10 +503,8 @@ CREATE TABLE `permissions` (
 -- Dumping data for table `permissions`
 --
 
-LOCK TABLES `permissions` WRITE;
 /*!40000 ALTER TABLE `permissions` DISABLE KEYS */;
 /*!40000 ALTER TABLE `permissions` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `role`
@@ -544,7 +516,7 @@ DROP TABLE IF EXISTS `role`;
 CREATE TABLE `role` (
   `role_id` char(36) NOT NULL,
   `name` varchar(20) NOT NULL,
-  `description` varchar(100) DEFAULT NULL,
+  `description` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`role_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -553,10 +525,9 @@ CREATE TABLE `role` (
 -- Dumping data for table `role`
 --
 
-LOCK TABLES `role` WRITE;
 /*!40000 ALTER TABLE `role` DISABLE KEYS */;
+INSERT INTO `role` VALUES ('b20fb5fc-6224-11f0-a977-d843ae0db894','Administrador','Encargado de la gestión total del sistema: usuarios, configuraciones, datos institucionales.'),('b20fc386-6224-11f0-a977-d843ae0db894','Director(a)','Responsable de supervisar todo el funcionamiento del kínder, incluyendo personal docente y administrativo.'),('b20fc76c-6224-11f0-a977-d843ae0db894','Docente','Encargado de registrar información académica, asistencia y observaciones de los estudiantes.'),('b20fc8b7-6224-11f0-a977-d843ae0db894','Padre/Madre/Tutor','Accede a la información del estudiante: reportes, mensajes, eventos y seguimiento académico.'),('b20fc9cc-6224-11f0-a977-d843ae0db894','Secretaría','Gestiona inscripciones, documentación, control escolar y apoyo administrativo.'),('b20fcadf-6224-11f0-a977-d843ae0db894','Psicólogo(a)','Accede a los registros necesarios para dar seguimiento psicológico y emocional a los estudiantes.'),('b20fcbdf-6224-11f0-a977-d843ae0db894','Soporte Técnico','Encargado del mantenimiento del sistema y atención a incidencias técnicas.');
 /*!40000 ALTER TABLE `role` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `student_parents`
@@ -585,10 +556,8 @@ CREATE TABLE `student_parents` (
 -- Dumping data for table `student_parents`
 --
 
-LOCK TABLES `student_parents` WRITE;
 /*!40000 ALTER TABLE `student_parents` DISABLE KEYS */;
 /*!40000 ALTER TABLE `student_parents` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `student_teacher_history`
@@ -620,10 +589,8 @@ CREATE TABLE `student_teacher_history` (
 -- Dumping data for table `student_teacher_history`
 --
 
-LOCK TABLES `student_teacher_history` WRITE;
 /*!40000 ALTER TABLE `student_teacher_history` DISABLE KEYS */;
 /*!40000 ALTER TABLE `student_teacher_history` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `students`
@@ -671,10 +638,8 @@ CREATE TABLE `students` (
 -- Dumping data for table `students`
 --
 
-LOCK TABLES `students` WRITE;
 /*!40000 ALTER TABLE `students` DISABLE KEYS */;
 /*!40000 ALTER TABLE `students` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `supply_units`
@@ -695,10 +660,9 @@ CREATE TABLE `supply_units` (
 -- Dumping data for table `supply_units`
 --
 
-LOCK TABLES `supply_units` WRITE;
 /*!40000 ALTER TABLE `supply_units` DISABLE KEYS */;
+INSERT INTO `supply_units` VALUES ('ea91373e-6224-11f0-a977-d843ae0db894','Caja','cj'),('ea915cef-6224-11f0-a977-d843ae0db894','Paquete','pqt'),('ea916287-6224-11f0-a977-d843ae0db894','Bolsa','bls'),('ea916487-6224-11f0-a977-d843ae0db894','Pieza','pz'),('ea91665d-6224-11f0-a977-d843ae0db894','Litro','L'),('ea916817-6224-11f0-a977-d843ae0db894','Mililitro','ml'),('ea9169dc-6224-11f0-a977-d843ae0db894','Metro','m'),('ea916b7e-6224-11f0-a977-d843ae0db894','Metro cuadrado','m²'),('ea916d73-6224-11f0-a977-d843ae0db894','Botella','bt'),('ea916f0d-6224-11f0-a977-d843ae0db894','Tubo','tb'),('ea91709f-6224-11f0-a977-d843ae0db894','Unidad','u'),('ea91725e-6224-11f0-a977-d843ae0db894','Galón','gal'),('ea9173fb-6224-11f0-a977-d843ae0db894','Rollo','rl'),('ea9175ee-6224-11f0-a977-d843ae0db894','Sobre','sb'),('ea9180bf-6224-11f0-a977-d843ae0db894','Kit','kt'),('ea918267-6224-11f0-a977-d843ae0db894','Jarro','jr'),('ea9184f6-6224-11f0-a977-d843ae0db894','Cuaderno','cuad'),('ea9186aa-6224-11f0-a977-d843ae0db894','Hoja','hoj'),('ea918841-6224-11f0-a977-d843ae0db894','Resma','res');
 /*!40000 ALTER TABLE `supply_units` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `teachers`
@@ -757,10 +721,8 @@ CREATE TABLE `teachers` (
 -- Dumping data for table `teachers`
 --
 
-LOCK TABLES `teachers` WRITE;
 /*!40000 ALTER TABLE `teachers` DISABLE KEYS */;
 /*!40000 ALTER TABLE `teachers` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `user_permissions`
@@ -787,10 +749,8 @@ CREATE TABLE `user_permissions` (
 -- Dumping data for table `user_permissions`
 --
 
-LOCK TABLES `user_permissions` WRITE;
 /*!40000 ALTER TABLE `user_permissions` DISABLE KEYS */;
 /*!40000 ALTER TABLE `user_permissions` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `users`
@@ -824,10 +784,12 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
-UNLOCK TABLES;
+
+--
+-- Dumping routines for database 'akt_backend_mirror'
+--
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -838,4 +800,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-07-15  5:03:35
+-- Dump completed on 2025-07-16  3:15:50

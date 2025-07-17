@@ -29,7 +29,6 @@ Tecnologías y herramientas utilizadas en el backend de este proyecto:
 
 #### 🪵 Logging y Utilidades
 - **morgan** 🪵 – Middleware para registrar peticiones HTTP.
-- **commander** ⚙️ – Gestión de comandos CLI (si aplica).
 
 #### 📦 Formateo, Linting y Calidad de Código
 - **prettier** ✨ – Formateador de código automático.
@@ -48,7 +47,6 @@ Tecnologías y herramientas utilizadas en el backend de este proyecto:
 - **concurrently** 🧵 – Ejecuta múltiples comandos en paralelo.
 - **dotenv** 🧬 – Carga variables de entorno desde archivos `.env`.
 - **husky** 🐶 – Automatiza scripts en Git como pre-commit o pre-push.
-- **@formkit/tempo** 🕒 – Formatea fechas en un formato legible y localizado.
 
 #### 📚 Documentación
 - **swagger-jsdoc** 📝 – Generador de especificaciones OpenAPI desde JSDoc.

@@ -6,7 +6,6 @@ import { lastLogin } from "../../../helpers/userLastLogin.helpers.js";
 
 export const loginService = async ({ email, password }) => {
   const user = await findUserByEmail(email);
-
   if (!user) {
     throw {
       statusCode: 404,
@@ -25,7 +24,7 @@ export const loginService = async ({ email, password }) => {
     };
   }
 
-  const isPasswordValid = await hashedArg.verify(user.Password, password);
+  const isPasswordValid = await hashedArg.verify(user.password, password);
 
   if (!isPasswordValid) {
     throw {
@@ -46,20 +45,13 @@ export const loginService = async ({ email, password }) => {
         "El usuario no puede iniciar sesión porque su cuenta está inactiva",
     };
   }
-
   // Crea el token
   const token = createToken({
-    id: user.ID,
-    nameUser: user.NameUser,
-    email: user.Email,
-    profilePicture: user.ProfilePicture,
-    role: user.Role,
-    accountType: user.AccountType,
-    lastLogin: user.LastLogin,
-    accountStatus: user.AccountStatus,
+    user_id: user.user_id,
+    role_id: user.role_id,
   });
 
-  await lastLogin(user.ID);
+  await lastLogin(user.user_id);
 
   return token;
 };

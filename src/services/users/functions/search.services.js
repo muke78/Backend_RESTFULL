@@ -1,11 +1,29 @@
 import { connectionQuery } from "../../../helpers/connection.helpers.js";
 
 export const searchUserService = async (email) => {
-  let querySearchUsers = `SELECT * FROM users WHERE 1=1`;
+  let querySearchUsers = `SELECT 
+    user_id,
+    role.name AS role_name,
+    name_user,
+    email,
+    profile_picture,
+    account_type,
+    last_login,
+    created,
+    updated,
+    cat_status.name AS status_name
+FROM
+    users
+        LEFT JOIN
+    role ON role.role_id = users.role_id
+        LEFT JOIN
+    cat_status ON cat_status.status_id = users.status_id
+WHERE
+    1 = 1`;
   const queryParamsSearch = [];
 
   if (email) {
-    querySearchUsers += ` AND Email LIKE ?`;
+    querySearchUsers += ` AND email LIKE ?`;
     queryParamsSearch.push(`%${email}%`);
   } else {
     throw {

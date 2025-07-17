@@ -19,10 +19,10 @@ export const verificarToken = (request, response, next) => {
   if (!bearerToken) {
     throw {
       statusCode: 401,
-      message: "Acceso no autorizado, token no proporcionado",
-      code: "TOKEN_NOT_FOUND",
+      message: "Acceso no autorizado, bearer no proporcionado",
+      code: "BEARER_NOT_FOUND",
       details:
-        "El token no se mando o no esta autorizado para realizar esta peticion",
+        "El bearer no se mando o no esta autorizado para realizar esta peticion",
     };
   }
 

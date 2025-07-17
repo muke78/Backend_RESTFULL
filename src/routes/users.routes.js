@@ -74,12 +74,7 @@ apiUsers.post("/auth/register", async (request, response, next) => {
   try {
     const registerUser = request.body;
     const result = await RegisterUser(registerUser);
-    methodCreated(
-      request,
-      response,
-      result,
-      "Se registro correctamente el usuario",
-    );
+    methodCreated(request, response, result, "Se ha registrado exitosamente");
   } catch (error) {
     next(error);
   }
@@ -135,7 +130,7 @@ apiUsers.delete("/:id", verificarToken, async (request, response, next) => {
       request,
       response,
       undefined,
-      `El usuario ${result.NameUser} fue eliminado correctamente`,
+      `El usuario ${result.name_user} fue eliminado correctamente`,
     );
   } catch (error) {
     next(error);

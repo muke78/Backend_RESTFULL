@@ -6,13 +6,13 @@ import { getUserByEmail } from "../../../helpers/getUserByEmail.helpers.js";
 import { insertUser } from "../../../models/users/index.js";
 
 export const insertUserService = async ({
-  nameUser,
+  name_user,
   email,
   password,
-  accountStatus,
-  role,
+  status_id,
+  role_id,
 }) => {
-  if (!nameUser || !email || !password || !accountStatus || !role) {
+  if (!name_user || !email || !password || !status_id || !role_id) {
     throw {
       statusCode: 400,
       message: "Debe de proporcionar todos los campos",
@@ -33,11 +33,11 @@ export const insertUserService = async ({
 
   const hashedPassword = await hashedArg.hash(password);
   const insertResult = await insertUser(
-    nameUser,
+    name_user,
     email,
     hashedPassword,
-    accountStatus,
-    role,
+    status_id,
+    role_id,
   );
 
   if (insertResult.affectedRows > 0) {
@@ -67,11 +67,11 @@ export const insertUserMasiveService = async (countInsert) => {
   const insertados = [];
 
   for (let i = 0; i < countInsert; i++) {
-    const nameUser = faker.internet.username();
+    const name_user = faker.internet.username();
     const email = faker.internet.email();
     const password = faker.internet.password();
-    const role = "user";
-    const accountStatus = "Inactivo";
+    const role_id = undefined;
+    const status_id = "cefdafcc-61f5-11f0-a977-d843ae0db894";
 
     const existingUser = await findUserByEmail(email);
     if (existingUser) {
@@ -85,15 +85,15 @@ export const insertUserMasiveService = async (countInsert) => {
 
     const hashedPassword = await hashedArg.hash(password);
     const insertResult = await insertUser(
-      nameUser,
+      name_user,
       email,
       hashedPassword,
-      accountStatus,
-      role,
+      status_id,
+      role_id,
     );
 
     if (insertResult.affectedRows > 0) {
-      insertados.push({ nameUser, email, hashedPassword, role, accountStatus });
+      insertados.push({ name_user, email, hashedPassword, role_id, status_id });
     }
   }
   return insertados;
