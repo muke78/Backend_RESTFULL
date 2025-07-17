@@ -5,8 +5,8 @@ import { findUserByEmail } from "../../../helpers/findUserByEmail.helpers.js";
 import { getUserByEmail } from "../../../helpers/getUserByEmail.helpers.js";
 import { registerUser } from "../../../models/users/functions/register.models.js";
 
-export const registerUserService = async ({ nameUser, email, password }) => {
-  if (!nameUser || !email || !password) {
+export const registerUserService = async ({ name_user, email, password }) => {
+  if (!name_user || !email || !password) {
     throw {
       statusCode: 400,
       message: "Debe de proporcionar todos los campos",
@@ -27,7 +27,7 @@ export const registerUserService = async ({ nameUser, email, password }) => {
   }
 
   const hashedPassword = await hashedArg.hash(password);
-  const insertResult = await registerUser(nameUser, email, hashedPassword);
+  const insertResult = await registerUser(name_user, email, hashedPassword);
 
   if (insertResult.affectedRows > 0) {
     const newUser = await getUserByEmail(email);

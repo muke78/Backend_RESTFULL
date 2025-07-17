@@ -2,17 +2,25 @@ import hashedArg from "argon2";
 
 import { findEmailInOtherUser } from "../../../helpers/getUserByEmailAndId.helpers.js";
 import {
+  extractRoleByName,
+  extractStatusByName,
   findUserById,
-  updateUserWithPassword,
-  updateUserWithoutPassword,
+  updateUser,
 } from "../../../models/users/index.js";
 
 export const updateUserService = async (
   userId,
-  { nameUser, email, password, role, accountStatus },
+  { name_user, email, password, role, status },
 ) => {
   // Verificar si otro usuario ya usa ese correo
-  const emailConflict = await findEmailInOtherUser(email, userId);
+  const [emailConflict, existingUser, extractRole, extractStatus] =
+    await Promise.all([
+      findEmailInOtherUser(email, userId),
+      findUserById(userId),
+      extractRoleByName(role),
+      extractStatusByName(status),
+    ]);
+
   if (emailConflict) {
     throw {
       statusCode: 409,
@@ -23,7 +31,6 @@ export const updateUserService = async (
   }
 
   // Verificar si el usuario existe
-  const existingUser = await findUserById(userId);
   if (!existingUser) {
     throw {
       statusCode: 404,
@@ -33,27 +40,20 @@ export const updateUserService = async (
     };
   }
 
-  // Determinar si se actualiza con o sin contraseña
-  let result;
+  // Preparar datos para actualización
+  const updateData = {
+    name_user,
+    email,
+    role: extractRole.role_id,
+    status: extractStatus.status_id,
+    userId,
+  };
+
+  // Agregar contraseña hasheada si se proporcionó
   if (password && password.trim() !== "") {
-    const hashedPassword = await hashedArg.hash(password);
-    result = await updateUserWithPassword({
-      nameUser,
-      email,
-      password: hashedPassword,
-      role,
-      accountStatus,
-      userId,
-    });
-  } else {
-    result = await updateUserWithoutPassword(
-      nameUser,
-      email,
-      role,
-      accountStatus,
-      userId,
-    );
+    updateData.password = await hashedArg.hash(password);
   }
 
+  const result = await updateUser(updateData);
   return result.affectedRows > 0;
 };

@@ -1,8 +1,5 @@
-import {
-  deleteUser,
-  deleteUserBulk,
-  validateFoundUserToEliminated,
-} from "../../../models/users/index.js";
+import { validateFoundToEliminated } from "../../../helpers/delete.helpers.js";
+import { deleteUser, deleteUserBulk } from "../../../models/users/index.js";
 
 export const deleteUserService = async (userId) => {
   if (!userId) {
@@ -14,7 +11,11 @@ export const deleteUserService = async (userId) => {
     };
   }
 
-  const foundUserToEliminated = await validateFoundUserToEliminated(userId);
+  const foundUserToEliminated = await validateFoundToEliminated(
+    userId,
+    "name_user",
+    "users",
+  );
   if (foundUserToEliminated.length === 0) {
     throw {
       statusCode: 404,
