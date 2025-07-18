@@ -53,7 +53,6 @@ export const UpdateUser = async (userId, userData) => {
 
 export const DeleteUser = async (userId) => {
   const deleteUser = await deleteUserService(userId);
-  console.log(deleteUser);
   return deleteUser;
 };
 

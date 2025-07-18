@@ -6,18 +6,6 @@ export const findUserById = async (userId) => {
   return result[0];
 };
 
-export const extractRoleByName = async (role) => {
-  const query = `SELECT role_id FROM role WHERE name = ?`;
-  const result = await connectionQuery(query, [role]);
-  return result[0];
-};
-
-export const extractStatusByName = async (status) => {
-  const query = `SELECT status_id FROM cat_status WHERE name = ?`;
-  const result = await connectionQuery(query, [status]);
-  return result[0];
-};
-
 export const updateUser = async ({
   name_user,
   email,

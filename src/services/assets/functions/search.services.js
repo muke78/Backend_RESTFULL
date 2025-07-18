@@ -1,11 +1,11 @@
 import { connectionQuery } from "../../../helpers/connection.helpers.js";
 
 export const searchAssetsService = async (name) => {
-  let query = `SELECT * FROM catassets WHERE 1=1`;
+  let query = `SELECT * FROM cat_assets WHERE 1=1`;
   const params = [];
 
   if (name) {
-    query += ` AND Name LIKE ?`;
+    query += ` AND name LIKE ?`;
     params.push(`%${name}%`);
   } else {
     throw {

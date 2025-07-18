@@ -1,3 +1,4 @@
+import { validateFoundToEliminated } from "../../../helpers/delete.helpers.js";
 import {
   deleteAssetBulk,
   deleteAssetModel,
@@ -13,6 +14,22 @@ export const deleteAssetService = async (assetId) => {
     };
   }
 
+  const foundUserToEliminated = await validateFoundToEliminated(
+    assetId,
+    "assets_id",
+    "name",
+    "cat_assets",
+  );
+
+  if (foundUserToEliminated.length === 0) {
+    throw {
+      statusCode: 404,
+      message: "No se proporcionó un ID válido o el activo no existe",
+      code: "ASSETS_NOT_FOUND",
+      details: "El activo con el ID proporcionado no fue encontrado",
+    };
+  }
+
   const result = await deleteAssetModel(assetId);
 
   if (result.affectedRows === 0) {
@@ -20,10 +37,11 @@ export const deleteAssetService = async (assetId) => {
       statusCode: 500,
       message: "No se pudo eliminar el activo",
       code: "ASSETS_DELETE_FAILED",
-      dettails:
-        "Hubo un error al intentar borrar el activo en la base de datos",
+      ettails: "Hubo un error al intentar borrar el activo en la base de datos",
     };
   }
+
+  return foundUserToEliminated[0];
 };
 
 export const deleteAssetsBulkService = async (ids) => {

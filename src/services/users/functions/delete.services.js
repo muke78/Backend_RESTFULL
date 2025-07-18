@@ -1,5 +1,8 @@
 import { validateFoundToEliminated } from "../../../helpers/delete.helpers.js";
-import { deleteUser, deleteUserBulk } from "../../../models/users/index.js";
+import {
+  deleteUserBulk,
+  deleteUserModel,
+} from "../../../models/users/index.js";
 
 export const deleteUserService = async (userId) => {
   if (!userId) {
@@ -13,9 +16,11 @@ export const deleteUserService = async (userId) => {
 
   const foundUserToEliminated = await validateFoundToEliminated(
     userId,
+    "user_id",
     "name_user",
     "users",
   );
+
   if (foundUserToEliminated.length === 0) {
     throw {
       statusCode: 404,
@@ -25,7 +30,7 @@ export const deleteUserService = async (userId) => {
     };
   }
 
-  const deleteUserFromID = await deleteUser(userId);
+  const deleteUserFromID = await deleteUserModel(userId);
   if (deleteUserFromID.affectedRows === 0) {
     throw { statusCode: 500 };
   }
