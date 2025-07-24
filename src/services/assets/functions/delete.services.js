@@ -14,14 +14,14 @@ export const deleteAssetService = async (assetId) => {
     };
   }
 
-  const foundUserToEliminated = await validateFoundToEliminated(
+  const foundAssetToEliminated = await validateFoundToEliminated(
     assetId,
     "assets_id",
     "name",
     "cat_assets",
   );
 
-  if (foundUserToEliminated.length === 0) {
+  if (foundAssetToEliminated.length === 0) {
     throw {
       statusCode: 404,
       message: "No se proporcionó un ID válido o el activo no existe",
@@ -41,7 +41,7 @@ export const deleteAssetService = async (assetId) => {
     };
   }
 
-  return foundUserToEliminated[0];
+  return foundAssetToEliminated[0];
 };
 
 export const deleteAssetsBulkService = async (ids) => {
