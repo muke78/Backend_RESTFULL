@@ -1,14 +1,29 @@
-import { insertSupplyModel } from "../../../models/supply/index.js";
+import {
+  extractForeignKeysSupplyModel,
+  insertSupplyModel,
+} from "../../../models/supply/index.js";
 
-export const insertSupplyService = async (supply) => {
+export const insertSupplyService = async ({
+  supplier,
+  unit,
+  name,
+  description,
+  quantity,
+  purchaseDate,
+  expiryDate,
+  cost,
+  status,
+}) => {
   if (
-    !supply.name ||
-    !supply.description ||
-    !supply.quantity ||
-    !supply.unit ||
-    !supply.supplier ||
-    !supply.purchaseDate ||
-    !supply.cost
+    !supplier ||
+    !unit ||
+    !name ||
+    !description ||
+    !quantity ||
+    !purchaseDate ||
+    !expiryDate ||
+    !cost ||
+    !status
   ) {
     throw {
       statusCode: 400,
@@ -18,7 +33,19 @@ export const insertSupplyService = async (supply) => {
     };
   }
 
-  const result = await insertSupplyModel(supply);
+  const extract = await extractForeignKeysSupplyModel(supplier, unit, status);
+
+  const result = await insertSupplyModel({
+    supplier: extract[0].supplier,
+    unit: extract[0].unit,
+    name,
+    description,
+    quantity,
+    purchaseDate,
+    expiryDate,
+    cost,
+    status: extract[0].status,
+  });
 
   if (!result.affectedRows > 0) {
     throw {

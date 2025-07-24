@@ -1,11 +1,31 @@
 import { connectionQuery } from "../../../helpers/connection.helpers.js";
 
 export const searchAssetsService = async (name) => {
-  let query = `SELECT * FROM cat_assets WHERE 1=1`;
+  let query = `SELECT 
+                      assets_id,
+                      asset_conditions.name AS 'condition',
+                      cat_classrooms.name AS location,
+                      cat_assets.name,
+                      cat_assets.description,
+                      purchase_date,
+                      cost,
+                      last_maintenance_date,
+                      warranty_end_date,
+                      created,
+                      updated,
+                      cat_status.name AS status
+                  FROM
+                      cat_assets
+                          INNER JOIN
+                      asset_conditions ON asset_conditions.condition_id = cat_assets.condition_id
+                          INNER JOIN
+                      cat_classrooms ON cat_classrooms.location_id = cat_assets.location_id
+                          INNER JOIN
+                      cat_status ON cat_status.status_id = cat_assets.status_id WHERE 1=1`;
   const params = [];
 
   if (name) {
-    query += ` AND name LIKE ?`;
+    query += ` AND cat_assets.name LIKE ?`;
     params.push(`%${name}%`);
   } else {
     throw {

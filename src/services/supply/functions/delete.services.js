@@ -1,3 +1,4 @@
+import { validateFoundToEliminated } from "../../../helpers/delete.helpers.js";
 import {
   deleteSupplyBulk,
   deleteSupplyModel,
@@ -13,6 +14,22 @@ export const deleteSupplyService = async (supplyId) => {
     };
   }
 
+  const foundSupplyToEliminated = await validateFoundToEliminated(
+    supplyId,
+    "supplies_id",
+    "name",
+    "cat_supplies",
+  );
+
+  if (foundSupplyToEliminated.length === 0) {
+    throw {
+      statusCode: 404,
+      message: "No se proporcionó un ID válido o el suministro no existe",
+      code: "SUPPLY_NOT_FOUND",
+      details: "El suministro con el ID proporcionado no fue encontrado",
+    };
+  }
+
   const result = await deleteSupplyModel(supplyId);
 
   if (result.affectedRows === 0) {
@@ -24,6 +41,8 @@ export const deleteSupplyService = async (supplyId) => {
         "Hubo un error al intentar borrar el suministro en la base de datos",
     };
   }
+
+  return foundSupplyToEliminated[0];
 };
 
 export const deleteSupplyBulkService = async (ids) => {

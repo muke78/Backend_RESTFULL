@@ -115,8 +115,8 @@ apiCatSupply.delete("/:id", verificarToken, async (request, response, next) => {
     methodOK(
       request,
       response,
-      result,
-      "El suministro fue eliminado correctamente",
+      undefined,
+      `El suministro ${result.name} fue eliminado correctamente`,
     );
   } catch (error) {
     next(error);
