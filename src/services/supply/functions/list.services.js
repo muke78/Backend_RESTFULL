@@ -49,7 +49,7 @@ export const listSupplyService = async ({
                       quantity,
                       purchase_date,
                       expiry_date,
-                      cost,
+                      FORMAT(cost, 2) AS cost,
                       cat_status.name AS status
                   FROM
                       cat_supplies

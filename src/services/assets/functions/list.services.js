@@ -24,7 +24,7 @@ export const listAssetsService = async ({
   }
 
   if (condition && condition !== "All") {
-    where += " AND `asset_conditions.name` = ?";
+    where += " AND asset_conditions.name = ?";
     values.push(condition);
   }
 
@@ -41,7 +41,7 @@ export const listAssetsService = async ({
                       cat_assets.name,
                       cat_assets.description,
                       purchase_date,
-                      cost,
+                      FORMAT(cost, 2) AS cost,
                       last_maintenance_date,
                       warranty_end_date,
                       created,

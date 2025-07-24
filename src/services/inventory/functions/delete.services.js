@@ -1,3 +1,4 @@
+import { validateFoundToEliminated } from "../../../helpers/delete.helpers.js";
 import {
   deleteInventoryBulk,
   deleteInventoryModel,
@@ -13,6 +14,22 @@ export const deleteInventoryService = async (inventoryId) => {
     };
   }
 
+  const foundInventoryToEliminated = await validateFoundToEliminated(
+    inventoryId,
+    "inventory_id",
+    "name",
+    "cat_inventory",
+  );
+
+  if (foundInventoryToEliminated.length === 0) {
+    throw {
+      statusCode: 404,
+      message: "No se proporcionó un ID válido o el inventario no existe",
+      code: "INVENTORY_NOT_FOUND",
+      details: "El inventario con el ID proporcionado no fue encontrado",
+    };
+  }
+
   const result = await deleteInventoryModel(inventoryId);
 
   if (result.affectedRows === 0) {
@@ -24,6 +41,8 @@ export const deleteInventoryService = async (inventoryId) => {
         "Hubo un error al intentar borrar el inventario en la base de datos",
     };
   }
+
+  return foundInventoryToEliminated[0];
 };
 
 export const deleteInventoryBulkService = async (ids) => {

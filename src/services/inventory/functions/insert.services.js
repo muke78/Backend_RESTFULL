@@ -1,17 +1,41 @@
-import { insertInventoryModel } from "../../../models/inventory/index.js";
+import {
+  extractForeignKeysInventoryModel,
+  insertInventoryModel,
+} from "../../../models/inventory/index.js";
 
-export const insertInventoryService = async (inventory) => {
+export const insertInventoryService = async ({
+  condition,
+  location,
+  item_code,
+  serial_number,
+  name,
+  description,
+  quantity,
+  weight,
+  width,
+  height,
+  purchase_date,
+  cost,
+  last_maintenance_date,
+  warranty_end_date,
+  status,
+}) => {
   if (
-    !inventory.itemCode ||
-    !inventory.name ||
-    !inventory.description ||
-    !inventory.quantity ||
-    !inventory.weight ||
-    !inventory.width ||
-    !inventory.height ||
-    !inventory.location ||
-    !inventory.condition ||
-    !inventory.purchaseDate
+    !condition ||
+    !location ||
+    !item_code ||
+    !serial_number ||
+    !name ||
+    !description ||
+    !quantity ||
+    !weight ||
+    !width ||
+    !height ||
+    !purchase_date ||
+    !cost ||
+    !last_maintenance_date ||
+    !warranty_end_date ||
+    !status
   ) {
     throw {
       statusCode: 400,
@@ -21,7 +45,29 @@ export const insertInventoryService = async (inventory) => {
     };
   }
 
-  const result = await insertInventoryModel(inventory);
+  const extract = await extractForeignKeysInventoryModel(
+    condition,
+    location,
+    status,
+  );
+
+  const result = await insertInventoryModel({
+    condition: extract[0].condition,
+    location: extract[0].location,
+    item_code,
+    serial_number,
+    name,
+    description,
+    quantity,
+    weight,
+    width,
+    height,
+    purchase_date,
+    cost,
+    last_maintenance_date,
+    warranty_end_date,
+    status: extract[0].status,
+  });
 
   if (!result.affectedRows > 0) {
     throw {
