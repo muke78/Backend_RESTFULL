@@ -18,8 +18,8 @@ export const SearchOfAssets = async (name) => {
   return searchOfAssets;
 };
 
-export const InsertAssets = async (user) => {
-  const insertAssets = await insertAssetsService(user);
+export const InsertAssets = async (asset) => {
+  const insertAssets = await insertAssetsService(asset);
   return insertAssets;
 };
 

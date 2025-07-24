@@ -2,8 +2,7 @@ import hashedArg from "argon2";
 
 import { findEmailInOtherUser } from "../../../helpers/getUserByEmailAndId.helpers.js";
 import {
-  extractRoleByName,
-  extractStatusByName,
+  extractForeignKeysUserModel,
   findUserById,
   updateUser,
 } from "../../../models/users/index.js";
@@ -13,13 +12,11 @@ export const updateUserService = async (
   { name_user, email, password, role, status },
 ) => {
   // Verificar si otro usuario ya usa ese correo
-  const [emailConflict, existingUser, extractRole, extractStatus] =
-    await Promise.all([
-      findEmailInOtherUser(email, userId),
-      findUserById(userId),
-      extractRoleByName(role),
-      extractStatusByName(status),
-    ]);
+  const [emailConflict, existingUser, extract] = await Promise.all([
+    findEmailInOtherUser(email, userId),
+    findUserById(userId),
+    extractForeignKeysUserModel(role, status),
+  ]);
 
   if (emailConflict) {
     throw {
@@ -44,8 +41,8 @@ export const updateUserService = async (
   const updateData = {
     name_user,
     email,
-    role: extractRole.role_id,
-    status: extractStatus.status_id,
+    role: extract[0].role,
+    status: extract[0].status,
     userId,
   };
 

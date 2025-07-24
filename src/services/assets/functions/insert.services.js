@@ -1,15 +1,28 @@
-import { insertAssetsModel } from "../../../models/assets/index.js";
+import {
+  extractForeignKeysAssetsModel,
+  insertAssetsModel,
+} from "../../../models/assets/index.js";
 
-export const insertAssetsService = async (user) => {
+export const insertAssetsService = async ({
+  condition,
+  location,
+  name,
+  description,
+  purchase_date,
+  cost,
+  last_maintenance_date,
+  warranty_end_date,
+  status,
+}) => {
   if (
-    !user.name ||
-    !user.description ||
-    !user.purchaseDate ||
-    !user.cost ||
-    !user.location ||
-    !user.condition ||
-    !user.lastMaintenanceDate ||
-    !user.warrantyEndDate
+    !condition ||
+    !location ||
+    !name ||
+    !description ||
+    !purchase_date ||
+    !cost ||
+    !last_maintenance_date ||
+    !status
   ) {
     throw {
       statusCode: 400,
@@ -19,7 +32,23 @@ export const insertAssetsService = async (user) => {
     };
   }
 
-  const result = await insertAssetsModel(user);
+  const extract = await extractForeignKeysAssetsModel(
+    condition,
+    location,
+    status,
+  );
+
+  const result = await insertAssetsModel({
+    condition: extract[0].condition,
+    location: extract[0].location,
+    name,
+    description,
+    purchase_date,
+    cost,
+    last_maintenance_date,
+    warranty_end_date,
+    status: extract[0].status,
+  });
 
   if (!result.affectedRows > 0) {
     throw {

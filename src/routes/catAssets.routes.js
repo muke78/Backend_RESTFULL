@@ -109,8 +109,8 @@ apiCatAssets.delete("/:id", verificarToken, async (request, response, next) => {
     methodOK(
       request,
       response,
-      result,
-      "El activo fue eliminado correctamente",
+      undefined,
+      `El activo ${result.name} fue eliminado correctamente`,
     );
   } catch (error) {
     next(error);
