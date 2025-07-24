@@ -121,8 +121,8 @@ apiCatInventory.delete(
       methodOK(
         request,
         response,
-        result,
-        "El inventario fue eliminado correctamente",
+        undefined,
+        `El inventario ${result.name} fue eliminado correctamente`,
       );
     } catch (error) {
       next(error);
