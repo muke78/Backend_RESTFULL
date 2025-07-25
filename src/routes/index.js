@@ -1,6 +1,7 @@
 import express from "express";
 
 import { apiCatAssets } from "./catAssets.routes.js";
+import { apiCatClassrooms } from "./catClassrooms.routes.js";
 import { apiCatConditions } from "./catConditions.routes.js";
 import { apiCatInventory } from "./catInventory.routes.js";
 import { apiCatSupply } from "./catSupplies.routes.js";
@@ -19,5 +20,6 @@ router.use("/api/v1/assets", apiCatAssets);
 router.use("/api/v1/inventory", apiCatInventory);
 router.use("/api/v1/supply", apiCatSupply);
 router.use("/api/v1/conditions", apiCatConditions);
+router.use("/api/v1/classrooms", apiCatClassrooms);
 
 export { router };
