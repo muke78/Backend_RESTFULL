@@ -1,9 +1,7 @@
-require("dotenv").config();
 const frisby = require("frisby");
 const { createTokenTesting } = require("../../helpers/apiCreateToken.helpers");
 const Joi = frisby.Joi;
-
-const BASE_URL = process.env.BASE_URL;
+const { config } = require("../../config/config");
 
 describe("✅ Prueba para la lista de usuarios", () => {
   it("📦 Debe retornar usuarios activos con un status 200", async () => {
@@ -16,7 +14,7 @@ describe("✅ Prueba para la lista de usuarios", () => {
           },
         },
       })
-      .get(`${BASE_URL}/users?status=Activo&correo=normal&rol=admin`)
+      .get(`${config.docs.baseUrl}/users?status=Activo&correo=normal&rol=admin`)
       .then((res) => {
         // console.log("🔎 STATUS:", res.status);
         // console.log("🔎 RESPONSE:", res.json);

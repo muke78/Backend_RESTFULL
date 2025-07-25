@@ -7,6 +7,10 @@ import { createServer } from "node:http";
 import { setupSwagger } from "./src/config/swaggerConfig.js";
 import { corsOptions } from "./src/middleware/cors.middleware.js";
 import { errorHandler } from "./src/middleware/errorHandler.middleware.js";
+import {
+  burstProtectionLimiter,
+  normalLimiter,
+} from "./src/middleware/rateLimitRequest.middleware.js";
 import { router } from "./src/routes/index.js";
 
 // Datos del proyecto
@@ -23,14 +27,14 @@ const app = express();
 // Configuracion de Swagger
 setupSwagger(app);
 
-// Middleware
+// ✅ 1. Middlewares básicos primero
 app.use(cors(corsOptions));
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.use(morgan("dev"));
 app.use(helmet());
 
-// ✅ Ruta raíz: información del proyecto
+// ✅ 2. Ruta raíz
 app.get("/", (request, response) => {
   response.status(200).json({
     description: projectInfo.description,
@@ -45,9 +49,10 @@ app.get("/", (request, response) => {
   });
 });
 
-app.use(router);
+// ✅ 3. Rutas de la API (ya con rate limiting aplicado)
+app.use(burstProtectionLimiter, normalLimiter, router);
 
-// ✅ Middleware global de errores profesional
+// ✅ 4. Middleware de errores AL FINAL
 app.use(errorHandler);
 
 // Crear y arrancar el servidor

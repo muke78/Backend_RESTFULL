@@ -1,7 +1,7 @@
+import { validateFoundToEliminated } from "../../../helpers/delete.helpers.js";
 import {
-  deleteUser,
   deleteUserBulk,
-  validateFoundUserToEliminated,
+  deleteUserModel,
 } from "../../../models/users/index.js";
 
 export const deleteUserService = async (userId) => {
@@ -14,19 +14,25 @@ export const deleteUserService = async (userId) => {
     };
   }
 
-  const foundUserToEliminated = await validateFoundUserToEliminated(userId);
+  const foundUserToEliminated = await validateFoundToEliminated(
+    userId,
+    "user_id",
+    "name_user",
+    "users",
+  );
+
   if (foundUserToEliminated.length === 0) {
     throw {
-      status: 404,
+      statusCode: 404,
       message: "No se proporcionó un ID válido o el usuario no existe",
       code: "USER_NOT_FOUND",
       details: "El usuario con el ID proporcionado no fue encontrado",
     };
   }
 
-  const deleteUserFromID = await deleteUser(userId);
+  const deleteUserFromID = await deleteUserModel(userId);
   if (deleteUserFromID.affectedRows === 0) {
-    throw { status: 500 };
+    throw { statusCode: 500 };
   }
 
   return foundUserToEliminated[0];
@@ -37,7 +43,7 @@ export const deleteUserBulkService = async (ids) => {
 
   if (!Array.isArray(ids) || ids.length === 0) {
     throw {
-      status: 413,
+      statusCode: 413,
       message: `No se pueden eliminar más de ${MAX_IDS} usuarios en una sola solicitud`,
       code: "OVERLOAD_REQUEST",
       details:

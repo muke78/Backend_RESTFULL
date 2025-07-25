@@ -1,36 +1,19 @@
-import { addDay, addHour } from "@formkit/tempo";
-import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
 
-dotenv.config();
-
-const secret = process.env.JWT_SECRET;
+import { config } from "../config/config.js";
 
 export const createToken = (user) => {
-  // Duracion de 2 minutos para probar que el toke se expire correctamente
-  // const expirationDate = addMinute(new Date(), 2);
-
-  const expirationDate = addHour(new Date(), 12);
-
-  const expirationTime = Math.floor(expirationDate.getTime() / 1000);
-
   const payload = {
-    id: user.id,
-    nameUser: user.nameUser,
-    email: user.email,
-    profilePicture: user.profilePicture,
-    role: user.role,
-    accountType: user.accountType,
-    lastLogin: user.lastLogin,
-    accountStatus: user.accountStatus,
-    iat: Math.floor(Date.now() / 1000),
-    exp: expirationTime,
+    user_id: user.user_id,
+    role_id: user.role_id,
   };
-  return jwt.sign(payload, secret);
+  return jwt.sign(payload, config.jwt.secret, {
+    expiresIn: `${config.jwt.expiresIn}h`,
+  });
 };
 
 export const refreshToken = (token) => {
-  const decoded = jwt.verify(token, secret);
+  const decoded = jwt.verify(token, config.jwt.secret);
 
   if (decoded.accountStatus === "Inactivo") {
     throw {
@@ -42,21 +25,11 @@ export const refreshToken = (token) => {
     };
   }
 
-  const expirationDate = addDay(new Date(), 20);
-
-  const expirationTime = Math.floor(expirationDate.getTime() / 1000);
-
   const payload = {
-    id: decoded.id,
-    nameUser: decoded.nameUser,
-    email: decoded.email,
-    profilePicture: decoded.profilePicture,
-    role: decoded.role,
-    accountType: decoded.accountType,
-    lastLogin: decoded.lastLogin,
-    accountStatus: decoded.accountStatus,
-    iat: Math.floor(Date.now() / 1000),
-    exp: expirationTime,
+    user_id: decoded.user_id,
+    role_id: decoded.role_id,
   };
-  return jwt.sign(payload, secret);
+  return jwt.sign(payload, config.jwt.secret, {
+    expiresIn: `${config.jwt.expiresIn}h`,
+  });
 };

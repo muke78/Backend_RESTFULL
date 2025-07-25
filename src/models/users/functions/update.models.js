@@ -1,40 +1,30 @@
 import { connectionQuery } from "../../../helpers/connection.helpers.js";
 
 export const findUserById = async (userId) => {
-  const query = `SELECT * FROM users WHERE ID = ?`;
+  const query = `SELECT * FROM users WHERE user_id = ?`;
   const result = await connectionQuery(query, [userId]);
   return result[0];
 };
 
-export const updateUserWithPassword = async ({
-  nameUser,
+export const updateUser = async ({
+  name_user,
   email,
   password,
   role,
-  accountStatus,
+  status,
   userId,
 }) => {
-  const query = `
-    UPDATE users 
-    SET NameUser = ?, Email = ?, Password = ?, Role = ?, AccountStatus = ? 
-    WHERE ID = ?
-  `;
-  const params = [nameUser, email, password, role, accountStatus, userId];
-  return await connectionQuery(query, params);
-};
+  // Construir query dinámicamente basado en si hay contraseña o no
+  const fields = ["name_user = ?", "email = ?", "role_id = ?", "status_id = ?"];
+  const params = [name_user, email, role, status];
 
-export const updateUserWithoutPassword = async (
-  nameUser,
-  email,
-  role,
-  accountStatus,
-  userId,
-) => {
-  const query = `
-    UPDATE users 
-    SET NameUser = ?, Email = ?, Role = ?, AccountStatus = ? 
-    WHERE ID = ?
-  `;
-  const params = [nameUser, email, role, accountStatus, userId];
+  if (password) {
+    fields.push("password = ?");
+    params.push(password);
+  }
+
+  params.push(userId); // WHERE user_id = ?
+
+  const query = `UPDATE users SET ${fields.join(", ")} WHERE user_id = ?`;
   return await connectionQuery(query, params);
 };

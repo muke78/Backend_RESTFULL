@@ -1,9 +1,7 @@
-require("dotenv").config();
 const frisby = require("frisby");
 const { createTokenTesting } = require("../../helpers/apiCreateToken.helpers");
 const { randomUUID } = require("node:crypto");
-
-const BASE_URL = process.env.BASE_URL;
+const { config } = require("../../config/config");
 
 describe("✅ Prueba para eliminar un usuario por su id", () => {
   it("📦 Debe de retornar el mensaje de que el usuario fue eliminado correctamente con un status 200", async () => {
@@ -17,7 +15,7 @@ describe("✅ Prueba para eliminar un usuario por su id", () => {
           },
         },
       })
-      .del(`${BASE_URL}/users/${id}`)
+      .del(`${config.docs.baseUrl}/users/${id}`)
       .then((res) => {
         // console.log("🔎 STATUS:", res.status);
         // console.log("🔎 RESPONSE:", res.json);

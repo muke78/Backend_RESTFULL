@@ -4,7 +4,12 @@ import { connectionQuery } from "./connection.helpers.js";
 // y fallara la insercion regresando un estado Conflict
 
 export const findUserByEmail = async (email) => {
-  const query = `SELECT * FROM users WHERE Email = ?`;
+  const query = `SELECT 
+                    user_id,
+                    role_id,
+                    password
+                FROM users
+                WHERE email = ?`;
   const params = [email];
   const result = await connectionQuery(query, params);
   return result[0];

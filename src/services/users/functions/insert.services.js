@@ -3,16 +3,19 @@ import hashedArg from "argon2";
 
 import { findUserByEmail } from "../../../helpers/findUserByEmail.helpers.js";
 import { getUserByEmail } from "../../../helpers/getUserByEmail.helpers.js";
-import { insertUser } from "../../../models/users/index.js";
+import {
+  extractForeignKeysUserModel,
+  insertUserModel,
+} from "../../../models/users/index.js";
 
 export const insertUserService = async ({
-  nameUser,
+  name_user,
   email,
   password,
-  accountStatus,
   role,
+  status,
 }) => {
-  if (!nameUser || !email || !password || !accountStatus || !role) {
+  if (!name_user || !email || !password || !role || !status) {
     throw {
       statusCode: 400,
       message: "Debe de proporcionar todos los campos",
@@ -31,14 +34,16 @@ export const insertUserService = async ({
     };
   }
 
+  const extract = await extractForeignKeysUserModel(role, status);
+
   const hashedPassword = await hashedArg.hash(password);
-  const insertResult = await insertUser(
-    nameUser,
+  const insertResult = await insertUserModel({
+    name_user,
     email,
     hashedPassword,
-    accountStatus,
-    role,
-  );
+    role: extract[0].role,
+    status: extract[0].status,
+  });
 
   if (insertResult.affectedRows > 0) {
     const newUser = await getUserByEmail(email);
@@ -67,11 +72,11 @@ export const insertUserMasiveService = async (countInsert) => {
   const insertados = [];
 
   for (let i = 0; i < countInsert; i++) {
-    const nameUser = faker.internet.username();
+    const name_user = faker.internet.username();
     const email = faker.internet.email();
     const password = faker.internet.password();
-    const role = "user";
-    const accountStatus = "Inactivo";
+    const role = undefined;
+    const status = "cefdafcc-61f5-11f0-a977-d843ae0db894";
 
     const existingUser = await findUserByEmail(email);
     if (existingUser) {
@@ -84,16 +89,16 @@ export const insertUserMasiveService = async (countInsert) => {
     }
 
     const hashedPassword = await hashedArg.hash(password);
-    const insertResult = await insertUser(
-      nameUser,
+    const insertResult = await insertUserModel(
+      name_user,
       email,
       hashedPassword,
-      accountStatus,
       role,
+      status,
     );
 
     if (insertResult.affectedRows > 0) {
-      insertados.push({ nameUser, email, hashedPassword, role, accountStatus });
+      insertados.push({ name_user, email, hashedPassword, role, status });
     }
   }
   return insertados;
