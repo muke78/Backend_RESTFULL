@@ -1,7 +1,7 @@
 import { insertConditionsModel } from "../../../models/conditions/index.js";
 
 export const insertConditionsService = async ({ name, description }) => {
-  if (!name || !description) {
+  if (!name) {
     throw {
       statusCode: 400,
       message: "Debe de proporcionar todos los campos",

@@ -7,6 +7,7 @@ import { apiCatEducationalLevel } from "./catEducationalLevel.routes.js";
 import { apiCatGender } from "./catGender.routes.js";
 import { apiCatInventory } from "./catInventory.routes.js";
 import { apiCatSupply } from "./catSupplies.routes.js";
+import { apiCatUnits } from "./catUnits.routes.js";
 import { apiGoogle } from "./google.route.js";
 import { apiToken } from "./token.routes.js";
 import { apiUsers } from "./users.routes.js";
@@ -26,5 +27,6 @@ router.use("/api/v1/conditions", apiCatConditions);
 router.use("/api/v1/classrooms", apiCatClassrooms);
 router.use("/api/v1/eduLev", apiCatEducationalLevel);
 router.use("/api/v1/gender", apiCatGender);
+router.use("/api/v1/units", apiCatUnits);
 
 export { router };

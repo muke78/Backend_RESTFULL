@@ -18,7 +18,6 @@ export const insertAssetsService = async ({
     !condition ||
     !location ||
     !name ||
-    !description ||
     !purchase_date ||
     !cost ||
     !last_maintenance_date ||

@@ -26,15 +26,10 @@ export const insertInventoryService = async ({
     !item_code ||
     !serial_number ||
     !name ||
-    !description ||
     !quantity ||
-    !weight ||
-    !width ||
-    !height ||
     !purchase_date ||
     !cost ||
     !last_maintenance_date ||
-    !warranty_end_date ||
     !status
   ) {
     throw {
