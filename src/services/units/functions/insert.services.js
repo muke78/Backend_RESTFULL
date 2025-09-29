@@ -1,3 +1,5 @@
+import { randomUUID } from "node:crypto";
+
 import { insertUnitModel } from "../../../models/units/index.js";
 
 export const insertUnitService = async ({ name, symbol }) => {
@@ -10,15 +12,22 @@ export const insertUnitService = async ({ name, symbol }) => {
     };
   }
 
-  const result = await insertUnitModel({ name, symbol });
+  const newUnit = {
+    unit_id: randomUUID(),
+    name,
+    symbol,
+  };
+
+  const result = await insertUnitModel(newUnit);
 
   if (!result.affectedRows > 0) {
     throw {
       statusCode: 500,
       message: "No se pudo crear la unidad",
       code: "UNIT_CREATION_FAILED",
-      dettails:
+      details:
         "Hubo un error al intentar insertar la unidad en la base de datos",
     };
   }
+  return newUnit;
 };

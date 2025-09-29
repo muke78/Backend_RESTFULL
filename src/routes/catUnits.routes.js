@@ -38,44 +38,31 @@ apiCatUnits.post("/", verificarToken, async (request, response, next) => {
 });
 
 // PUT /api/units/update/:id
-apiCatUnits.put(
-  "/:id",
-  verificarToken,
-  async (request, response, next) => {
-    try {
-      const unitId = request.params.id;
-      const unitData = request.body;
-      const result = await UpdateUnit(unitId, unitData);
-      methodOK(
-        request,
-        response,
-        result,
-        "La unidad se actualizo correctamente",
-      );
-    } catch (error) {
-      next(error);
-    }
-  },
+apiCatUnits.put("/:id", verificarToken, async (request, response, next) => {
+  try {
+    const unitId = request.params.id;
+    const unitData = request.body;
+    const result = await UpdateUnit(unitId, unitData);
+    methodOK(request, response, result, "La unidad se actualizo correctamente");
+  } catch (error) {
+    next(error);
+  }
+});
 
-  // DELETE /api/units/delete/:id
-  apiCatUnits.delete(
-    "/:id",
-    verificarToken,
-    async (request, response, next) => {
-      try {
-        const unitId = request.params.id;
-        const result = await DeleteUnit(unitId);
-        methodOK(
-          request,
-          response,
-          undefined,
-          `La unidad ${result.name} fue eliminado correctamente`,
-        );
-      } catch (error) {
-        next(error);
-      }
-    },
-  ),
-);
+// DELETE /api/units/delete/:id
+apiCatUnits.delete("/:id", verificarToken, async (request, response, next) => {
+  try {
+    const unitId = request.params.id;
+    const result = await DeleteUnit(unitId);
+    methodOK(
+      request,
+      response,
+      undefined,
+      `La unidad ${result.name} fue eliminado correctamente`,
+    );
+  } catch (error) {
+    next(error);
+  }
+});
 
 export { apiCatUnits };
