@@ -4,7 +4,7 @@ import { connectionQuery } from "./connection.helpers.js";
 // el nombre del usuario, su email, su rol que tiene y su estatus dentro del sistema, sirve tanto para la insercion y el registro
 
 export const getUserByEmail = async (email) => {
-  const query = `SELECT
+	const query = `SELECT
                   name_user, 
                   email,
                   role.name AS rol,
@@ -14,6 +14,6 @@ export const getUserByEmail = async (email) => {
                 LEFT JOIN cat_status ON cat_status.status_id = users.status_id
                 WHERE email = ?;
 `;
-  const result = await connectionQuery(query, [email]);
-  return result[0];
+	const result = await connectionQuery(query, [email]);
+	return result[0];
 };

@@ -1,39 +1,39 @@
 import { listAssetsModel } from "../../../models/assets/index.js";
 
 export const listAssetsService = async ({
-  cost,
-  limitCost,
-  location,
-  condition,
-  status,
+	cost,
+	limitCost,
+	location,
+	condition,
+	status,
 }) => {
-  let where = "WHERE 1=1";
-  const values = [];
+	let where = "WHERE 1=1";
+	const values = [];
 
-  if (cost && cost !== "All" && !limitCost) {
-    where += " AND cost = ?";
-    values.push(cost);
-  } else if (cost && limitCost) {
-    where += " AND cost BETWEEN ? AND ?";
-    values.push(cost, limitCost);
-  }
+	if (cost && cost !== "All" && !limitCost) {
+		where += " AND cost = ?";
+		values.push(cost);
+	} else if (cost && limitCost) {
+		where += " AND cost BETWEEN ? AND ?";
+		values.push(cost, limitCost);
+	}
 
-  if (location && location !== "All") {
-    where += " AND cat_classrooms.name = ?";
-    values.push(location);
-  }
+	if (location && location !== "All") {
+		where += " AND cat_classrooms.name = ?";
+		values.push(location);
+	}
 
-  if (condition && condition !== "All") {
-    where += " AND asset_conditions.name = ?";
-    values.push(condition);
-  }
+	if (condition && condition !== "All") {
+		where += " AND asset_conditions.name = ?";
+		values.push(condition);
+	}
 
-  if (status && status !== "All") {
-    where += " AND cat_status.name = ?";
-    values.push(status);
-  }
+	if (status && status !== "All") {
+		where += " AND cat_status.name = ?";
+		values.push(status);
+	}
 
-  const queryString = `
+	const queryString = `
                       SELECT 
                       assets_id,
                       asset_conditions.name AS 'condition',
@@ -59,18 +59,18 @@ export const listAssetsService = async ({
                   ORDER BY cat_assets.name ASC
   `;
 
-  const resultList = await listAssetsModel(queryString, values);
+	const resultList = await listAssetsModel(queryString, values);
 
-  if (resultList.length === 0) {
-    throw {
-      statusCode: 404,
-      message: "No se encontraron activos con los filtros proporcionados",
-      code: "ASSETS_NOT_FOUND",
-      details: `No se encontraron activos con los filtros proporcionados: ${JSON.stringify(
-        { cost, limitCost, location, condition, status },
-      )}`,
-    };
-  }
+	if (resultList.length === 0) {
+		throw {
+			statusCode: 404,
+			message: "No se encontraron activos con los filtros proporcionados",
+			code: "ASSETS_NOT_FOUND",
+			details: `No se encontraron activos con los filtros proporcionados: ${JSON.stringify(
+				{ cost, limitCost, location, condition, status },
+			)}`,
+		};
+	}
 
-  return resultList;
+	return resultList;
 };

@@ -1,7 +1,7 @@
 import { connectionQuery } from "../../../helpers/connection.helpers.js";
 
 export const searchSupplyService = async (name) => {
-  let query = `SELECT 
+	let query = `SELECT 
                   supplies_id,
                   cat_supplier.name AS supplier,
                   supply_units.name AS unit,
@@ -21,30 +21,30 @@ export const searchSupplyService = async (name) => {
                       INNER JOIN
                   cat_status ON cat_status.status_id = cat_supplies.status_id WHERE 1=1`;
 
-  const params = [];
+	const params = [];
 
-  if (name) {
-    query += ` AND cat_supplies.name LIKE ?`;
-    params.push(`%${name}%`);
-  } else {
-    throw {
-      statusCode: 400,
-      message: "Debe proporcionar un nombre del suministro para buscar",
-      code: "NAME_REQUIRED",
-      details: "El campo de nombre es obligatorio para realizar busquedas",
-    };
-  }
-  console.log(query);
-  const result = await connectionQuery(query, params);
+	if (name) {
+		query += ` AND cat_supplies.name LIKE ?`;
+		params.push(`%${name}%`);
+	} else {
+		throw {
+			statusCode: 400,
+			message: "Debe proporcionar un nombre del suministro para buscar",
+			code: "NAME_REQUIRED",
+			details: "El campo de nombre es obligatorio para realizar busquedas",
+		};
+	}
+	console.log(query);
+	const result = await connectionQuery(query, params);
 
-  if (result.length === 0) {
-    throw {
-      statusCode: 404,
-      message: `No se encontro el nombre ${name}`,
-      code: "SUPPLY_NOT_FOUND",
-      details: `No se encontraron suministros con el nombre proporcionado: ${name}`,
-    };
-  }
+	if (result.length === 0) {
+		throw {
+			statusCode: 404,
+			message: `No se encontro el nombre ${name}`,
+			code: "SUPPLY_NOT_FOUND",
+			details: `No se encontraron suministros con el nombre proporcionado: ${name}`,
+		};
+	}
 
-  return result;
+	return result;
 };

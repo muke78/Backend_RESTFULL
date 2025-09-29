@@ -1,20 +1,20 @@
 import { connectionQuery } from "../../../helpers/connection.helpers.js";
 
 export const updateSupplyModel = async (
-  supplyId,
-  {
-    supplier,
-    unit,
-    name,
-    description,
-    quantity,
-    purchaseDate,
-    expiryDate,
-    cost,
-    status,
-  },
+	supplyId,
+	{
+		supplier,
+		unit,
+		name,
+		description,
+		quantity,
+		purchaseDate,
+		expiryDate,
+		cost,
+		status,
+	},
 ) => {
-  const query = `UPDATE cat_supplies SET 
+	const query = `UPDATE cat_supplies SET 
                                       supplier_id = ?, 
                                       unit_id = ?, 
                                       name = ?, 
@@ -25,18 +25,18 @@ export const updateSupplyModel = async (
                                       cost = ?, 
                                       status_id = ? 
                                       WHERE supplies_id = ?`;
-  const params = [
-    supplier,
-    unit,
-    name,
-    description,
-    quantity,
-    purchaseDate,
-    expiryDate,
-    cost,
-    status,
-    supplyId,
-  ];
+	const params = [
+		supplier,
+		unit,
+		name,
+		description,
+		quantity,
+		purchaseDate,
+		expiryDate,
+		cost,
+		status,
+		supplyId,
+	];
 
-  return await connectionQuery(query, params);
+	return await connectionQuery(query, params);
 };

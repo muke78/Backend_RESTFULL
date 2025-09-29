@@ -12,6 +12,7 @@ import {
   normalLimiter,
 } from "./src/middleware/rateLimitRequest.middleware.js";
 import { router } from "./src/routes/index.js";
+import { config } from "./src/config/config.js";
 
 // Datos del proyecto
 const projectInfo = {
@@ -46,6 +47,7 @@ app.get("/", (request, response) => {
     },
     api: "/api/v1",
     status: "🟢 API funcionando correctamente",
+    documentation: `${config.docs.baseUrl}`
   });
 });
 

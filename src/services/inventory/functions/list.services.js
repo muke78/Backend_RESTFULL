@@ -1,41 +1,41 @@
 import { listInventoryModel } from "../../../models/inventory/index.js";
 
 export const listInventoryService = async ({
-  name,
-  weight,
-  location,
-  condition,
-  status,
+	name,
+	weight,
+	location,
+	condition,
+	status,
 }) => {
-  let where = "WHERE 1=1";
-  const values = [];
+	let where = "WHERE 1=1";
+	const values = [];
 
-  if (name && name !== "All") {
-    where += " AND cat_inventory.name = ?";
-    values.push(name);
-  }
+	if (name && name !== "All") {
+		where += " AND cat_inventory.name = ?";
+		values.push(name);
+	}
 
-  if (weight && weight !== "All") {
-    where += " AND weight = ?";
-    values.push(weight);
-  }
+	if (weight && weight !== "All") {
+		where += " AND weight = ?";
+		values.push(weight);
+	}
 
-  if (location && location !== "All") {
-    where += " AND cat_classrooms.name = ?";
-    values.push(location);
-  }
+	if (location && location !== "All") {
+		where += " AND cat_classrooms.name = ?";
+		values.push(location);
+	}
 
-  if (condition && condition !== "All") {
-    where += " AND asset_conditions.name = ?";
-    values.push(condition);
-  }
+	if (condition && condition !== "All") {
+		where += " AND asset_conditions.name = ?";
+		values.push(condition);
+	}
 
-  if (status && status !== "All") {
-    where += " AND cat_status.name = ?";
-    values.push(status);
-  }
+	if (status && status !== "All") {
+		where += " AND cat_status.name = ?";
+		values.push(status);
+	}
 
-  const queryString = `
+	const queryString = `
                       SELECT 
                       inventory_id, 
                       asset_conditions.name AS 'condition', 
@@ -63,18 +63,18 @@ export const listInventoryService = async ({
 
   `;
 
-  const resultList = await listInventoryModel(queryString, values);
+	const resultList = await listInventoryModel(queryString, values);
 
-  if (resultList.length === 0) {
-    throw {
-      statusCode: 404,
-      message: "No se encontraron inventarios con los filtros proporcionados",
-      code: "INVENTORY_NOT_FOUND",
-      details: `No se encontraron inventarios con los filtros proporcionados: ${JSON.stringify(
-        { name, weight, location, condition, status },
-      )}`,
-    };
-  }
+	if (resultList.length === 0) {
+		throw {
+			statusCode: 404,
+			message: "No se encontraron inventarios con los filtros proporcionados",
+			code: "INVENTORY_NOT_FOUND",
+			details: `No se encontraron inventarios con los filtros proporcionados: ${JSON.stringify(
+				{ name, weight, location, condition, status },
+			)}`,
+		};
+	}
 
-  return resultList;
+	return resultList;
 };

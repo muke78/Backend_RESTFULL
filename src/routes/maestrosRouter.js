@@ -60,9 +60,9 @@ const apiMaestros = express.Router();
  */
 
 apiMaestros.get(
-  "/lista-de-maestros",
-  verificarToken,
-  MaestrosControllers.ObtenerTodosLosMaestros,
+	"/lista-de-maestros",
+	verificarToken,
+	MaestrosControllers.ObtenerTodosLosMaestros,
 );
 
 /**
@@ -120,9 +120,9 @@ apiMaestros.get(
  */
 
 apiMaestros.get(
-  "/lista-de-maestros-eliminados",
-  verificarToken,
-  MaestrosControllers.ObtenerLosUsuariosEliminados,
+	"/lista-de-maestros-eliminados",
+	verificarToken,
+	MaestrosControllers.ObtenerLosUsuariosEliminados,
 );
 
 /**
@@ -198,9 +198,9 @@ apiMaestros.get(
  */
 
 apiMaestros.post(
-  "/buscar-maestro",
-  verificarToken,
-  MaestrosControllers.BusquedaDeMaestro,
+	"/buscar-maestro",
+	verificarToken,
+	MaestrosControllers.BusquedaDeMaestro,
 );
 
 /**
@@ -332,9 +332,9 @@ apiMaestros.post(
  */
 
 apiMaestros.post(
-  "/agregar-maestro",
-  verificarToken,
-  MaestrosControllers.InsertarMaestro,
+	"/agregar-maestro",
+	verificarToken,
+	MaestrosControllers.InsertarMaestro,
 );
 
 /**
@@ -469,9 +469,9 @@ apiMaestros.post(
  *                   example: Error interno del servidor
  */
 apiMaestros.put(
-  "/actualizar-maestro",
-  verificarToken,
-  MaestrosControllers.ActualizarMaestro,
+	"/actualizar-maestro",
+	verificarToken,
+	MaestrosControllers.ActualizarMaestro,
 );
 
 /**
@@ -528,9 +528,9 @@ apiMaestros.put(
  */
 
 apiMaestros.put(
-  "/borrar-maestro-boveda/:id",
-  verificarToken,
-  MaestrosControllers.MoverABovedaEliminados,
+	"/borrar-maestro-boveda/:id",
+	verificarToken,
+	MaestrosControllers.MoverABovedaEliminados,
 );
 
 /**
@@ -597,9 +597,9 @@ apiMaestros.put(
  */
 
 apiMaestros.delete(
-  "/borrar-maestro-def/:id",
-  verificarToken,
-  MaestrosControllers.EliminarMaestro,
+	"/borrar-maestro-def/:id",
+	verificarToken,
+	MaestrosControllers.EliminarMaestro,
 );
 
 export { apiMaestros };
