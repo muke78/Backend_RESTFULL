@@ -1,7 +1,7 @@
 import { insertEducationLevelModel } from "../../../models/educationLevel/index.js";
 
 export const insertEducationLevelService = async ({ name, short_name }) => {
-  if (!name || !short_name) {
+  if (!name) {
     throw {
       statusCode: 400,
       message: "Debe de proporcionar todos los campos",

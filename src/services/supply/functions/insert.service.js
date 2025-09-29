@@ -18,10 +18,8 @@ export const insertSupplyService = async ({
     !supplier ||
     !unit ||
     !name ||
-    !description ||
     !quantity ||
     !purchaseDate ||
-    !expiryDate ||
     !cost ||
     !status
   ) {
