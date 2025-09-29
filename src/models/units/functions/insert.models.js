@@ -1,7 +1,7 @@
 import { connectionQuery } from "../../../helpers/connection.helpers.js";
 
 export const insertUnitModel = async ({ unit_id, name, symbol }) => {
-  const query = `
+	const query = `
                 INSERT INTO supply_units (unit_id, name, symbol) 
                 VALUES 
                 (
@@ -9,6 +9,6 @@ export const insertUnitModel = async ({ unit_id, name, symbol }) => {
                     ?,
                     ?
                 );`;
-  const params = [unit_id, name, symbol];
-  return await connectionQuery(query, params);
+	const params = [unit_id, name, symbol];
+	return await connectionQuery(query, params);
 };

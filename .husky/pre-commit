@@ -8,9 +8,9 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
 echo "🔍 Verificando archivos antes del commit..."
-echo "📦 Formateando código con Prettier..."
+echo "📦 Formateando código con Biome..."
 
-pnpm prettier 'src/**/*.{js,ts,jsx,tsx,json}' server.js package.json --write || exit 1
+pnpm exec biome format --write . || exit 1
 
 
 # Agregar los archivos modificados después del formateo

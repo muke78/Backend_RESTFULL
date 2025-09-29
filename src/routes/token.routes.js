@@ -8,13 +8,13 @@ const apiToken = express.Router();
 
 //POST /api/token/refresh
 apiToken.post("/refresh", verificarToken, async (request, response, next) => {
-  try {
-    const { token } = request.body;
-    const refreshToken = await RefreshToken(token);
-    methodOK(request, response, refreshToken);
-  } catch (error) {
-    next(error);
-  }
+	try {
+		const { token } = request.body;
+		const refreshToken = await RefreshToken(token);
+		methodOK(request, response, refreshToken);
+	} catch (error) {
+		next(error);
+	}
 });
 
 export { apiToken };

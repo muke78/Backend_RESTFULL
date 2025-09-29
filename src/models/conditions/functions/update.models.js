@@ -1,17 +1,17 @@
 import { connectionQuery } from "../../../helpers/connection.helpers.js";
 
 export const updateConditionsModel = async (
-  conditionsId,
-  { name, description },
+	conditionsId,
+	{ name, description },
 ) => {
-  const query = `UPDATE 
+	const query = `UPDATE 
                 asset_conditions 
                 SET 
                 name = ?, 
                 description = ? 
                 WHERE 
                 condition_id = ?`;
-  const params = [name, description, conditionsId];
+	const params = [name, description, conditionsId];
 
-  return await connectionQuery(query, params);
+	return await connectionQuery(query, params);
 };

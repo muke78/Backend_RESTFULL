@@ -1,7 +1,7 @@
 import { connectionQuery } from "../../../helpers/connection.helpers.js";
 
 export const insertClassroomsModel = async ({ name, room_type, capacity }) => {
-  const query = `INSERT INTO cat_classrooms (
+	const query = `INSERT INTO cat_classrooms (
                 location_id, name, room_type, capacity
                 ) 
                 VALUES 
@@ -11,6 +11,6 @@ export const insertClassroomsModel = async ({ name, room_type, capacity }) => {
                     ?, 
                     ?
                 );`;
-  const params = [name, room_type, capacity];
-  return await connectionQuery(query, params);
+	const params = [name, room_type, capacity];
+	return await connectionQuery(query, params);
 };

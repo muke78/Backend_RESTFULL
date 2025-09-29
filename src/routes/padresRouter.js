@@ -41,9 +41,9 @@ const apiPadres = express.Router();
  *         description: Error interno del servidor
  */
 apiPadres.get(
-  "/lista-de-padres",
-  verificarToken,
-  PadresControllers.ObtenerTodosLosPapas,
+	"/lista-de-padres",
+	verificarToken,
+	PadresControllers.ObtenerTodosLosPapas,
 );
 
 /**
@@ -86,9 +86,9 @@ apiPadres.get(
  *         description: Error interno del servidor
  */
 apiPadres.get(
-  "/lista-de-padres-eliminados",
-  verificarToken,
-  PadresControllers.ObtenerPadresEliminados,
+	"/lista-de-padres-eliminados",
+	verificarToken,
+	PadresControllers.ObtenerPadresEliminados,
 );
 
 /**
@@ -156,9 +156,9 @@ apiPadres.get(
  */
 
 apiPadres.post(
-  "/lista-padres-maestro/:id",
-  verificarToken,
-  PadresControllers.ObtenerPadresPorMaestro,
+	"/lista-padres-maestro/:id",
+	verificarToken,
+	PadresControllers.ObtenerPadresPorMaestro,
 );
 
 /**
@@ -233,9 +233,9 @@ apiPadres.post(
  */
 
 apiPadres.post(
-  "/busqueda-padres",
-  verificarToken,
-  PadresControllers.BusquedaDePadres,
+	"/busqueda-padres",
+	verificarToken,
+	PadresControllers.BusquedaDePadres,
 );
 
 /**
@@ -366,9 +366,9 @@ apiPadres.post(
  */
 
 apiPadres.post(
-  "/insertar-padres",
-  verificarToken,
-  PadresControllers.InsertarPadres,
+	"/insertar-padres",
+	verificarToken,
+	PadresControllers.InsertarPadres,
 );
 
 /**
@@ -489,9 +489,9 @@ apiPadres.post(
  */
 
 apiPadres.put(
-  "/actualizar-padres",
-  verificarToken,
-  PadresControllers.EditarPadres,
+	"/actualizar-padres",
+	verificarToken,
+	PadresControllers.EditarPadres,
 );
 
 /**
@@ -546,9 +546,9 @@ apiPadres.put(
  */
 
 apiPadres.put(
-  "/borrar-padres-boveda/:id",
-  verificarToken,
-  PadresControllers.MoverABovedaEliminados,
+	"/borrar-padres-boveda/:id",
+	verificarToken,
+	PadresControllers.MoverABovedaEliminados,
 );
 
 /**
@@ -613,9 +613,9 @@ apiPadres.put(
  */
 
 apiPadres.delete(
-  "/borrar-padres-def/:id",
-  verificarToken,
-  PadresControllers.EliminarPadre,
+	"/borrar-padres-def/:id",
+	verificarToken,
+	PadresControllers.EliminarPadre,
 );
 
 export { apiPadres };

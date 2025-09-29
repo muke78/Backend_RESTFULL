@@ -1,7 +1,7 @@
 import { connectionQuery } from "../../../helpers/connection.helpers.js";
 
 export const searchAssetsService = async (name) => {
-  let query = `SELECT 
+	let query = `SELECT 
                       assets_id,
                       asset_conditions.name AS 'condition',
                       cat_classrooms.name AS location,
@@ -22,30 +22,30 @@ export const searchAssetsService = async (name) => {
                       cat_classrooms ON cat_classrooms.location_id = cat_assets.location_id
                           INNER JOIN
                       cat_status ON cat_status.status_id = cat_assets.status_id WHERE 1=1`;
-  const params = [];
+	const params = [];
 
-  if (name) {
-    query += ` AND cat_assets.name LIKE ?`;
-    params.push(`%${name}%`);
-  } else {
-    throw {
-      statusCode: 400,
-      message: "Debe proporcionar un nombre del activo para buscar",
-      code: "NAME_REQUIRED",
-      details: "El campo de nombre es obligatorio para realizar busquedas",
-    };
-  }
+	if (name) {
+		query += ` AND cat_assets.name LIKE ?`;
+		params.push(`%${name}%`);
+	} else {
+		throw {
+			statusCode: 400,
+			message: "Debe proporcionar un nombre del activo para buscar",
+			code: "NAME_REQUIRED",
+			details: "El campo de nombre es obligatorio para realizar busquedas",
+		};
+	}
 
-  const result = await connectionQuery(query, params);
+	const result = await connectionQuery(query, params);
 
-  if (result.length === 0) {
-    throw {
-      statusCode: 404,
-      message: `No se encontro el nombre ${name}`,
-      code: "ASSET_NOT_FOUND",
-      details: `No se encontraron activos con el nombre proporcionado: ${name}`,
-    };
-  }
+	if (result.length === 0) {
+		throw {
+			statusCode: 404,
+			message: `No se encontro el nombre ${name}`,
+			code: "ASSET_NOT_FOUND",
+			details: `No se encontraron activos con el nombre proporcionado: ${name}`,
+		};
+	}
 
-  return result;
+	return result;
 };

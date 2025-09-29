@@ -1,29 +1,29 @@
 import {
-  deleteClassroomService,
-  insertClassroomsService,
-  listClassroomsService,
-  updateClassroomsService,
+	deleteClassroomService,
+	insertClassroomsService,
+	listClassroomsService,
+	updateClassroomsService,
 } from "../../../services/classrooms/index.js";
 
 export const GetAllClassrooms = async () => {
-  const listGetAllClassrooms = await listClassroomsService();
-  return listGetAllClassrooms;
+	const listGetAllClassrooms = await listClassroomsService();
+	return listGetAllClassrooms;
 };
 
 export const InsertClassrooms = async (classrooms) => {
-  const insertClassrooms = await insertClassroomsService(classrooms);
-  return insertClassrooms;
+	const insertClassrooms = await insertClassroomsService(classrooms);
+	return insertClassrooms;
 };
 
 export const UpdateClassrooms = async (classroomsId, classroomsData) => {
-  const updateClassrooms = await updateClassroomsService(
-    classroomsId,
-    classroomsData,
-  );
-  return updateClassrooms;
+	const updateClassrooms = await updateClassroomsService(
+		classroomsId,
+		classroomsData,
+	);
+	return updateClassrooms;
 };
 
 export const DeleteClassroom = async (classroomsId) => {
-  const deleteClassroom = await deleteClassroomService(classroomsId);
-  return deleteClassroom;
+	const deleteClassroom = await deleteClassroomService(classroomsId);
+	return deleteClassroom;
 };

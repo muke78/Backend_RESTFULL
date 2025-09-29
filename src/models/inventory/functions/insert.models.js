@@ -1,11 +1,11 @@
 import { connectionQuery } from "../../../helpers/connection.helpers.js";
 
 export const extractForeignKeysInventoryModel = async (
-  condition,
-  location,
-  status,
+	condition,
+	location,
+	status,
 ) => {
-  const query = `SELECT 
+	const query = `SELECT 
     (SELECT 
             condition_id
         FROM
@@ -24,28 +24,28 @@ export const extractForeignKeysInventoryModel = async (
             cat_status
         WHERE
             name = ?) AS status;`;
-  const result = await connectionQuery(query, [condition, location, status]);
-  return result;
+	const result = await connectionQuery(query, [condition, location, status]);
+	return result;
 };
 
 export const insertInventoryModel = async ({
-  condition,
-  location,
-  item_code,
-  serial_number,
-  name,
-  description,
-  quantity,
-  weight,
-  width,
-  height,
-  purchase_date,
-  cost,
-  last_maintenance_date,
-  warranty_end_date,
-  status,
+	condition,
+	location,
+	item_code,
+	serial_number,
+	name,
+	description,
+	quantity,
+	weight,
+	width,
+	height,
+	purchase_date,
+	cost,
+	last_maintenance_date,
+	warranty_end_date,
+	status,
 }) => {
-  const query = `INSERT INTO cat_inventory (
+	const query = `INSERT INTO cat_inventory (
   inventory_id, condition_id, location_id, item_code, 
   serial_number, name, description, 
   quantity, weight, width, height, purchase_date,
@@ -58,23 +58,23 @@ VALUES
   );
 `;
 
-  const params = [
-    condition,
-    location,
-    item_code,
-    serial_number,
-    name,
-    description,
-    quantity,
-    weight,
-    width,
-    height,
-    purchase_date,
-    cost,
-    last_maintenance_date,
-    warranty_end_date,
-    status,
-  ];
+	const params = [
+		condition,
+		location,
+		item_code,
+		serial_number,
+		name,
+		description,
+		quantity,
+		weight,
+		width,
+		height,
+		purchase_date,
+		cost,
+		last_maintenance_date,
+		warranty_end_date,
+		status,
+	];
 
-  return await connectionQuery(query, params);
+	return await connectionQuery(query, params);
 };

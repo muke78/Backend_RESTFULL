@@ -1,10 +1,10 @@
 import { connectionQuery } from "../../../helpers/connection.helpers.js";
 
 export const updateClassroomsModel = async (
-  classroomsId,
-  { name, room_type, capacity },
+	classroomsId,
+	{ name, room_type, capacity },
 ) => {
-  const query = `UPDATE 
+	const query = `UPDATE 
                 cat_classrooms 
                 SET 
                 name = ?, 
@@ -12,7 +12,7 @@ export const updateClassroomsModel = async (
                 capacity = ? 
                 WHERE 
                 location_id = ?`;
-  const params = [name, room_type, capacity, classroomsId];
+	const params = [name, room_type, capacity, classroomsId];
 
-  return await connectionQuery(query, params);
+	return await connectionQuery(query, params);
 };

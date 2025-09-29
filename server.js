@@ -8,18 +8,19 @@ import { setupSwagger } from "./src/config/swaggerConfig.js";
 import { corsOptions } from "./src/middleware/cors.middleware.js";
 import { errorHandler } from "./src/middleware/errorHandler.middleware.js";
 import {
-  burstProtectionLimiter,
-  normalLimiter,
+	burstProtectionLimiter,
+	normalLimiter,
 } from "./src/middleware/rateLimitRequest.middleware.js";
 import { router } from "./src/routes/index.js";
+import { config } from "./src/config/config.js";
 
 // Datos del proyecto
 const projectInfo = {
-  name: "CRM Kinder Garden Backend",
-  description: "CRM para Gestión y Administración de una escuela",
-  version: "1.0.0",
-  authorName: "Erick Gonzalez",
-  githubName: "https://github.com/muke78",
+	name: "CRM Kinder Garden Backend",
+	description: "CRM para Gestión y Administración de una escuela",
+	version: "1.0.0",
+	authorName: "Erick Gonzalez",
+	githubName: "https://github.com/muke78",
 };
 
 const app = express();
@@ -36,17 +37,18 @@ app.use(helmet());
 
 // ✅ 2. Ruta raíz
 app.get("/", (request, response) => {
-  response.status(200).json({
-    description: projectInfo.description,
-    name: projectInfo.name,
-    version: projectInfo.version,
-    author: {
-      name: projectInfo.authorName,
-      github: projectInfo.githubName,
-    },
-    api: "/api/v1",
-    status: "🟢 API funcionando correctamente",
-  });
+	response.status(200).json({
+		description: projectInfo.description,
+		name: projectInfo.name,
+		version: projectInfo.version,
+		author: {
+			name: projectInfo.authorName,
+			github: projectInfo.githubName,
+		},
+		api: "/api/v1",
+		status: "🟢 API funcionando correctamente",
+		documentation: `${config.docs.baseUrl}`,
+	});
 });
 
 // ✅ 3. Rutas de la API (ya con rate limiting aplicado)
@@ -60,23 +62,23 @@ let currentPort = 3000;
 const server = createServer(app);
 
 const tryListen = (port) => {
-  server.listen(port);
+	server.listen(port);
 };
 
 server.on("error", (error) => {
-  if (error.code === "EADDRINUSE") {
-    console.log(
-      `⚠️ El puerto ${currentPort} está en uso. Intentando con el puerto ${currentPort + 1}...`,
-    );
-    currentPort++;
-    tryListen(currentPort);
-  } else {
-    console.error("Error del servidor:", error);
-  }
+	if (error.code === "EADDRINUSE") {
+		console.log(
+			`⚠️ El puerto ${currentPort} está en uso. Intentando con el puerto ${currentPort + 1}...`,
+		);
+		currentPort++;
+		tryListen(currentPort);
+	} else {
+		console.error("Error del servidor:", error);
+	}
 });
 
 server.listen(currentPort, () => {
-  console.log(
-    `🟢 API funcionando correctamente, servidor corriendo en el puerto localhost:${server.address().port}`,
-  );
+	console.log(
+		`🟢 API funcionando correctamente, servidor corriendo en el puerto localhost:${server.address().port}`,
+	);
 });
