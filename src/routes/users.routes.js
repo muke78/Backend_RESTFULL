@@ -13,6 +13,7 @@ import {
 } from "../controllers/users/index.js";
 import { verificarToken } from "../middleware/verificarToken.middleware.js";
 import { methodCreated, methodOK } from "../server/serverMethods.js";
+import { logger } from "../utils/logger.utils.js";
 
 const apiUsers = express.Router();
 

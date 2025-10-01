@@ -3,6 +3,7 @@ import hashedArg from "argon2";
 import { findUserByEmail } from "../../../helpers/findUserByEmail.helpers.js";
 import { createToken } from "../../../helpers/jwt.helpers.js";
 import { lastLogin } from "../../../helpers/userLastLogin.helpers.js";
+import { NotFoundError } from "../../../utils/apiError.utils.js";
 
 export const loginService = async ({ email, password }) => {
 	const user = await findUserByEmail(email);
@@ -27,12 +28,7 @@ export const loginService = async ({ email, password }) => {
 	const isPasswordValid = await hashedArg.verify(user.password, password);
 
 	if (!isPasswordValid) {
-		throw {
-			statusCode: 400,
-			message: "La contraseña es incorrecta o está mal escrita",
-			code: "INCORRECT_PASSWORD",
-			details: "La contraseña proporcionada no coincide con la registrada",
-		};
+		throw new NotFoundError("La contraseña es incorrecta o está mal escrita");
 	}
 
 	if (user.AccountStatus === "Inactivo") {
