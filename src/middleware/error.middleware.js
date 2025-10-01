@@ -26,7 +26,7 @@ export const errorHandler = (err, req, res, next) => {
 	});
 
 	const response = {
-		success: "error",
+		success: "false",
 		httpStatus: statusCode,
 		code,
 		message,

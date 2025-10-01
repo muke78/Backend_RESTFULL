@@ -45,6 +45,13 @@ class ConflictError extends ApiError {
 	}
 }
 
+// 429 / Errores de desbordamiento
+class ToManyRequest extends ApiError {
+	constructor(message, details) {
+		super("ConflictError", message, 429, "TO_MANY_REQUEST", details);
+	}
+}
+
 //  500 - Errores de base de datos y servicios
 class DatabaseError extends ApiError {
 	constructor(message, details) {
@@ -91,6 +98,7 @@ export {
 	ForbiddenError,
 	NotFoundError,
 	ConflictError,
+	ToManyRequest,
 	DatabaseError,
 	ServiceUnavailableError,
 	BadRequestError,

@@ -1,17 +1,14 @@
 import { rateLimit } from "express-rate-limit";
+import { ToManyRequest } from "../utils/apiError.utils.js";
 
 // Bloqueo burst - más restrictivo para prevenir spam
 export const burstProtectionLimiter = rateLimit({
-	windowMs: 7 * 60 * 1000, // 7 minutos
-	limit: 20, // 20 requests en 7 minutos (más restrictivo)
-	handler: (request, response, next) => {
-		next({
-			statusCode: 429,
-			message:
-				"Demasiadas solicitudes en poco tiempo. Intenta de nuevo en 7 minutos",
-			code: "TOO_MANY_REQUESTS",
-			details: "Has sido temporalmente bloqueado por actividad sospechosa.",
-		});
+	windowMs: 20 * 60 * 1000, // 20 minutos
+	limit: 20, // 20 requests en 20 minutos (más restrictivo)
+	handler: () => {
+		throw new ToManyRequest(
+			"Demasiadas solicitudes en poco tiempo. Intenta de nuevo en 7 minutos",
+		);
 	},
 	standardHeaders: true,
 	legacyHeaders: false,
@@ -23,14 +20,10 @@ export const burstProtectionLimiter = rateLimit({
 export const normalLimiter = rateLimit({
 	windowMs: 60 * 60 * 1000, // 60 minutos
 	limit: 1000,
-	handler: (request, response, next) => {
-		next({
-			statusCode: 429,
-			message:
-				"Demasiadas solicitudes en poco tiempo. Intenta de nuevo en 1 hora",
-			code: "TOO_MANY_REQUESTS",
-			details: "Has excedido el número máximo de solicitudes permitidas.",
-		});
+	handler: () => {
+		throw new ToManyRequest(
+			"Demasiadas solicitudes en poco tiempo. Intenta de nuevo en 1 hora",
+		);
 	},
 	standardHeaders: true,
 	legacyHeaders: false,
