@@ -6,7 +6,7 @@ export const deleteUserModel = async (userId) => {
 	return await connectionQuery(query, params);
 };
 
-export const deleteUserBulk = async (placeholders, batch) => {
+export const deleteUserBulkModel = async (placeholders, batch) => {
 	const query = `DELETE FROM users WHERE user_id IN (${placeholders})`;
 	return await connectionQuery(query, batch);
 };

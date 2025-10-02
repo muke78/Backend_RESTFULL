@@ -1,12 +1,12 @@
 import { connectionQuery } from "../../../helpers/connection.helpers.js";
 
-export const findUserById = async (userId) => {
+export const findUserByIdModel = async (userId) => {
 	const query = `SELECT * FROM users WHERE user_id = ?`;
 	const result = await connectionQuery(query, [userId]);
 	return result[0];
 };
 
-export const updateUser = async ({
+export const updateUserModel = async ({
 	name_user,
 	email,
 	password,

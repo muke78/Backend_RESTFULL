@@ -3,5 +3,7 @@ export * from "./functions/delete.models.js";
 export * from "./functions/insert.models.js";
 export * from "./functions/list.models.js";
 export * from "./functions/register.models.js";
+export * from "./functions/search.models.js";
 export * from "./functions/update.models.js";
+export * from "./functions/updateStatus.models.js";
 export * from "./index.js";

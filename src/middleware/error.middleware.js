@@ -1,14 +1,8 @@
-import { logger } from "../utils/logger.utils.js";
 import { config } from "../config/config.js";
-import { InternalServerError } from "../utils/apiError.utils.js";
+import { logger } from "../utils/logger.utils.js";
 
-export const errorHandler = (err, req, res, next) => {
+export const errorHandler = (err, req, res, _next) => {
 	const isDevelopment = config.nodeEnv === "development";
-
-	if (!(err instanceof Error) || !err.statusCode) {
-		err = new InternalServerError("Unexpected Error", { original: err });
-	}
-
 	const statusCode = err.statusCode || 500;
 	const code = err.code || "INTERNAL_SERVER_ERROR";
 	const message = err.message || "An unexpected error occurred";
@@ -22,11 +16,14 @@ export const errorHandler = (err, req, res, next) => {
 		details: err.details,
 		path: req.originalUrl,
 		method: req.method,
+		body: req.body.email,
+		params: req.params,
+		query: req.query,
 		user: req.user ? req.user.id : undefined,
 	});
 
 	const response = {
-		success: "false",
+		success: false,
 		httpStatus: statusCode,
 		code,
 		message,

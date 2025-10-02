@@ -1,3 +1,4 @@
+import { updatedStatusService } from "../../../services/users/functions/updateStatus.services.js";
 import {
 	deleteUserBulkService,
 	deleteUserService,
@@ -49,6 +50,11 @@ export const InsertUsersMasive = async (countInsert) => {
 export const UpdateUser = async (userId, userData) => {
 	const updateUser = await updateUserService(userId, userData);
 	return updateUser;
+};
+
+export const UpdatedStatus = (userId, userData) => {
+	const updatedStatus = updatedStatusService(userId, userData);
+	return updatedStatus;
 };
 
 export const DeleteUser = async (userId) => {

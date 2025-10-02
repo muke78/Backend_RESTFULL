@@ -7,8 +7,12 @@ export const findUserByEmail = async (email) => {
 	const query = `SELECT 
                     user_id,
                     role_id,
-                    password
+                    password,
+                    account_type,
+                    cat_status.name AS status_name
                 FROM users
+                LEFT JOIN 
+                    cat_status ON cat_status.status_id = users.status_id
                 WHERE email = ?`;
 	const params = [email];
 	const result = await connectionQuery(query, params);

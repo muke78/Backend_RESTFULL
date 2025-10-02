@@ -3,43 +3,33 @@ import hashedArg from "argon2";
 import { findUserByEmail } from "../../../helpers/findUserByEmail.helpers.js";
 import { createToken } from "../../../helpers/jwt.helpers.js";
 import { lastLogin } from "../../../helpers/userLastLogin.helpers.js";
-import { NotFoundError } from "../../../utils/apiError.utils.js";
+import {
+	AuthError,
+	NotFoundError,
+	ConflictError,
+	InactiveUserError,
+} from "../../../utils/apiError.utils.js";
 
 export const loginService = async ({ email, password }) => {
 	const user = await findUserByEmail(email);
 	if (!user) {
-		throw {
-			statusCode: 404,
-			message: "El usuario no ha podidio ser encontrado",
-			code: "USER_NOT_FOUND",
-			details: "No se encontró un usuario con ese correo electrónico",
-		};
+		throw new NotFoundError("El usuario no ha podidio ser encontrado");
 	}
 
-	if (user.AccountType === "google") {
-		throw {
-			statusCode: 409,
-			message: "El correo ya esta registrado con google",
-			code: "GOOGLE_ACCOUNT",
-			details: "El usuario ya se ha registrado con una cuenta de Google",
-		};
+	if (user.account_type === "google") {
+		throw new ConflictError("El correo ya esta registrado con google");
 	}
 
 	const isPasswordValid = await hashedArg.verify(user.password, password);
 
 	if (!isPasswordValid) {
-		throw new NotFoundError("La contraseña es incorrecta o está mal escrita");
+		throw new AuthError("La contraseña es incorrecta o está mal escrita");
 	}
 
-	if (user.AccountStatus === "Inactivo") {
-		throw {
-			statusCode: 403,
-			message:
-				"El usuario está inactivo, pida la reactivación a un administrador",
-			code: "USER_INACTIVE",
-			details:
-				"El usuario no puede iniciar sesión porque su cuenta está inactiva",
-		};
+	if (user.status_name === "Inactivo") {
+		throw new InactiveUserError(
+			"El usuario está inactivo, pida la reactivación a un administrador",
+		);
 	}
 	// Crea el token
 	const token = createToken({

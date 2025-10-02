@@ -2,41 +2,37 @@ import hashedArg from "argon2";
 
 import { findUserByEmail } from "../../../helpers/findUserByEmail.helpers.js";
 import { getUserByEmail } from "../../../helpers/getUserByEmail.helpers.js";
-import { registerUser } from "../../../models/users/functions/register.models.js";
+import { registerUserModel } from "../../../models/users/functions/register.models.js";
+import {
+	ConflictError,
+	DatabaseError,
+	FieldsRequiredError,
+} from "../../../utils/apiError.utils.js";
 
 export const registerUserService = async ({ name_user, email, password }) => {
 	if (!name_user || !email || !password) {
-		throw {
-			statusCode: 400,
-			message: "Debe de proporcionar todos los campos",
-			code: "FIELDS_REQUIRED",
-			details: "Todos los campos son obligatorios para crear un usuario",
-		};
+		throw new FieldsRequiredError("Todos los campos son obligatorios");
 	}
 
 	const existingUser = await findUserByEmail(email);
 
 	if (existingUser) {
-		throw {
-			statusCode: 409,
-			message: "El correo ya se encuentra registrado",
-			code: "EMAIL_CONFLICT",
-			details: "El correo proporcionado ya está en uso por otro usuario",
-		};
+		throw new ConflictError("El correo ya se encuentra registrado");
 	}
 
 	const hashedPassword = await hashedArg.hash(password);
-	const insertResult = await registerUser(name_user, email, hashedPassword);
+	const insertResult = await registerUserModel(
+		name_user,
+		email,
+		hashedPassword,
+	);
 
 	if (insertResult.affectedRows > 0) {
 		const newUser = await getUserByEmail(email);
 		return newUser;
 	} else {
-		throw {
-			statusCode: 500,
-			message: "Error al registrar el usuario",
-			code: "REGISTRATION_ERROR",
-			details: "No se pudo completar el registro del usuario",
-		};
+		throw new DatabaseError(
+			"No se pudo registrar el usuario en la base de datos",
+		);
 	}
 };

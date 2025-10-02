@@ -23,7 +23,7 @@ export const methodOK = (request, response, result, message) => {
 		message: responsePayload.message,
 		path: request.originalUrl,
 		method: request.method,
-		body: request.body,
+		body: request.body.email,
 		params: request.params,
 		query: request.query,
 		dataCount: totalDataCount,

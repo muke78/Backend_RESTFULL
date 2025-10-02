@@ -9,11 +9,11 @@ import {
 	Login,
 	RegisterUser,
 	SearchOfUsers,
+	UpdatedStatus,
 	UpdateUser,
 } from "../controllers/users/index.js";
 import { verificarToken } from "../middleware/verificarToken.middleware.js";
 import { methodCreated, methodOK } from "../server/serverMethods.js";
-import { logger } from "../utils/logger.utils.js";
 
 const apiUsers = express.Router();
 
@@ -103,6 +103,23 @@ apiUsers.put("/:id", verificarToken, async (request, response, next) => {
 			response,
 			result,
 			"El usuario se actualizo correctamente",
+		);
+	} catch (error) {
+		next(error);
+	}
+});
+
+// PATCH /api/users/updated/:id
+apiUsers.patch("/:id", verificarToken, async (request, response, next) => {
+	try {
+		const userId = request.params.id;
+		const userData = request.body;
+		const result = await UpdatedStatus(userId, userData);
+		methodOK(
+			request,
+			response,
+			undefined,
+			`El usuario ${result.name_user} cambio su estado a ${result.status_name}`,
 		);
 	} catch (error) {
 		next(error);
