@@ -20,10 +20,6 @@ export const insertUserService = async ({
 	role,
 	status,
 }) => {
-	if (!name_user || !email || !password || !role || !status) {
-		throw new FieldsRequiredError("Todos los campos son obligatorios");
-	}
-
 	const existingUser = await findUserByEmail(email);
 	if (existingUser) {
 		throw new ConflictError("El correo ya se encuentra registrado");

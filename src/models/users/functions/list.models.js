@@ -1,6 +1,6 @@
 import { connectionQuery } from "../../../helpers/connection.helpers.js";
 
-export const listUsersModel = async ({ status, correo, rol }) => {
+export const listUsersModel = async ({ status, account_type, role }) => {
 	let where = "WHERE 1=1";
 	const values = [];
 
@@ -9,14 +9,14 @@ export const listUsersModel = async ({ status, correo, rol }) => {
 		values.push(status);
 	}
 
-	if (correo && correo !== "All") {
+	if (account_type && account_type !== "All") {
 		where += " AND account_type = ?";
-		values.push(correo);
+		values.push(account_type);
 	}
 
-	if (rol && rol !== "All") {
+	if (role && role !== "All") {
 		where += " AND role.name = ?";
-		values.push(rol);
+		values.push(role);
 	}
 
 	const query = `

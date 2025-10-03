@@ -17,7 +17,7 @@ export const verificarToken = (request, _response, next) => {
 
 	try {
 		const decoded = jwt.verify(bearerToken, config.jwt.secret);
-		request.usuario = decoded;
+		request.user = decoded;
 		next();
 	} catch (_error) {
 		throw new AuthError("Acceso no autorizado: token inválido");

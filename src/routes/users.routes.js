@@ -14,46 +14,71 @@ import {
 } from "../controllers/users/index.js";
 import { verificarToken } from "../middleware/verificarToken.middleware.js";
 import { methodCreated, methodOK } from "../server/serverMethods.js";
+import { validationFields } from "../middleware/validation.middleware.js";
+import {
+	schemaAuthUserValidations,
+	schemaCreateUserValidations,
+	schemaListUsersValidations,
+	schemaRegisterUserValidations,
+	schemaSearchUserValidations,
+} from "../validations/users/index.js";
+import { schemaUpdateUserValidations } from "../validations/users/update.schemas.js";
+import { uuidSchema } from "../validations/schemas/subSchemas.schemas.js";
 
 const apiUsers = express.Router();
 
 // GET /api/users/list_of_users
-apiUsers.get("/", verificarToken, async (request, response, next) => {
-	try {
-		const listUsers = request.query;
-		const result = await GetAllUsers(listUsers);
-		methodOK(request, response, result);
-	} catch (error) {
-		next(error);
-	}
-});
+apiUsers.get(
+	"/",
+	verificarToken,
+	validationFields(schemaListUsersValidations, "query"),
+	async (request, response, next) => {
+		try {
+			const listUsers = request.query;
+			const result = await GetAllUsers(listUsers);
+			methodOK(request, response, result);
+		} catch (error) {
+			next(error);
+		}
+	},
+);
 
 // GET /api/users/search
-apiUsers.get("/search", verificarToken, async (request, response, next) => {
-	try {
-		const { email } = request.query;
-		const result = await SearchOfUsers(email);
-		methodOK(request, response, result, "Busqueda realizada correctamente");
-	} catch (error) {
-		next(error);
-	}
-});
+apiUsers.get(
+	"/search",
+	verificarToken,
+	validationFields(schemaSearchUserValidations, "query"),
+	async (request, response, next) => {
+		try {
+			const { email } = request.query;
+			const result = await SearchOfUsers(email);
+			methodOK(request, response, result, "Busqueda realizada correctamente");
+		} catch (error) {
+			next(error);
+		}
+	},
+);
 
 //POST /api/users/create
-apiUsers.post("/", verificarToken, async (request, response, next) => {
-	try {
-		const insertUser = request.body;
-		const result = await InsertUsers(insertUser);
-		methodCreated(
-			request,
-			response,
-			result,
-			"Se inserto correctamente el usuario",
-		);
-	} catch (error) {
-		next(error);
-	}
-});
+apiUsers.post(
+	"/",
+	verificarToken,
+	validationFields(schemaCreateUserValidations, "body"),
+	async (request, response, next) => {
+		try {
+			const insertUser = request.body;
+			const result = await InsertUsers(insertUser);
+			methodCreated(
+				request,
+				response,
+				result,
+				"Se inserto correctamente el usuario",
+			);
+		} catch (error) {
+			next(error);
+		}
+	},
+);
 
 //POST /api/users/masive
 apiUsers.post("/bulk", verificarToken, async (request, response, next) => {
@@ -71,43 +96,57 @@ apiUsers.post("/bulk", verificarToken, async (request, response, next) => {
 });
 
 //POST /api/users/register
-apiUsers.post("/auth/register", async (request, response, next) => {
-	try {
-		const registerUser = request.body;
-		const result = await RegisterUser(registerUser);
-		methodCreated(request, response, result, "Se ha registrado exitosamente");
-	} catch (error) {
-		next(error);
-	}
-});
+apiUsers.post(
+	"/auth/register",
+	validationFields(schemaRegisterUserValidations, "body"),
+	async (request, response, next) => {
+		try {
+			const registerUser = request.body;
+			const result = await RegisterUser(registerUser);
+			methodCreated(request, response, result, "Se ha registrado exitosamente");
+		} catch (error) {
+			next(error);
+		}
+	},
+);
 
 //POST /api/users/auth/login
-apiUsers.post("/auth/login", async (request, response, next) => {
-	try {
-		const userData = request.body;
-		const token = await Login(userData);
-		methodOK(request, response, token, "Sesion iniciada correctamente");
-	} catch (error) {
-		next(error);
-	}
-});
+apiUsers.post(
+	"/auth/login",
+	validationFields(schemaAuthUserValidations, "body"),
+	async (request, response, next) => {
+		try {
+			const userData = request.body;
+			const token = await Login(userData);
+			methodOK(request, response, token, "Sesion iniciada correctamente");
+		} catch (error) {
+			next(error);
+		}
+	},
+);
 
 //PUT /api/users/update/:id
-apiUsers.put("/:id", verificarToken, async (request, response, next) => {
-	try {
-		const userId = request.params.id;
-		const userData = request.body;
-		const result = await UpdateUser(userId, userData);
-		methodOK(
-			request,
-			response,
-			result,
-			"El usuario se actualizo correctamente",
-		);
-	} catch (error) {
-		next(error);
-	}
-});
+apiUsers.put(
+	"/:id",
+	verificarToken,
+	validationFields(uuidSchema, "params"),
+	validationFields(schemaUpdateUserValidations, "body"),
+	async (request, response, next) => {
+		try {
+			const userId = request.params.id;
+			const userData = request.body;
+			const result = await UpdateUser(userId, userData);
+			methodOK(
+				request,
+				response,
+				result,
+				"El usuario se actualizo correctamente",
+			);
+		} catch (error) {
+			next(error);
+		}
+	},
+);
 
 // PATCH /api/users/updated/:id
 apiUsers.patch("/:id", verificarToken, async (request, response, next) => {
