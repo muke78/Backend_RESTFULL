@@ -23,7 +23,11 @@ import {
 	schemaSearchUserValidations,
 } from "../validations/users/index.js";
 import { schemaUpdateUserValidations } from "../validations/users/update.schemas.js";
-import { uuidSchema } from "../validations/schemas/subSchemas.schemas.js";
+import {
+	uuidSchema,
+	statusSchema,
+} from "../validations/schemas/subSchemas.schemas.js";
+import { schemaBulkDeleteUserValidations } from "../validations/users/deleteBulk.schemas.js";
 
 const apiUsers = express.Router();
 
@@ -149,49 +153,65 @@ apiUsers.put(
 );
 
 // PATCH /api/users/updated/:id
-apiUsers.patch("/:id", verificarToken, async (request, response, next) => {
-	try {
-		const userId = request.params.id;
-		const userData = request.body;
-		const result = await UpdatedStatus(userId, userData);
-		methodOK(
-			request,
-			response,
-			undefined,
-			`El usuario ${result.name_user} cambio su estado a ${result.status_name}`,
-		);
-	} catch (error) {
-		next(error);
-	}
-});
+apiUsers.patch(
+	"/:id",
+	verificarToken,
+	validationFields(uuidSchema, "params"),
+	validationFields(statusSchema, "body"),
+	async (request, response, next) => {
+		try {
+			const userId = request.params.id;
+			const userData = request.body;
+			const result = await UpdatedStatus(userId, userData);
+			methodOK(
+				request,
+				response,
+				undefined,
+				`El usuario ${result.name_user} cambio su estado a ${result.status_name}`,
+			);
+		} catch (error) {
+			next(error);
+		}
+	},
+);
 
 //DELETE /api/users/bulk_delete_users
-apiUsers.delete("/bulk", verificarToken, async (request, response, next) => {
-	try {
-		const { ids } = request.body;
-		await DeleteUserBulk(ids);
-		methodOK(request, response, {
-			message: `Se eliminaron ${request.body.ids.length} usuarios correctamente`,
-		});
-	} catch (error) {
-		next(error);
-	}
-});
+apiUsers.delete(
+	"/bulk",
+	verificarToken,
+	validationFields(schemaBulkDeleteUserValidations, "body"),
+	async (request, response, next) => {
+		try {
+			const { ids } = request.body;
+			await DeleteUserBulk(ids);
+			methodOK(request, response, {
+				message: `Se eliminaron ${request.body.ids.length} usuarios correctamente`,
+			});
+		} catch (error) {
+			next(error);
+		}
+	},
+);
 
 //DELETE /api/users/delete/:id
-apiUsers.delete("/:id", verificarToken, async (request, response, next) => {
-	try {
-		const userId = request.params.id;
-		const result = await DeleteUser(userId);
-		methodOK(
-			request,
-			response,
-			undefined,
-			`El usuario ${result.name_user} fue eliminado correctamente`,
-		);
-	} catch (error) {
-		next(error);
-	}
-});
+apiUsers.delete(
+	"/:id",
+	verificarToken,
+	validationFields(uuidSchema, "params"),
+	async (request, response, next) => {
+		try {
+			const userId = request.params.id;
+			const result = await DeleteUser(userId);
+			methodOK(
+				request,
+				response,
+				undefined,
+				`El usuario ${result.name_user} fue eliminado correctamente`,
+			);
+		} catch (error) {
+			next(error);
+		}
+	},
+);
 
 export { apiUsers };
