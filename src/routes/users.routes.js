@@ -4,6 +4,7 @@ import {
 	DeleteUser,
 	DeleteUserBulk,
 	GetAllUsers,
+	GetProfile,
 	InsertUsers,
 	InsertUsersMasive,
 	Login,
@@ -62,6 +63,17 @@ apiUsers.get(
 		}
 	},
 );
+
+// GET /api/users/profile
+apiUsers.get("/profile", verificarToken, async (request, response, next) => {
+	try {
+		const { user_id } = request.user;
+		const result = await GetProfile(user_id);
+		methodOK(request, response, result);
+	} catch (error) {
+		next(error);
+	}
+});
 
 //POST /api/users/create
 apiUsers.post(

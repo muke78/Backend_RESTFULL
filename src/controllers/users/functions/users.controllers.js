@@ -4,6 +4,7 @@ import {
 	deleteUserService,
 	insertUserMasiveService,
 	insertUserService,
+	listProfileService,
 	listUsersService,
 	loginGoogleService,
 	loginService,
@@ -15,6 +16,11 @@ import {
 export const GetAllUsers = async (listUsers) => {
 	const listGetAllUsers = await listUsersService(listUsers);
 	return listGetAllUsers;
+};
+
+export const GetProfile = async (user_id) => {
+	const listGetProfile = await listProfileService(user_id);
+	return listGetProfile;
 };
 
 export const SearchOfUsers = async (email) => {

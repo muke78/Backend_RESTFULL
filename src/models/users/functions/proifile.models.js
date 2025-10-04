@@ -1,6 +1,6 @@
 import { connectionQuery } from "../../../helpers/connection.helpers.js";
 
-export const searchUserModel = async (email) => {
+export const listProfileModel = async (user_id) => {
 	const query = `SELECT 
                         user_id,
                         role.name AS role,
@@ -15,7 +15,7 @@ export const searchUserModel = async (email) => {
                     FROM users
                     LEFT JOIN role ON role.role_id = users.role_id
                     LEFT JOIN cat_status ON cat_status.status_id = users.status_id
-                    WHERE email LIKE ?`;
-	const params = [`%${email}%`];
+					WHERE user_id = ?;`;
+	const params = [user_id];
 	return await connectionQuery(query, params);
 };
