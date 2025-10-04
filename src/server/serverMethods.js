@@ -23,7 +23,7 @@ export const methodOK = (request, response, result, message) => {
 		message: responsePayload.message,
 		path: request.originalUrl,
 		method: request.method,
-		body: request.body.email,
+		body: request.body?.email,
 		params: request.params,
 		query: request.query,
 		dataCount: totalDataCount,
@@ -52,7 +52,7 @@ export const methodCreated = (request, response, result, message) => {
 		message: responsePayload.message,
 		path: request.originalUrl,
 		method: request.method,
-		user: request.user ? request.user.id : undefined,
+		user: request.user?.user_id,
 		dataCount: responsePayload.metadata.dataCount,
 	});
 

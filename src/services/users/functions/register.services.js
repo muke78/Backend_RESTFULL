@@ -3,17 +3,9 @@ import hashedArg from "argon2";
 import { findUserByEmail } from "../../../helpers/findUserByEmail.helpers.js";
 import { getUserByEmail } from "../../../helpers/getUserByEmail.helpers.js";
 import { registerUserModel } from "../../../models/users/functions/register.models.js";
-import {
-	ConflictError,
-	DatabaseError,
-	FieldsRequiredError,
-} from "../../../utils/apiError.utils.js";
+import { ConflictError, DatabaseError } from "../../../utils/apiError.utils.js";
 
 export const registerUserService = async ({ name_user, email, password }) => {
-	if (!name_user || !email || !password) {
-		throw new FieldsRequiredError("Todos los campos son obligatorios");
-	}
-
 	const existingUser = await findUserByEmail(email);
 
 	if (existingUser) {

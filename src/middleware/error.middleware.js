@@ -16,10 +16,10 @@ export const errorHandler = (err, req, res, _next) => {
 		details: err.details,
 		path: req.originalUrl,
 		method: req.method,
-		body: req.body.email,
+		body: req.body?.email,
 		params: req.params,
 		query: req.query,
-		user: req.user ? req.user.id : undefined,
+		user: req.user?.user_id,
 	});
 
 	const response = {

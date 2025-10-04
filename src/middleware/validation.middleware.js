@@ -16,7 +16,7 @@ export const validationFields = (schema, property = "body") => {
 				body: request.body.email,
 				params: request.params,
 				query: request.query,
-				user: request.user ? request.user.id : undefined,
+				user: request.user?.user_id,
 			});
 
 			return response.status(400).json({

@@ -22,13 +22,12 @@ import {
 	schemaListUsersValidations,
 	schemaRegisterUserValidations,
 	schemaSearchUserValidations,
+	schemaStatusUserValidations,
+	schemaBulkDeleteUserValidations,
+	schemaUpdateUserValidations,
 } from "../validations/users/index.js";
-import { schemaUpdateUserValidations } from "../validations/users/update.schemas.js";
-import {
-	uuidSchema,
-	statusSchema,
-} from "../validations/schemas/subSchemas.schemas.js";
-import { schemaBulkDeleteUserValidations } from "../validations/users/deleteBulk.schemas.js";
+
+import { uuidSchema } from "../validations/schemas/subSchemas.schemas.js";
 
 const apiUsers = express.Router();
 
@@ -169,7 +168,7 @@ apiUsers.patch(
 	"/:id",
 	verificarToken,
 	validationFields(uuidSchema, "params"),
-	validationFields(statusSchema, "body"),
+	validationFields(schemaStatusUserValidations, "body"),
 	async (request, response, next) => {
 		try {
 			const userId = request.params.id;
@@ -179,7 +178,7 @@ apiUsers.patch(
 				request,
 				response,
 				undefined,
-				`El usuario ${result.name_user} cambio su estado a ${result.status_name}`,
+				`El usuario ${result.name_user} cambio su estado a ${result.status}`,
 			);
 		} catch (error) {
 			next(error);

@@ -58,8 +58,8 @@ export const UpdateUser = async (userId, userData) => {
 	return updateUser;
 };
 
-export const UpdatedStatus = (userId, userData) => {
-	const updatedStatus = updatedStatusService(userId, userData);
+export const UpdatedStatus = async (userId, userData) => {
+	const updatedStatus = await updatedStatusService(userId, userData);
 	return updatedStatus;
 };
 

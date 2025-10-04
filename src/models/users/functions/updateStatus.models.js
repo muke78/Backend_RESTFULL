@@ -15,7 +15,7 @@ export const updateStatusUserModel = async (status, userId) => {
 export const listFieldStatusUpdatedModel = async (userId) => {
 	const query = `SELECT 
                     name_user,
-                    cat_status.name AS status_name
+                    cat_status.name AS status
                 FROM users
                 LEFT JOIN 
                     cat_status ON cat_status.status_id = users.status_id

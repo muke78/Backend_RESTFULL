@@ -1,6 +1,6 @@
 import { connectionQuery } from "../../../helpers/connection.helpers.js";
 
-export const listUsersModel = async ({ status, account_type, role }) => {
+export const listUsersModel = async (status, account_type, role) => {
 	let where = "WHERE 1=1";
 	const values = [];
 

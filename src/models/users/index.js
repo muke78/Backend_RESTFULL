@@ -2,7 +2,7 @@ export * from "./functions/authGoogle.models.js";
 export * from "./functions/delete.models.js";
 export * from "./functions/insert.models.js";
 export * from "./functions/list.models.js";
-export * from "./functions/proifile.models.js";
+export * from "./functions/profile.models.js";
 export * from "./functions/register.models.js";
 export * from "./functions/search.models.js";
 export * from "./functions/update.models.js";
