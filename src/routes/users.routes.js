@@ -133,6 +133,14 @@ apiUsers.post(
 		try {
 			const userData = request.body;
 			const token = await Login(userData);
+
+			response.cookie("access_token", token, {
+				httpOnly: true,
+				secure: false,
+				sameSite: "strict",
+				maxAge: 1000 * 60 * 60 * 12, // 12 horas
+			});
+
 			methodOK(request, response, token, "Sesion iniciada correctamente");
 		} catch (error) {
 			next(error);
