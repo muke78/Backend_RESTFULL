@@ -6,7 +6,7 @@ import { createServer } from "node:http";
 
 import { setupSwagger } from "./src/config/swaggerConfig.js";
 import { corsOptions } from "./src/middleware/cors.middleware.js";
-import { errorHandler } from "./src/middleware/errorHandler.middleware.js";
+import { errorHandler } from "./src/middleware/error.middleware.js";
 import {
 	burstProtectionLimiter,
 	normalLimiter,

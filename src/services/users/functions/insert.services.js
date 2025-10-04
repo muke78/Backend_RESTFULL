@@ -7,6 +7,11 @@ import {
 	extractForeignKeysUserModel,
 	insertUserModel,
 } from "../../../models/users/index.js";
+import {
+	ConflictError,
+	DatabaseError,
+	FieldsRequiredError,
+} from "../../../utils/apiError.utils.js";
 
 export const insertUserService = async ({
 	name_user,
@@ -15,23 +20,9 @@ export const insertUserService = async ({
 	role,
 	status,
 }) => {
-	if (!name_user || !email || !password || !role || !status) {
-		throw {
-			statusCode: 400,
-			message: "Debe de proporcionar todos los campos",
-			code: "FIELDS_REQUIRED",
-			details: "Todos los campos son obligatorios para crear un usuario",
-		};
-	}
-
 	const existingUser = await findUserByEmail(email);
 	if (existingUser) {
-		throw {
-			statusCode: 409,
-			message: "El correo ya se encuentra registrado",
-			code: "EMAIL_CONFLICTS",
-			details: "El correo proporcionado ya está en uso por otro usuario",
-		};
+		throw new ConflictError("El correo ya se encuentra registrado");
 	}
 
 	const extract = await extractForeignKeysUserModel(role, status);
@@ -49,24 +40,13 @@ export const insertUserService = async ({
 		const newUser = await getUserByEmail(email);
 		return newUser;
 	} else {
-		throw {
-			statusCode: 500,
-			message: "No se pudo crear el usuario",
-			code: "USER_CREATION_FAILED",
-			dettails:
-				"Hubo un error al intentar insertar el usuario en la base de datos",
-		};
+		throw new DatabaseError("No se pudo crear el usuario en la base de datos");
 	}
 };
 
 export const insertUserMasiveService = async (countInsert) => {
-	if (!countInsert || isNaN(countInsert)) {
-		throw {
-			statusCode: 400,
-			message: "Debe de proporcionar todos los campos",
-			code: "FIELDS_REQUIRED",
-			details: "Todos los campos son obligatorios para crear un usuario",
-		};
+	if (!countInsert || Number.isNaN(countInsert)) {
+		throw new FieldsRequiredError("Todos los campos son obligatorios");
 	}
 
 	const insertados = [];
@@ -80,12 +60,7 @@ export const insertUserMasiveService = async (countInsert) => {
 
 		const existingUser = await findUserByEmail(email);
 		if (existingUser) {
-			throw {
-				statusCode: 409,
-				message: "El correo ya se encuentra registrado",
-				code: "EMAIL_CONFLICTS",
-				details: "El correo proporcionado ya está en uso por otro usuario",
-			};
+			throw new ConflictError("El correo ya se encuentra registrado");
 		}
 
 		const hashedPassword = await hashedArg.hash(password);

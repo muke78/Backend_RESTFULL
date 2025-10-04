@@ -18,7 +18,7 @@ export const config = {
 	},
 	jwt: {
 		secret: process.env.JWT_SECRET,
-		expiresIn: process.env.EXP_TOKEN || "12h",
+		expiresIn: process.env.EXP_TOKEN,
 	},
 	docs: {
 		urlDocs: process.env.ENDPOINT_SWAGGER,

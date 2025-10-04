@@ -1,8 +1,10 @@
+import { updatedStatusService } from "../../../services/users/functions/updateStatus.services.js";
 import {
 	deleteUserBulkService,
 	deleteUserService,
 	insertUserMasiveService,
 	insertUserService,
+	listProfileService,
 	listUsersService,
 	loginGoogleService,
 	loginService,
@@ -14,6 +16,11 @@ import {
 export const GetAllUsers = async (listUsers) => {
 	const listGetAllUsers = await listUsersService(listUsers);
 	return listGetAllUsers;
+};
+
+export const GetProfile = async (user_id) => {
+	const listGetProfile = await listProfileService(user_id);
+	return listGetProfile;
 };
 
 export const SearchOfUsers = async (email) => {
@@ -49,6 +56,11 @@ export const InsertUsersMasive = async (countInsert) => {
 export const UpdateUser = async (userId, userData) => {
 	const updateUser = await updateUserService(userId, userData);
 	return updateUser;
+};
+
+export const UpdatedStatus = async (userId, userData) => {
+	const updatedStatus = await updatedStatusService(userId, userData);
+	return updatedStatus;
 };
 
 export const DeleteUser = async (userId) => {

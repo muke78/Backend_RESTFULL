@@ -3,9 +3,10 @@ import hashedArg from "argon2";
 import { findEmailInOtherUser } from "../../../helpers/getUserByEmailAndId.helpers.js";
 import {
 	extractForeignKeysUserModel,
-	findUserById,
-	updateUser,
+	findUserByIdModel,
+	updateUserModel,
 } from "../../../models/users/index.js";
+import { ConflictError, NotFoundError } from "../../../utils/apiError.utils.js";
 
 export const updateUserService = async (
 	userId,
@@ -14,27 +15,19 @@ export const updateUserService = async (
 	// Verificar si otro usuario ya usa ese correo
 	const [emailConflict, existingUser, extract] = await Promise.all([
 		findEmailInOtherUser(email, userId),
-		findUserById(userId),
+		findUserByIdModel(userId),
 		extractForeignKeysUserModel(role, status),
 	]);
 
 	if (emailConflict) {
-		throw {
-			statusCode: 409,
-			message: "El correo ya se encuentra registrado",
-			code: "EMAIL_CONFLICT",
-			details: "El correo proporcionado ya está en uso por otro usuario",
-		};
+		throw new ConflictError("El correo ya se encuentra registrado");
 	}
 
 	// Verificar si el usuario existe
 	if (!existingUser) {
-		throw {
-			statusCode: 404,
-			message: "No se proporcionó un ID válido o el usuario no existe",
-			code: "USER_NOT_FOUND",
-			details: "El usuario con el ID proporcionado no fue encontrado",
-		};
+		throw new NotFoundError(
+			"No se proporcionó un ID válido o el usuario no existe",
+		);
 	}
 
 	// Preparar datos para actualización
@@ -51,6 +44,6 @@ export const updateUserService = async (
 		updateData.password = await hashedArg.hash(password);
 	}
 
-	const result = await updateUser(updateData);
+	const result = await updateUserModel(updateData);
 	return result.affectedRows > 0;
 };
