@@ -51,6 +51,7 @@ export const roleSchema = Joi.string()
 	)
 	.required()
 	.messages({
+		"any.required": "El rol es obligatorio",
 		"any.only": "El rol debe ser uno de los valores permitidos",
 		"string.base": "El rol debe ser un texto",
 	});

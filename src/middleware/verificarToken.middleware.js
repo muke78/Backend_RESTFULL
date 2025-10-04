@@ -4,19 +4,14 @@ import { config } from "../config/config.js";
 import { AuthError } from "../utils/apiError.utils.js";
 
 export const verificarToken = (request, _response, next) => {
-	const token = request.header("Authorization");
+	const token = request.cookies?.access_token;
 
 	if (!token) {
 		throw new AuthError("Acceso no autorizado, token no proporcionado");
 	}
 
-	const bearerToken = token.split(" ")[1];
-	if (!bearerToken) {
-		throw new AuthError("Acceso no autorizado, bearer no proporcionado");
-	}
-
 	try {
-		const decoded = jwt.verify(bearerToken, config.jwt.secret);
+		const decoded = jwt.verify(token, config.jwt.secret);
 		request.user = decoded;
 		next();
 	} catch (_error) {

@@ -28,6 +28,7 @@ import {
 } from "../validations/users/index.js";
 
 import { uuidSchema } from "../validations/schemas/subSchemas.schemas.js";
+import { config } from "../config/config.js";
 
 const apiUsers = express.Router();
 
@@ -133,7 +134,15 @@ apiUsers.post(
 		try {
 			const userData = request.body;
 			const token = await Login(userData);
-			methodOK(request, response, token, "Sesion iniciada correctamente");
+
+			response.cookie("access_token", token, {
+				httpOnly: true,
+				secure: config.nodeEnv === "production",
+				sameSite: "strict",
+				maxAge: 1000 * 60 * 60 * 12, // 12 horas
+			});
+
+			methodOK(request, response, undefined, "Sesion iniciada correctamente");
 		} catch (error) {
 			next(error);
 		}
