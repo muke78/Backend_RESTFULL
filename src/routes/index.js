@@ -11,6 +11,7 @@ import { apiCatUnits } from "./catUnits.routes.js";
 import { apiGoogle } from "./google.route.js";
 import { apiToken } from "./token.routes.js";
 import { apiUsers } from "./users.routes.js";
+import { apiAuth } from "./auth.routes.js";
 
 // import { apiMaestros } from "./maestrosRouter.js";
 // import { apiPadres } from "./padresRouter.js";
@@ -18,6 +19,7 @@ import { apiUsers } from "./users.routes.js";
 
 const router = express.Router();
 
+router.use("/api/v1/auth", apiAuth);
 router.use("/api/v1/users", apiUsers, apiGoogle);
 router.use("/api/v1/token", apiToken);
 router.use("/api/v1/assets", apiCatAssets);
