@@ -3,12 +3,6 @@ import {
 	registerUserService,
 } from "../../../services/auth/index.js";
 
-export const Login = async (userData) => {
-	const login = await loginService(userData);
-	return login;
-};
+export const Login = (userData) => loginService(userData);
 
-export const RegisterUser = async (register) => {
-	const registerUser = await registerUserService(register);
-	return registerUser;
-};
+export const RegisterUser = (register) => registerUserService(register);

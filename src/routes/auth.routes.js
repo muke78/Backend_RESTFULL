@@ -7,15 +7,22 @@ import { config } from "../config/config.js";
 import { Login, RegisterUser } from "../controllers/auth/index.js";
 import { validationFields } from "../middleware/validation.middleware.js";
 import { methodCreated, methodOK } from "../server/serverMethods.js";
+import { AuthError } from "../utils/apiError.utils.js";
 
 const apiAuth = express.Router();
 
 //POST /api/auth/logout
 apiAuth.post("/logout", async (request, response, next) => {
 	try {
+		const token = request.cookies?.access_token;
+
+		if (!token)
+			throw new AuthError("No se encontró un token activo en la cookie");
+
 		response.clearCookie("access_token", {
 			httpOnly: true,
 			secure: config.nodeEnv === "production",
+			sameSite: "strict",
 		});
 
 		methodOK(request, response, undefined, "Sesión cerrada correctamente");
@@ -37,7 +44,7 @@ apiAuth.post(
 				httpOnly: true,
 				secure: config.nodeEnv === "production",
 				sameSite: "strict",
-				maxAge: 1000 * 60 * 60 * 12, // 12 horas
+				maxAge: config.cookie.cookieMaxAge,
 			});
 
 			methodOK(request, response, undefined, "Sesion iniciada correctamente");
