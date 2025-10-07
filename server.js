@@ -60,7 +60,7 @@ app.use(burstProtectionLimiter, normalLimiter, router);
 app.use(errorHandler);
 
 // Crear y arrancar el servidor
-let currentPort = 3000;
+let currentPort = config.port;
 const server = createServer(app);
 
 const tryListen = (port) => {

@@ -11,22 +11,27 @@ import { apiCatUnits } from "./catUnits.routes.js";
 import { apiGoogle } from "./google.route.js";
 import { apiToken } from "./token.routes.js";
 import { apiUsers } from "./users.routes.js";
+import { apiAuth } from "./auth.routes.js";
+
+import { config } from "../config/config.js";
 
 // import { apiMaestros } from "./maestrosRouter.js";
 // import { apiPadres } from "./padresRouter.js";
 // import { apiEstudiantes } from "./studentsRouter.js";
 
 const router = express.Router();
+const base = config.api.basePath;
 
-router.use("/api/v1/users", apiUsers, apiGoogle);
-router.use("/api/v1/token", apiToken);
-router.use("/api/v1/assets", apiCatAssets);
-router.use("/api/v1/inventory", apiCatInventory);
-router.use("/api/v1/supply", apiCatSupply);
-router.use("/api/v1/conditions", apiCatConditions);
-router.use("/api/v1/classrooms", apiCatClassrooms);
-router.use("/api/v1/eduLev", apiCatEducationalLevel);
-router.use("/api/v1/gender", apiCatGender);
-router.use("/api/v1/units", apiCatUnits);
+router.use(`${base}/auth`, apiAuth);
+router.use(`${base}/users`, apiUsers, apiGoogle);
+router.use(`${base}/token`, apiToken);
+router.use(`${base}/assets`, apiCatAssets);
+router.use(`${base}/inventory`, apiCatInventory);
+router.use(`${base}/supply`, apiCatSupply);
+router.use(`${base}/conditions`, apiCatConditions);
+router.use(`${base}/classrooms`, apiCatClassrooms);
+router.use(`${base}/eduLev`, apiCatEducationalLevel);
+router.use(`${base}/gender`, apiCatGender);
+router.use(`${base}/units`, apiCatUnits);
 
 export { router };

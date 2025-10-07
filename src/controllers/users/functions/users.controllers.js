@@ -1,4 +1,3 @@
-import { updatedStatusService } from "../../../services/users/functions/updateStatus.services.js";
 import {
 	deleteUserBulkService,
 	deleteUserService,
@@ -7,10 +6,9 @@ import {
 	listProfileService,
 	listUsersService,
 	loginGoogleService,
-	loginService,
-	registerUserService,
 	searchUserService,
 	updateUserService,
+	updatedStatusService,
 } from "../../../services/users/index.js";
 
 export const GetAllUsers = async (listUsers) => {
@@ -33,19 +31,9 @@ export const InsertUsers = async (user) => {
 	return insertUsers;
 };
 
-export const Login = async (userData) => {
-	const login = await loginService(userData);
-	return login;
-};
-
 export const LoginFromGoogle = async (credential) => {
 	const { responseData, isNewUser } = await loginGoogleService(credential);
 	return { responseData, isNewUser };
-};
-
-export const RegisterUser = async (register) => {
-	const registerUser = await registerUserService(register);
-	return registerUser;
 };
 
 export const InsertUsersMasive = async (countInsert) => {

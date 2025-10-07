@@ -2,7 +2,7 @@ import hashedArg from "argon2";
 
 import { findUserByEmail } from "../../../helpers/findUserByEmail.helpers.js";
 import { getUserByEmail } from "../../../helpers/getUserByEmail.helpers.js";
-import { registerUserModel } from "../../../models/users/functions/register.models.js";
+import { registerUserModel } from "../../../models/auth/index.js";
 import { ConflictError, DatabaseError } from "../../../utils/apiError.utils.js";
 
 export const registerUserService = async ({ name_user, email, password }) => {
