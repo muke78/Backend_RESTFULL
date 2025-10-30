@@ -15,15 +15,6 @@ import {
 import { router } from "./src/routes/index.js";
 import { config } from "./src/config/config.js";
 
-// Datos del proyecto
-const projectInfo = {
-	name: "CRM Kinder Garden Backend",
-	description: "CRM para Gestión y Administración de una escuela",
-	version: "1.0.0",
-	authorName: "Erick Gonzalez",
-	githubName: "https://github.com/muke78",
-};
-
 const app = express();
 
 // Configuracion de Swagger
@@ -38,14 +29,14 @@ app.use(helmet());
 app.use(cookieParser());
 
 // ✅ 2. Ruta raíz
-app.get("/", (request, response) => {
+app.get("/", (_request, response) => {
 	response.status(200).json({
-		description: projectInfo.description,
-		name: projectInfo.name,
-		version: projectInfo.version,
+		description: "CRM para Gestión y Administración de una escuela",
+		name: "CRM Kinder Garden Backend",
+		version: "1.0.0",
 		author: {
-			name: projectInfo.authorName,
-			github: projectInfo.githubName,
+			name: "Erick Gonzalez",
+			github: "https://github.com/muke78",
 		},
 		api: "/api/v1",
 		status: "🟢 API funcionando correctamente",
@@ -56,7 +47,7 @@ app.get("/", (request, response) => {
 // ✅ 3. Rutas de la API (ya con rate limiting aplicado)
 app.use(burstProtectionLimiter, normalLimiter, router);
 
-// ✅ 4. Middleware de errores AL FINAL
+// ✅ 4. Middleware de errores
 app.use(errorHandler);
 
 // Crear y arrancar el servidor
@@ -81,6 +72,6 @@ server.on("error", (error) => {
 
 server.listen(currentPort, () => {
 	console.log(
-		`🟢 API funcionando correctamente, servidor corriendo en el puerto localhost:${server.address().port}`,
+		`🟢 API funcionando correctamente, servidor corriendo en el puerto http://localhost:${server.address().port}`,
 	);
 });

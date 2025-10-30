@@ -1,4 +1,4 @@
-import { rateLimit } from "express-rate-limit";
+import { ipKeyGenerator, rateLimit } from "express-rate-limit";
 import { TooManyRequestsError } from "../utils/apiError.utils.js";
 
 // Bloqueo burst - más restrictivo para prevenir spam
@@ -13,7 +13,12 @@ export const burstProtectionLimiter = rateLimit({
 	standardHeaders: true,
 	legacyHeaders: false,
 	skipSuccessfulRequests: false,
-	keyGenerator: (req) => req.ip,
+	keyGenerator: (req, _res) => {
+		if (req.query.apiKey) return req.query.apiKey;
+
+		const ipv6Subnet = 64;
+		return ipKeyGenerator(req.ip, ipv6Subnet);
+	},
 });
 
 // Control normal - más permisivo para uso regular
@@ -27,5 +32,10 @@ export const normalLimiter = rateLimit({
 	},
 	standardHeaders: true,
 	legacyHeaders: false,
-	keyGenerator: (req) => req.ip,
+	keyGenerator: (req, _res) => {
+		if (req.query.apiKey) return req.query.apiKey;
+
+		const ipv6Subnet = 64;
+		return ipKeyGenerator(req.ip, ipv6Subnet);
+	},
 });

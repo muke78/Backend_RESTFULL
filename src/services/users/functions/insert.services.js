@@ -58,19 +58,21 @@ export const insertUserMasiveService = async (countInsert) => {
 		const role = undefined;
 		const status = "cefdafcc-61f5-11f0-a977-d843ae0db894";
 
+		console.log(name_user);
+
 		const existingUser = await findUserByEmail(email);
 		if (existingUser) {
 			throw new ConflictError("El correo ya se encuentra registrado");
 		}
 
 		const hashedPassword = await hashedArg.hash(password);
-		const insertResult = await insertUserModel(
+		const insertResult = await insertUserModel({
 			name_user,
 			email,
 			hashedPassword,
 			role,
 			status,
-		);
+		});
 
 		if (insertResult.affectedRows > 0) {
 			insertados.push({ name_user, email, hashedPassword, role, status });

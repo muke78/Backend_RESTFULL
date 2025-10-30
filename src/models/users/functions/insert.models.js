@@ -25,9 +25,8 @@ export const insertUserModel = async ({
 	role,
 	status,
 }) => {
-	const query = ` INSERT INTO users (user_id, role_id, name_user, email, password, account_type, status_id) 
-  VALUES (UUID(),?, ?, ?, ?, 'local', ?)
-    `;
+	const query = `INSERT INTO users (user_id, role_id, name_user, email, password, account_type, status_id) 
+  VALUES (UUID(),?, ?, ?, ?, 'local', ?);`;
 	const params = [role, name_user, email, hashedPassword, status];
 	return await connectionQuery(query, params);
 };
