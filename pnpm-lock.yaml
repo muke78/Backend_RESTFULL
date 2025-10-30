@@ -41,6 +41,9 @@ importers:
       morgan:
         specifier: 1.10.1
         version: 1.10.1
+      mysql2:
+        specifier: 3.15.3
+        version: 3.15.3
       swagger-themes:
         specifier: 1.4.3
         version: 1.4.3
@@ -72,9 +75,6 @@ importers:
       jest:
         specifier: 30.2.0
         version: 30.2.0(@types/node@24.9.2)
-      mysql2:
-        specifier: 3.15.3
-        version: 3.15.3
       nodemon:
         specifier: 3.1.10
         version: 3.1.10

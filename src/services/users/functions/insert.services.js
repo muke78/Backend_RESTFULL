@@ -58,8 +58,6 @@ export const insertUserMasiveService = async (countInsert) => {
 		const role = undefined;
 		const status = "cefdafcc-61f5-11f0-a977-d843ae0db894";
 
-		console.log(name_user);
-
 		const existingUser = await findUserByEmail(email);
 		if (existingUser) {
 			throw new ConflictError("El correo ya se encuentra registrado");
