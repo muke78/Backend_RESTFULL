@@ -64,13 +64,13 @@ export const insertUserMasiveService = async (countInsert) => {
 		}
 
 		const hashedPassword = await hashedArg.hash(password);
-		const insertResult = await insertUserModel(
+		const insertResult = await insertUserModel({
 			name_user,
 			email,
 			hashedPassword,
 			role,
 			status,
-		);
+		});
 
 		if (insertResult.affectedRows > 0) {
 			insertados.push({ name_user, email, hashedPassword, role, status });
