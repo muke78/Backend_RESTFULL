@@ -13,7 +13,7 @@ export const validationFields = (schema, property = "body") => {
 				details: error.details.message,
 				path: request.originalUrl,
 				method: request.method,
-				body: request.body.email,
+				body: request.body,
 				params: request.params,
 				query: request.query,
 				user: request.user?.user_id,
