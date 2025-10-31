@@ -38,7 +38,7 @@ export const listUsersModel = async (
 	const [countResult] = await connectionQuery(countQuery, values);
 	const totalRecords = countResult.total;
 
-	const { pagination } = calculatePagination(totalRecords, page, limit);
+	const { pagination, offset } = calculatePagination(totalRecords, page, limit);
 
 	const query = `
 		SELECT 
@@ -59,11 +59,7 @@ export const listUsersModel = async (
 		LIMIT ? OFFSET ?
 	`;
 
-	const rows = await connectionQuery(query, [
-		...values,
-		limit,
-		pagination.offset,
-	]);
+	const rows = await connectionQuery(query, [...values, limit, offset]);
 
 	return { rows, pagination };
 };

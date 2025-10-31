@@ -4,6 +4,7 @@ export const calculatePagination = (totalRecords, page, limit) => {
 	const offset = (page - 1) * limit;
 
 	return {
+		offset,
 		pagination: {
 			currentPage: page,
 			totalPages,
@@ -11,7 +12,6 @@ export const calculatePagination = (totalRecords, page, limit) => {
 			recordsPerPage: limit,
 			hasNextPage: page < totalPages,
 			hasPrevPage: page > 1,
-			offset,
 		},
 	};
 };

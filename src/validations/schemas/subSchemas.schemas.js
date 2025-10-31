@@ -85,13 +85,15 @@ export const accountTypeSchema = Joi.string()
 		"any.only": "El tipo de cuenta debe ser 'local' o 'google'",
 	});
 
-export const uuidSchema = Joi.string()
-	.uuid({ version: ["uuidv1", "uuidv4", "uuidv5"] })
-	.required()
-	.messages({
-		"string.uuid": "El id debe ser un UUID válido",
-		"any.required": "El id es obligatorio",
-	});
+export const uuidSchema = Joi.object({
+	id: Joi.string()
+		.uuid({ version: ["uuidv1", "uuidv4", "uuidv5"] })
+		.required()
+		.messages({
+			"string.uuid": "El id debe ser un UUID válido",
+			"any.required": "El id es obligatorio",
+		}),
+});
 
 export const paginationSchema = Joi.object({
 	limit: Joi.number()
