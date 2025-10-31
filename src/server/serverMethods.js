@@ -4,7 +4,13 @@ import { logger } from "../utils/logger.utils.js";
 export const methodOK = (request, response, result, message) => {
 	const timestamp = new Date().toISOString();
 	const requestId = crypto.randomUUID();
-	const totalDataCount = Array.isArray(result) ? result.length : result ? 1 : 0;
+	const totalDataCount = Array.isArray(result)
+		? result.length
+		: result && Array.isArray(result.rows)
+			? result.rows.length
+			: result
+				? 1
+				: 0;
 	const formattedDataCount = totalDataCount.toLocaleString("es-MX");
 
 	const responsePayload = {

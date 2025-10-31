@@ -2,7 +2,7 @@ import crypto from "node:crypto";
 
 import { config } from "../../../config/config.js";
 import { createTokenGoogle } from "../../../helpers/jwtGoogle.helpers.js";
-import { lastLogin } from "../../../helpers/userLastLogin.helpers.js";
+import { lastLogin } from "../../../helpers/last.login.helpers.js";
 import { googleClient } from "../../../lib/clientGoogle.lib.js";
 import {
 	checkUser,

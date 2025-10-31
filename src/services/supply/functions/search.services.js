@@ -34,7 +34,6 @@ export const searchSupplyService = async (name) => {
 			details: "El campo de nombre es obligatorio para realizar busquedas",
 		};
 	}
-	console.log(query);
 	const result = await connectionQuery(query, params);
 
 	if (result.length === 0) {

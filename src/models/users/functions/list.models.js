@@ -1,6 +1,16 @@
 import { connectionQuery } from "../../../helpers/connection.helpers.js";
+import {
+	buildCountQuery,
+	calculatePagination,
+} from "../../../helpers/pagination.helpers.js";
 
-export const listUsersModel = async (status, account_type, role) => {
+export const listUsersModel = async (
+	status,
+	account_type,
+	role,
+	limit,
+	page,
+) => {
 	let where = "WHERE 1=1";
 	const values = [];
 
@@ -19,24 +29,37 @@ export const listUsersModel = async (status, account_type, role) => {
 		values.push(role);
 	}
 
-	const query = `
-				SELECT 
-					user_id,
-					role.name AS role_name,
-					name_user,
-					email,
-					profile_picture,
-					account_type,
-					last_login,
-					created,
-					updated,
-					cat_status.name AS status_name
-				FROM users
-				LEFT JOIN role ON role.role_id = users.role_id
-				LEFT JOIN cat_status ON cat_status.status_id = users.status_id
-				${where}
-				ORDER BY name_user ASC
-  `;
+	const joins = `
+		LEFT JOIN role ON role.role_id = users.role_id
+		LEFT JOIN cat_status ON cat_status.status_id = users.status_id
+	`;
 
-	return await connectionQuery(query, values);
+	const countQuery = buildCountQuery("users", joins, where);
+	const [countResult] = await connectionQuery(countQuery, values);
+	const totalRecords = countResult.total;
+
+	const { pagination, offset } = calculatePagination(totalRecords, page, limit);
+
+	const query = `
+		SELECT 
+			user_id,
+			role.name AS role_name,
+			name_user,
+			email,
+			profile_picture,
+			account_type,
+			last_login,
+			created,
+			updated,
+			cat_status.name AS status_name
+		FROM users
+		${joins}
+		${where}
+		ORDER BY created DESC, user_id DESC
+		LIMIT ? OFFSET ?
+	`;
+
+	const rows = await connectionQuery(query, [...values, limit, offset]);
+
+	return { rows, pagination };
 };
